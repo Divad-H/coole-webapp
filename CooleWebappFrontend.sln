@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32616.157
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "CooleWebappFrontend", "CooleWebappFrontend\CooleWebappFrontend.esproj", "{2E991AB4-085E-4AB8-B115-3BB8DAB60696}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CooleWebappBackend", "CooleWebappBackend\CooleWebappBackend.csproj", "{DC79D0D8-FDEC-4204-BD91-689B53737141}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2E991AB4-085E-4AB8-B115-3BB8DAB60696}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E991AB4-085E-4AB8-B115-3BB8DAB60696}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E991AB4-085E-4AB8-B115-3BB8DAB60696}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{2E991AB4-085E-4AB8-B115-3BB8DAB60696}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E991AB4-085E-4AB8-B115-3BB8DAB60696}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E991AB4-085E-4AB8-B115-3BB8DAB60696}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{DC79D0D8-FDEC-4204-BD91-689B53737141}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC79D0D8-FDEC-4204-BD91-689B53737141}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC79D0D8-FDEC-4204-BD91-689B53737141}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC79D0D8-FDEC-4204-BD91-689B53737141}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {4A3F7F02-A2AE-47E2-BF80-8D78A212C7BA}
+	EndGlobalSection
+EndGlobal
