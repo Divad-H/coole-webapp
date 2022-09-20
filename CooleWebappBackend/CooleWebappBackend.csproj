@@ -19,6 +19,7 @@
     <ProjectReference Include="..\CooleWebappFrontend\CooleWebappFrontend.esproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
+    <ProjectReference Include="..\Database\Database.csproj" />
   </ItemGroup>
 
   <Target Name="NSwag">
