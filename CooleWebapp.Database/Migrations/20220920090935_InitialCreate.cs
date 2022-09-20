@@ -2,7 +2,7 @@
 
 #nullable disable
 
-namespace Database.Migrations
+namespace CooleWebapp.Database.Migrations
 {
     public partial class InitialCreate : Migration
     {

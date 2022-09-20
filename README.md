@@ -4,4 +4,4 @@
 
 #### Create Initial Migrations
 
-From within the database project directory call `dotnet ef migrations add InitialCreate --startup-project ..\CooleWebappBackend\CooleWebappBackend.csproj`
+From within the database project directory call `dotnet ef migrations add InitialCreate --startup-project ..\CooleWebapp.Backend\CooleWebapp.Backend.csproj`

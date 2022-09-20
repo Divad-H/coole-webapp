@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 
-namespace CooleWebappBackend.Controllers
+namespace CooleWebapp.Backend.Controllers
 {
   [ApiController]
   [Route("[controller]")]

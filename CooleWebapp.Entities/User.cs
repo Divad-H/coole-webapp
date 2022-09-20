@@ -1,4 +1,4 @@
-﻿namespace Entities
+﻿namespace CooleWebapp.Entities
 {
   public class User
   {

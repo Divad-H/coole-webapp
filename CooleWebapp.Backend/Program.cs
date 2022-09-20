@@ -1,4 +1,4 @@
-using Database;
+using CooleWebapp.Database;
 
 var builder = WebApplication.CreateBuilder(args);
 

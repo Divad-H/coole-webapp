@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace CooleWebappBackend
+namespace CooleWebapp.Backend
 {
   public class WeatherForecast
   {

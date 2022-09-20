@@ -1,4 +1,4 @@
-﻿namespace Database.Configuration
+﻿namespace CooleWebapp.Database.Configuration
 {
   public sealed record DatabaseConfig
   {

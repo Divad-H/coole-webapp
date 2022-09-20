@@ -1,11 +1,11 @@
-﻿using Database.Configuration;
-using Database.Model;
+﻿using CooleWebapp.Database.Configuration;
+using CooleWebapp.Database.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 
-namespace Database
+namespace CooleWebapp.Database
 {
   public static class DbSetup
   {

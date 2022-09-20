@@ -9,7 +9,7 @@
     }
   },
   "profiles": {
-    "CooleWebappBackend": {
+    "CooleWebapp.Backend": {
       "commandName": "Project",
       "launchUrl": "swagger",
       "environmentVariables": {

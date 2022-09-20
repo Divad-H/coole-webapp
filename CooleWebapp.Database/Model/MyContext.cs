@@ -1,7 +1,7 @@
-﻿using Entities;
+﻿using CooleWebapp.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Database.Model
+namespace CooleWebapp.Database.Model
 {
   public sealed class MyContext : DbContext
   {

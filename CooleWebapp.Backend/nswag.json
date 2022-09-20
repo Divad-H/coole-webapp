@@ -3,7 +3,7 @@
   "defaultVariables": null,
   "documentGenerator": {
     "aspNetCoreToOpenApi": {
-      "project": "CooleWebappBackend.csproj",
+      "project": "CooleWebapp.Backend.csproj",
       "msBuildProjectExtensionsPath": null,
       "configuration": null,
       "runtime": null,
@@ -121,7 +121,7 @@
       "enumNameGeneratorType": null,
       "serviceHost": null,
       "serviceSchemes": null,
-      "output": "../CooleWebappFrontend/src/generated/coole-webapp-api.ts",
+      "output": "../CooleWebapp.Frontend/src/generated/coole-webapp-api.ts",
       "newLineBehavior": "Auto"
     }
   }
