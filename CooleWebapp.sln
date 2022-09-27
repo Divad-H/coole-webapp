@@ -7,11 +7,13 @@ Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "CooleWebapp.Frontend", "Coo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CooleWebapp.Backend", "CooleWebapp.Backend\CooleWebapp.Backend.csproj", "{DC79D0D8-FDEC-4204-BD91-689B53737141}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CooleWebapp.Application", "CooleWebapp.Application\CooleWebapp.Application.csproj", "{044AA182-B9F8-40AE-96FF-A7A514DE41BC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CooleWebapp.Application", "CooleWebapp.Application\CooleWebapp.Application.csproj", "{044AA182-B9F8-40AE-96FF-A7A514DE41BC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CooleWebapp.Entities", "CooleWebapp.Entities\CooleWebapp.Entities.csproj", "{3A6710E5-8827-41B9-8CD1-23D41F188F25}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CooleWebapp.Entities", "CooleWebapp.Entities\CooleWebapp.Entities.csproj", "{3A6710E5-8827-41B9-8CD1-23D41F188F25}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CooleWebapp.Database", "CooleWebapp.Database\CooleWebapp.Database.csproj", "{F99DC10B-F165-4D93-8BEB-6736DC01CDA7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CooleWebapp.Database", "CooleWebapp.Database\CooleWebapp.Database.csproj", "{F99DC10B-F165-4D93-8BEB-6736DC01CDA7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CooleWebapp.Auth", "CooleWebapp.Auth\CooleWebapp.Auth.csproj", "{0C6F734D-1041-4FFF-A3FD-FFA143022A26}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +43,10 @@ Global
 		{F99DC10B-F165-4D93-8BEB-6736DC01CDA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F99DC10B-F165-4D93-8BEB-6736DC01CDA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F99DC10B-F165-4D93-8BEB-6736DC01CDA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C6F734D-1041-4FFF-A3FD-FFA143022A26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C6F734D-1041-4FFF-A3FD-FFA143022A26}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C6F734D-1041-4FFF-A3FD-FFA143022A26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C6F734D-1041-4FFF-A3FD-FFA143022A26}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

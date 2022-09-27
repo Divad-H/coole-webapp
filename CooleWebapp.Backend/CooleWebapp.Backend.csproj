@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CooleWebapp.Application\CooleWebapp.Application.csproj" />
+    <ProjectReference Include="..\CooleWebapp.Auth\CooleWebapp.Auth.csproj" />
     <ProjectReference Include="..\CooleWebapp.Frontend\CooleWebapp.Frontend.esproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
