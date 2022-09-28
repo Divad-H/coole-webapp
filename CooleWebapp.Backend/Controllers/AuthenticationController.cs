@@ -9,18 +9,17 @@ using Microsoft.AspNetCore.Identity;
 using CooleWebapp.Auth.Model;
 using Microsoft.AspNetCore.Authentication;
 using System.Collections.Immutable;
-using System.Linq;
 
 namespace CooleWebapp.Backend.Controllers
 {
   [ApiController]
   [Route("[controller]")]
-  public class AuthorizationController : ControllerBase
+  public class AuthenticationController : ControllerBase
   {
     private readonly SignInManager<WebappUser> _signInManager;
     private readonly UserManager<WebappUser> _userManager;
 
-    public AuthorizationController(
+    public AuthenticationController(
       SignInManager<WebappUser> signInManager,
       UserManager<WebappUser> userManager)
     {
@@ -79,9 +78,6 @@ namespace CooleWebapp.Backend.Controllers
           identity.AddClaim(Claims.Role, role, Destinations.AccessToken);
 
         var principal = new ClaimsPrincipal(identity);
-
-        var s = request.Scope;
-        var ss = request.GetScopes();
 
         // Note: in this sample, the granted scopes match the requested scope
         // but you may want to allow the user to uncheck specific scopes.
