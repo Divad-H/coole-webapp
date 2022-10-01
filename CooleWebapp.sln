@@ -13,7 +13,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CooleWebapp.Entities", "Coo
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CooleWebapp.Database", "CooleWebapp.Database\CooleWebapp.Database.csproj", "{F99DC10B-F165-4D93-8BEB-6736DC01CDA7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CooleWebapp.Auth", "CooleWebapp.Auth\CooleWebapp.Auth.csproj", "{0C6F734D-1041-4FFF-A3FD-FFA143022A26}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CooleWebapp.Auth", "CooleWebapp.Auth\CooleWebapp.Auth.csproj", "{0C6F734D-1041-4FFF-A3FD-FFA143022A26}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CooleWebapp.Application.Test", "CooleWebapp.Application.Test\CooleWebapp.Application.Test.csproj", "{CAA718D8-13CC-4AE2-B478-6075C92EA5C8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{35E1DA68-D096-45B9-9758-19710A62B92C}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +55,10 @@ Global
 		{0C6F734D-1041-4FFF-A3FD-FFA143022A26}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0C6F734D-1041-4FFF-A3FD-FFA143022A26}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0C6F734D-1041-4FFF-A3FD-FFA143022A26}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CAA718D8-13CC-4AE2-B478-6075C92EA5C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CAA718D8-13CC-4AE2-B478-6075C92EA5C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CAA718D8-13CC-4AE2-B478-6075C92EA5C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CAA718D8-13CC-4AE2-B478-6075C92EA5C8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

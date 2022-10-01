@@ -12,4 +12,6 @@
   <Target Name="NSwag" BeforeTargets="Build">
     <MsBuild Targets="NSwag" Projects="../CooleWebapp.Backend/CooleWebapp.Backend.csproj" Properties="Configuration=$(Configuration)" />
   </Target>
+  <Target Name="VSTest">
+  </Target>
 </Project>
