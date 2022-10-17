@@ -197,6 +197,29 @@ namespace CooleWebapp.Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "CoolUsers",
+                columns: table => new
+                {
+                    Id = table.Column<ulong>(type: "INTEGER", nullable: false)
+                        .Annotation("Sqlite:Autoincrement", true),
+                    WebappUserId = table.Column<string>(type: "TEXT", nullable: false),
+                    FirstName = table.Column<string>(type: "TEXT", nullable: false),
+                    LastName = table.Column<string>(type: "TEXT", nullable: false),
+                    Title = table.Column<string>(type: "TEXT", nullable: true),
+                    Initials = table.Column<string>(type: "TEXT", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_CoolUsers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_CoolUsers_AspNetUsers_WebappUserId",
+                        column: x => x.WebappUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "OpenIddictAuthorizations",
                 columns: table => new
                 {
@@ -291,6 +314,12 @@ namespace CooleWebapp.Database.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_CoolUsers_WebappUserId",
+                table: "CoolUsers",
+                column: "WebappUserId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_OpenIddictApplications_ClientId",
                 table: "OpenIddictApplications",
                 column: "ClientId",
@@ -340,6 +369,9 @@ namespace CooleWebapp.Database.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUserTokens");
+
+            migrationBuilder.DropTable(
+                name: "CoolUsers");
 
             migrationBuilder.DropTable(
                 name: "OpenIddictScopes");
