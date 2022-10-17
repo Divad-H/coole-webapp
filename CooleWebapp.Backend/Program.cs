@@ -1,4 +1,5 @@
 using AspNet.Security.OpenIdConnect.Primitives;
+using CooleWebapp.Auth;
 using CooleWebapp.Auth.Model;
 using CooleWebapp.Database;
 using CooleWebapp.Database.Model;
@@ -48,6 +49,8 @@ builder.Services
     options.UseLocalServer();
     options.UseAspNetCore();
   });
+
+builder.Services.AddWebappAuth();
 
 var app = builder.Build();
 await DbSetup.InitializeCooleWebappDatabase(app.Services, app.Lifetime.ApplicationStopping);

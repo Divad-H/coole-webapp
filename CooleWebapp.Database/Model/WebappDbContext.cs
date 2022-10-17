@@ -2,13 +2,23 @@
 using CooleWebapp.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
-namespace CooleWebapp.Database.Model
+#nullable disable
+
+namespace CooleWebapp.Database.Model;
+
+public sealed class WebappDbContext : IdentityDbContext<WebappUser>
 {
-  public sealed class WebappDbContext : IdentityDbContext<WebappUser>
+  public WebappDbContext(DbContextOptions<WebappDbContext> dbContextOptions)
+    : base(dbContextOptions)
+  { }
+
+  protected override void OnModelCreating(ModelBuilder builder)
   {
-    public WebappDbContext(DbContextOptions<WebappDbContext> dbContextOptions)
-      : base(dbContextOptions)
-    { }
+    base.OnModelCreating(builder);
+    builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
   }
+
+  public DbSet<CoolUser> CoolUsers { get; set; }
 }

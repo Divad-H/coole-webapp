@@ -3,7 +3,9 @@ const PROXY_CONFIG = [
     context: [
       "/weatherforecast",
       "/WeatherForecast",
-      "/connect/token"
+      "/connect/token",
+      "/Registration",
+      "/registration"
     ],
     target: "https://localhost:7038",
     secure: false

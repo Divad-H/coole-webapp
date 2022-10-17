@@ -6,6 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Identity;
 using CooleWebapp.Auth.Model;
+using CooleWebapp.Auth.Registration;
+using CooleWebapp.Database.Repository;
 
 namespace CooleWebapp.Database
 {
@@ -26,6 +28,7 @@ namespace CooleWebapp.Database
           options.UseOpenIddict();
         })
         .Configure<DatabaseConfig>(configurationBuilder.GetSection(nameof(DatabaseConfig)));
+      serviceDescriptors.AddScoped<IUserDataAccess, UserDataAccess>();
       return serviceDescriptors;
     }
 
