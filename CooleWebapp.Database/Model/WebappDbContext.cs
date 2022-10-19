@@ -1,5 +1,5 @@
 ﻿using CooleWebapp.Auth.Model;
-using CooleWebapp.Entities;
+using CooleWebapp.Core.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System.Reflection;

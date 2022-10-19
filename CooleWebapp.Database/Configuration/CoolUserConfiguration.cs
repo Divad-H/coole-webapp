@@ -1,4 +1,4 @@
-﻿using CooleWebapp.Entities;
+﻿using CooleWebapp.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 

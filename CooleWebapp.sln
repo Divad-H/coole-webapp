@@ -9,13 +9,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CooleWebapp.Backend", "Cool
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CooleWebapp.Application", "CooleWebapp.Application\CooleWebapp.Application.csproj", "{044AA182-B9F8-40AE-96FF-A7A514DE41BC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CooleWebapp.Entities", "CooleWebapp.Entities\CooleWebapp.Entities.csproj", "{3A6710E5-8827-41B9-8CD1-23D41F188F25}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CooleWebapp.Core", "CooleWebapp.Entities\CooleWebapp.Core.csproj", "{3A6710E5-8827-41B9-8CD1-23D41F188F25}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CooleWebapp.Database", "CooleWebapp.Database\CooleWebapp.Database.csproj", "{F99DC10B-F165-4D93-8BEB-6736DC01CDA7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CooleWebapp.Auth", "CooleWebapp.Auth\CooleWebapp.Auth.csproj", "{0C6F734D-1041-4FFF-A3FD-FFA143022A26}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CooleWebapp.Application.Test", "CooleWebapp.Application.Test\CooleWebapp.Application.Test.csproj", "{CAA718D8-13CC-4AE2-B478-6075C92EA5C8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CooleWebapp.Application.Test", "CooleWebapp.Application.Test\CooleWebapp.Application.Test.csproj", "{CAA718D8-13CC-4AE2-B478-6075C92EA5C8}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{35E1DA68-D096-45B9-9758-19710A62B92C}"
 	ProjectSection(SolutionItems) = preProject

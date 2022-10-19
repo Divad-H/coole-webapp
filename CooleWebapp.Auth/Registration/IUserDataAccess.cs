@@ -1,4 +1,4 @@
-﻿using CooleWebapp.Entities;
+﻿using CooleWebapp.Core.Entities;
 
 namespace CooleWebapp.Auth.Registration;
 

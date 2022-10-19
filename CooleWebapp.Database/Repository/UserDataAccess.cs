@@ -1,7 +1,7 @@
 ﻿using CooleWebapp.Auth.Registration;
 using CooleWebapp.Database.Model;
-using CooleWebapp.Entities;
 using Microsoft.EntityFrameworkCore;
+using CooleWebapp.Core.Entities;
 
 namespace CooleWebapp.Database.Repository;
 

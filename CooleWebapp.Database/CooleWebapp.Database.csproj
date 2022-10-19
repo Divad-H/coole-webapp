@@ -22,7 +22,7 @@
   <ItemGroup>
     <ProjectReference Include="..\CooleWebapp.Application\CooleWebapp.Application.csproj" />
     <ProjectReference Include="..\CooleWebapp.Auth\CooleWebapp.Auth.csproj" />
-    <ProjectReference Include="..\CooleWebapp.Entities\CooleWebapp.Entities.csproj" />
+    <ProjectReference Include="..\CooleWebapp.Entities\CooleWebapp.Core.csproj" />
   </ItemGroup>
 
 </Project>
