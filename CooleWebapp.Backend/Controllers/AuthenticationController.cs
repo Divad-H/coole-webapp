@@ -136,7 +136,7 @@ namespace CooleWebapp.Backend.Controllers
       IEnumerable<string> getDests(string scope)
       {
         yield return Destinations.AccessToken;
-        if (request.HasScope(scope) || true)
+        if (request.HasScope(scope))
           yield return Destinations.IdentityToken;
       }
 
