@@ -11,7 +11,7 @@ public record RegistrationData(
   string Password,
   [Required]
   string Email,
-  string Title);
+  string? Title = null);
 
 public interface IUserRegistration
 {
