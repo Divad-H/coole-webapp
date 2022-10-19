@@ -4,9 +4,9 @@ namespace CooleWebapp.Auth.Registration;
 
 public record RegistrationData(
   [Required]
-  string FirstName,
+  string Name,
   [Required]
-  string LastName,
+  string Initials,
   [Required]
   string Password,
   [Required]

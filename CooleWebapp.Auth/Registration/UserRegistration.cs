@@ -27,14 +27,12 @@ public sealed class UserRegistration : IUserRegistration
     try
     {
       user = await _userManager.FindByEmailAsync(registrationData.Email);
-      var initials = $"{registrationData.FirstName.First()}{registrationData.LastName.First()}{registrationData.LastName.Last()}";
       await _userDataAccess.CreateUser(new()
       {
-        FirstName = registrationData.FirstName,
-        LastName = registrationData.LastName,
+        Name = registrationData.Name,
+        Initials = registrationData.Initials,
         Title = registrationData.Title,
-        WebappUserId = user.Id,
-        Initials = initials
+        WebappUserId = user.Id
       }, ct);
     }
     catch (Exception)

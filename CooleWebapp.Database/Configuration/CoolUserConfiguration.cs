@@ -10,8 +10,7 @@ public class CoolUserConfiguration : IEntityTypeConfiguration<CoolUser>
   {
     builder.HasKey(x => x.Id);
     builder.Property(x => x.WebappUserId).IsRequired();
-    builder.Property(x => x.FirstName).IsRequired();
-    builder.Property(x => x.LastName).IsRequired();
+    builder.Property(x => x.Name).IsRequired();
     builder.Property(x => x.Initials).IsRequired();
   }
 }
