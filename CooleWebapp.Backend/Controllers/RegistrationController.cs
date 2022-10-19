@@ -16,14 +16,6 @@ public class RegistrationController : ControllerBase
   [HttpPost]
   public async Task RegisterUser(RegistrationData registrationData, CancellationToken ct)
   {
-    try
-    {
-      await _userRegistration.RegisterUser(registrationData, ct);
-    }
-    catch(Exception)
-    {
-      // TODO: Translate exception
-      throw;
-    }
+    await _userRegistration.RegisterUser(registrationData, ct);
   }
 }
