@@ -20,7 +20,11 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApiDocument();
 builder.Services.AddCooleWebappDatabase(builder.Configuration);
 
-builder.Services.AddIdentity<WebappUser, IdentityRole>()
+builder.Services
+  .AddIdentity<WebappUser, IdentityRole>(options =>
+  {
+    options.Password.RequiredLength = 8;
+  })
   .AddEntityFrameworkStores<WebappDbContext>()
   .AddDefaultTokenProviders();
 
