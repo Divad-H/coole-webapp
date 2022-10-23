@@ -1,4 +1,5 @@
 ﻿using CooleWebapp.Auth.Registration;
+using CooleWebapp.Backend.ErrorHandling;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CooleWebapp.Backend.Controllers;
@@ -20,6 +21,7 @@ public class RegistrationController : ControllerBase
   /// <param name="ct">Allows aborting the operation</param>
   /// <returns>The task of the operation</returns>
   [Route("register")]
+  [ProducesResponseType(typeof(ErrorData), StatusCodes.Status400BadRequest)]
   [HttpPost]
   public Task RegisterUser(RegistrationData registrationData, CancellationToken ct)
   {

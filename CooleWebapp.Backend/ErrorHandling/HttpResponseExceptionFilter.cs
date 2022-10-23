@@ -5,6 +5,11 @@ using System.Net;
 
 namespace CooleWebapp.Backend.ErrorHandling;
 
+public record ErrorData
+{
+  public string Message { get; set; } = string.Empty;
+}
+
 public class HttpResponseExceptionFilter : IActionFilter, IOrderedFilter
 {
   public int Order => int.MaxValue - 10;
@@ -15,7 +20,7 @@ public class HttpResponseExceptionFilter : IActionFilter, IOrderedFilter
   {
     if (context.Exception is ClientError httpResponseException)
     {
-      context.Result = new ObjectResult(new { httpResponseException.Message })
+      context.Result = new ObjectResult(new ErrorData() { Message = httpResponseException.Message })
       {
         StatusCode = httpResponseException.Type switch 
         { 
