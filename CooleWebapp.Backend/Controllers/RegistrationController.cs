@@ -1,6 +1,7 @@
 ﻿using CooleWebapp.Auth.Registration;
 using CooleWebapp.Backend.ErrorHandling;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
 
 namespace CooleWebapp.Backend.Controllers;
 
@@ -25,6 +26,24 @@ public class RegistrationController : ControllerBase
   [HttpPost]
   public Task RegisterUser(RegistrationData registrationData, CancellationToken ct)
   {
-    return _userRegistration.RegisterUser(registrationData, ct);
+    return _userRegistration.RegisterUser(
+      registrationData,
+      (data) =>
+      {
+        string url = $"{Request.Scheme}://{Request.Host}/Registration/confirm-email";
+        var param = new Dictionary<string, string?>() { 
+          { "token", data.Token } ,
+          { "email", data.Email } 
+        };
+        return QueryHelpers.AddQueryString(url, param);
+      },
+      ct);
+  }
+
+  [Route("confirm-email")]
+  [HttpGet]
+  public Task ConfirmEmail(string token, string email, CancellationToken ct)
+  {
+    return _userRegistration.ConfirmEmailAsync(email, token, ct);
   }
 }

@@ -26,5 +26,11 @@ internal sealed class UserManager : IUserManager
 
   public Task<WebappUser> FindByEmailAsync(string email)
     => _userManager.FindByEmailAsync(email);
+
+  public Task<string> GenerateEmailConfirmationTokenAsync(WebappUser webappUser)
+    => _userManager.GenerateEmailConfirmationTokenAsync(webappUser);
+
+  public async Task ConfirmEmailAsync(WebappUser webappUser, string token)
+    => ThrowOnError(await _userManager.ConfirmEmailAsync(webappUser, token));
 }
 

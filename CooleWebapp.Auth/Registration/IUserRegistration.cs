@@ -15,5 +15,9 @@ public record RegistrationData(
 
 public interface IUserRegistration
 {
-  Task RegisterUser(RegistrationData registrationData, CancellationToken ct);
+  Task RegisterUser(
+    RegistrationData registrationData,
+    Func<(string Token, string Email), string> createEmailLink,
+    CancellationToken ct);
+  Task ConfirmEmailAsync(string email, string token, CancellationToken ct);
 }

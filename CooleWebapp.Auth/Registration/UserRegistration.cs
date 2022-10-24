@@ -1,4 +1,5 @@
-﻿using CooleWebapp.Auth.Managers;
+﻿using CooleWebapp.Application.EmailService;
+using CooleWebapp.Auth.Managers;
 using CooleWebapp.Auth.Model;
 using CooleWebapp.Core.ErrorHandling;
 
@@ -8,15 +9,21 @@ public sealed class UserRegistration : IUserRegistration
 {
   private readonly IUserManager _userManager;
   private readonly IUserDataAccess _userDataAccess;
+  private readonly IEmailSender _emailSender;
   public UserRegistration(
     IUserManager userManager,
-    IUserDataAccess userDataAccess)
+    IUserDataAccess userDataAccess,
+    IEmailSender emailSender)
   {
     _userManager = userManager;
     _userDataAccess = userDataAccess;
+    _emailSender = emailSender;
   }
 
-  public async Task RegisterUser(RegistrationData registrationData, CancellationToken ct)
+  public async Task RegisterUser(
+    RegistrationData registrationData,
+    Func<(string Token, string Email), string> createEmailLink,
+    CancellationToken ct)
   {
     var user = await _userManager.FindByEmailAsync(registrationData.Email);
     if (user is not null)
@@ -39,6 +46,24 @@ public sealed class UserRegistration : IUserRegistration
       await _userManager.DeleteAsync(user);
       throw;
     }
-    // TODO: generate email confirmation token and send...
+    var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+    var confirmationLink = createEmailLink((Token: token, registrationData.Email));
+
+    await _emailSender.SendEmailAsync(
+      new Message(
+        new (string Name, string Address)[]{ 
+          (registrationData.Name, Address: registrationData.Email) },
+        "Coole Webapp: Confirm E-Mail Address",
+        $"Confirm your e-mail by following this link: {confirmationLink}"), 
+      ct);
+  }
+
+  public async Task ConfirmEmailAsync(string email, string token, CancellationToken ct)
+  {
+    var user = await _userManager.FindByEmailAsync(email);
+    if (user is null)
+      throw new ClientError(ErrorType.NotFound, "Invalid e-mail confirmation link. User not found.");
+
+    await _userManager.ConfirmEmailAsync(user, token);
   }
 }
