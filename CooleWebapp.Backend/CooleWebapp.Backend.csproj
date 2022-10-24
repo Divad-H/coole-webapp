@@ -5,6 +5,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <UserSecretsId>d1f77215-3f34-43ff-96ff-40c2031873fa</UserSecretsId>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
@@ -33,6 +34,7 @@
   <ItemGroup>
     <ProjectReference Include="..\CooleWebapp.Application\CooleWebapp.Application.csproj" />
     <ProjectReference Include="..\CooleWebapp.Auth\CooleWebapp.Auth.csproj" />
+    <ProjectReference Include="..\CooleWebapp.EmailService\CooleWebapp.EmailService.csproj" />
     <ProjectReference Include="..\CooleWebapp.Frontend\CooleWebapp.Frontend.esproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>

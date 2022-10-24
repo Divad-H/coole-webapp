@@ -6,6 +6,7 @@ using CooleWebapp.Database;
 using CooleWebapp.Database.Model;
 using Microsoft.AspNetCore.Identity;
 using OpenIddict.Abstractions;
+using CooleWebapp.EmailService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -59,6 +60,8 @@ builder.Services
   });
 
 builder.Services.AddWebappAuth();
+
+builder.Services.AddEmailSender(builder.Configuration);
 
 var app = builder.Build();
 await DbSetup.InitializeCooleWebappDatabase(app.Services, app.Lifetime.ApplicationStopping);
