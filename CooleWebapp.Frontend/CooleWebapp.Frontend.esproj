@@ -7,7 +7,7 @@
     <JavaScriptTestFramework>Jasmine</JavaScriptTestFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Folder Include="src\app\auth\" />
+    <Folder Include="src\app\auth\register\" />
   </ItemGroup>
   <Target Name="NSwag" BeforeTargets="Build">
     <MsBuild Targets="NSwag" Projects="../CooleWebapp.Backend/CooleWebapp.Backend.csproj" Properties="Configuration=$(Configuration)" />
