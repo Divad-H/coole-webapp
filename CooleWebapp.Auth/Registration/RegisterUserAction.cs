@@ -1,31 +1,23 @@
-﻿using CooleWebapp.Application.EmailService;
-using CooleWebapp.Auth.Managers;
+﻿using CooleWebapp.Auth.Managers;
 using CooleWebapp.Auth.Model;
 using CooleWebapp.Core.BusinessActionRunners;
 using CooleWebapp.Core.ErrorHandling;
-using System.Reactive;
 
 namespace CooleWebapp.Auth.Registration
 {
-  internal class RegisterUserAction : IBusinessAction<RegistrationData, Unit>
+  internal class RegisterUserAction : IBusinessAction<RegistrationData, UserRegistrationOutDto>
   {
-    private readonly Func<(string Token, string Email), string> _createEmailLink;
     private readonly IUserManager _userManager;
     private readonly IUserDataAccess _userDataAccess;
-    private readonly IEmailSender _emailSender;
     public RegisterUserAction(
-      Func<(string Token, string Email), string> createEmailLink,
       IUserManager userManager,
-      IUserDataAccess userDataAccess,
-      IEmailSender emailSender)
+      IUserDataAccess userDataAccess)
     {
-      _createEmailLink = createEmailLink;
       _userManager = userManager;
       _userDataAccess = userDataAccess;
-      _emailSender = emailSender;
     }
 
-    public async Task<Unit> Run(RegistrationData registrationData, CancellationToken ct)
+    public async Task<UserRegistrationOutDto> Run(RegistrationData registrationData, CancellationToken ct)
     {
       var user = await _userManager.FindByEmailAsync(registrationData.Email);
       if (user is not null)
@@ -41,16 +33,7 @@ namespace CooleWebapp.Auth.Registration
         WebappUserId = user.Id
       }, ct);
       var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-      var confirmationLink = _createEmailLink((Token: token, registrationData.Email));
-
-      await _emailSender.SendEmailAsync(
-        new Message(
-          new (string Name, string Address)[]{
-          (registrationData.Name, Address: registrationData.Email) },
-          "Coole Webapp: Confirm E-Mail Address",
-          $"Confirm your e-mail by following this link: {confirmationLink}"),
-        ct);
-      return Unit.Default;
+      return new(token);
     }
   }
 }

@@ -28,8 +28,13 @@ public sealed class UserRegistration : IUserRegistration
     Func<(string Token, string Email), string> createEmailLink,
     CancellationToken ct)
   {
-    var runner = _runnerFactory.CreateTransactionRunner(
-      new RegisterUserAction(createEmailLink, _userManager, _userDataAccess, _emailSender));
+    var runner = _runnerFactory.CreateTransaction2Runner(
+      new RegisterUserAction(_userManager, _userDataAccess),
+      registrationRes => new SendConfirmationRequestDto(
+        createEmailLink((registrationRes.Token, registrationData.Email)), 
+        registrationData.Name, 
+        registrationData.Email),
+      new SendConfirmationRequestEmailAction(_emailSender));
     await runner.Run(registrationData, ct);
   }
 

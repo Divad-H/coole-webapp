@@ -3,7 +3,7 @@ using CooleWebapp.Database.Model;
 
 namespace CooleWebapp.Database.Runners
 {
-  public class TransactionRunner<TIn, TOut> : ITransactionRunner<TIn, TOut>
+  public class TransactionRunner<TIn, TOut> : IActionRunner<TIn, TOut>
   {
     private readonly IBusinessAction<TIn, TOut> _businessAction;
     private readonly WebappDbContext _webappDbContext;
