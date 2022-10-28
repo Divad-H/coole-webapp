@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Identity;
 using CooleWebapp.Auth.Model;
 using CooleWebapp.Auth.Registration;
 using CooleWebapp.Database.Repository;
+using CooleWebapp.Core.BusinessActionRunners;
+using CooleWebapp.Database.Runners;
 
 namespace CooleWebapp.Database
 {
@@ -18,7 +20,7 @@ namespace CooleWebapp.Database
       IConfigurationRoot configurationBuilder)
     {
       serviceDescriptors
-        .AddDbContextFactory<WebappDbContext>((sp, options) =>
+        .AddDbContext<WebappDbContext>((sp, options) =>
         {
           var config = sp.GetRequiredService<IOptions<DatabaseConfig>>();
           var path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
@@ -29,6 +31,7 @@ namespace CooleWebapp.Database
         })
         .Configure<DatabaseConfig>(configurationBuilder.GetSection(nameof(DatabaseConfig)));
       serviceDescriptors.AddScoped<IUserDataAccess, UserDataAccess>();
+      serviceDescriptors.AddScoped<IRunnerFactory, RunnerFactory>();
       return serviceDescriptors;
     }
 
@@ -38,10 +41,10 @@ namespace CooleWebapp.Database
 
     public static async Task InitializeCooleWebappDatabase(IServiceProvider serviceProvider, CancellationToken ct)
     {
-      using var dbContext = await serviceProvider.GetRequiredService<IDbContextFactory<WebappDbContext>>().CreateDbContextAsync(ct);
-      await dbContext.Database.MigrateAsync(ct);
-
       await using var scope = serviceProvider.CreateAsyncScope();
+
+      var dbContext = scope.ServiceProvider.GetRequiredService<WebappDbContext>();
+      await dbContext.Database.MigrateAsync(ct);
 
       var userManager = scope.ServiceProvider.GetRequiredService<UserManager<WebappUser>>();
       var user = await userManager.FindByNameAsync(testUserName);
