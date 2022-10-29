@@ -1,7 +1,6 @@
-﻿namespace CooleWebapp.Database.Configuration
+﻿namespace CooleWebapp.Database.Configuration;
+
+public sealed record DatabaseConfig
 {
-  public sealed record DatabaseConfig
-  {
-    public string DatabaseName { get; set; } = "coole-webapp/coole-webapp-db";
-  }
+  public string DatabaseName { get; set; } = "coole-webapp/coole-webapp-db";
 }

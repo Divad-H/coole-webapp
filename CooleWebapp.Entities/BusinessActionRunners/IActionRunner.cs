@@ -1,7 +1,6 @@
-﻿namespace CooleWebapp.Core.BusinessActionRunners
+﻿namespace CooleWebapp.Core.BusinessActionRunners;
+
+public interface IActionRunner<TIn, TOut>
 {
-  public interface IActionRunner<TIn, TOut>
-  {
-    public Task<TOut> Run(TIn dataIn, CancellationToken ct);
-  }
+  public Task<TOut> Run(TIn dataIn, CancellationToken ct);
 }
