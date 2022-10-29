@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CooleWebapp.Backend", "Cool
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CooleWebapp.Application", "CooleWebapp.Application\CooleWebapp.Application.csproj", "{044AA182-B9F8-40AE-96FF-A7A514DE41BC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CooleWebapp.Core", "CooleWebapp.Entities\CooleWebapp.Core.csproj", "{3A6710E5-8827-41B9-8CD1-23D41F188F25}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CooleWebapp.Core", "CooleWebapp.Core\CooleWebapp.Core.csproj", "{3A6710E5-8827-41B9-8CD1-23D41F188F25}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CooleWebapp.Database", "CooleWebapp.Database\CooleWebapp.Database.csproj", "{F99DC10B-F165-4D93-8BEB-6736DC01CDA7}"
 EndProject
