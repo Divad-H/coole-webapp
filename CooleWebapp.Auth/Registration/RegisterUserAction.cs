@@ -5,7 +5,7 @@ using CooleWebapp.Core.ErrorHandling;
 
 namespace CooleWebapp.Auth.Registration;
 
-internal class RegisterUserAction : IBusinessAction<RegistrationData, UserRegistrationOutDto>
+public class RegisterUserAction : IBusinessAction<RegistrationData, UserRegistrationOutDto>
 {
   private readonly IUserManager _userManager;
   private readonly IUserDataAccess _userDataAccess;

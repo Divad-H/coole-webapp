@@ -1,18 +1,24 @@
 ﻿using CooleWebapp.Core.BusinessActionRunners;
-using Microsoft.Extensions.DependencyInjection;
+using CooleWebapp.Core.Utilities;
 
 namespace CooleWebapp.Auth.Registration;
 
 public sealed class UserRegistration : IUserRegistration
 {
   private readonly IRunnerFactory _runnerFactory;
-  private readonly IServiceProvider _serviceProvider;
+  private readonly IFactory<RegisterUserAction> _registerUserActionFactory;
+  private readonly IFactory<SendConfirmationRequestEmailAction> _sendConfirmationRequestEmailActionFactory;
+  private readonly IFactory<ConfirmEmailAction> _confirmEmailActionFactory;
   public UserRegistration(
     IRunnerFactory runnerFactory,
-    IServiceProvider serviceProvider)
+    IFactory<RegisterUserAction> registerUserActionFactory,
+    IFactory<SendConfirmationRequestEmailAction> sendConfirmationRequestEmailActionFactory,
+    IFactory<ConfirmEmailAction> confirmEmailActionFactory)
   {
     _runnerFactory = runnerFactory;
-    _serviceProvider = serviceProvider;
+    _registerUserActionFactory = registerUserActionFactory;
+    _sendConfirmationRequestEmailActionFactory = sendConfirmationRequestEmailActionFactory;
+    _confirmEmailActionFactory = confirmEmailActionFactory;
   }
 
   public async Task RegisterUser(
@@ -21,19 +27,19 @@ public sealed class UserRegistration : IUserRegistration
     CancellationToken ct)
   {
     var runner = _runnerFactory.CreateTransaction2Runner(
-      _serviceProvider.GetRequiredService<RegisterUserAction>(),
+      _registerUserActionFactory.Create(),
       registrationRes => new SendConfirmationRequestDto(
         createEmailLink((registrationRes.Token, registrationData.Email)), 
         registrationData.Name, 
         registrationData.Email),
-      _serviceProvider.GetRequiredService<SendConfirmationRequestEmailAction>());
+      _sendConfirmationRequestEmailActionFactory.Create());
     await runner.Run(registrationData, ct);
   }
 
   public async Task ConfirmEmailAsync(string email, string token, CancellationToken ct)
   {
     var runner = _runnerFactory.CreateWriterRunner(
-      _serviceProvider.GetRequiredService<ConfirmEmailAction>());
+      _confirmEmailActionFactory.Create());
     await runner.Run(new(email, token), ct);
   }
 }

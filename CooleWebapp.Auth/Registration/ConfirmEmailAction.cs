@@ -5,7 +5,7 @@ using System.Reactive;
 
 namespace CooleWebapp.Auth.Registration;
 
-internal class ConfirmEmailAction : IBusinessAction<ConfirmEmailActionDto, Unit>
+public class ConfirmEmailAction : IBusinessAction<ConfirmEmailActionDto, Unit>
 {
   private readonly IUserManager _userManager;
   public ConfirmEmailAction(IUserManager userManager) 

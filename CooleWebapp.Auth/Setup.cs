@@ -1,5 +1,6 @@
 ﻿using CooleWebapp.Auth.Managers;
 using CooleWebapp.Auth.Registration;
+using CooleWebapp.Core.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace CooleWebapp.Auth;
@@ -10,8 +11,8 @@ public static class Setup
   {
     serviceDescriptors.AddScoped<IUserRegistration, UserRegistration>();
     serviceDescriptors.AddScoped<IUserManager, UserManager>();
-    serviceDescriptors.AddTransient<RegisterUserAction>();
-    serviceDescriptors.AddTransient<SendConfirmationRequestEmailAction>();
-    serviceDescriptors.AddTransient<ConfirmEmailAction>();
+    serviceDescriptors.AddScopedFactory<RegisterUserAction>();
+    serviceDescriptors.AddScopedFactory<SendConfirmationRequestEmailAction>();
+    serviceDescriptors.AddScopedFactory<ConfirmEmailAction>();
   }
 }

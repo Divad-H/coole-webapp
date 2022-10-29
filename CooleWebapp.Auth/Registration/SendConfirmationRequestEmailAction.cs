@@ -4,7 +4,7 @@ using System.Reactive;
 
 namespace CooleWebapp.Auth.Registration;
 
-internal class SendConfirmationRequestEmailAction : IBusinessAction<SendConfirmationRequestDto, Unit>
+public class SendConfirmationRequestEmailAction : IBusinessAction<SendConfirmationRequestDto, Unit>
 {
   private readonly IEmailSender _emailSender;
 
