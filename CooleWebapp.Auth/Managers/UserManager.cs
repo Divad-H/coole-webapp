@@ -24,8 +24,8 @@ internal sealed class UserManager : IUserManager
   public async Task DeleteAsync(WebappUser user)
     => ThrowOnError(await _userManager.DeleteAsync(user));
 
-  public Task<WebappUser> FindByEmailAsync(string email)
-    => _userManager.FindByEmailAsync(email);
+  public Task<WebappUser?> FindByEmailAsync(string email)
+    => _userManager.FindByEmailAsync(email)!;
 
   public Task<string> GenerateEmailConfirmationTokenAsync(WebappUser webappUser)
     => _userManager.GenerateEmailConfirmationTokenAsync(webappUser);

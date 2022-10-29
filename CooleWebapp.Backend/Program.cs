@@ -7,6 +7,7 @@ using CooleWebapp.Database.Model;
 using Microsoft.AspNetCore.Identity;
 using OpenIddict.Abstractions;
 using CooleWebapp.EmailService;
+using CooleWebapp.Auth.Managers;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +22,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApiDocument();
 builder.Services.AddCooleWebappDatabase(builder.Configuration);
 
+builder.Services
+  .AddScoped<IUserStore<WebappUser>, UserStore>();
 builder.Services
   .AddIdentity<WebappUser, IdentityRole>(options =>
   {

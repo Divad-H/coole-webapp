@@ -26,7 +26,7 @@ public sealed class UserRegistration : IUserRegistration
     Func<(string Token, string Email), string> createEmailLink,
     CancellationToken ct)
   {
-    var runner = _runnerFactory.CreateTransaction2Runner(
+    var runner = _runnerFactory.CreateWriter2Runner(
       _registerUserActionFactory.Create(),
       registrationRes => new SendConfirmationRequestDto(
         createEmailLink((registrationRes.Token, registrationData.Email)), 

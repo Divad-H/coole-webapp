@@ -24,7 +24,6 @@ public class RegisterUserAction : IBusinessAction<RegistrationData, UserRegistra
       throw new ClientError(ErrorType.InvalidOperation, $"A user with the email {registrationData.Email} already exists.");
     user = new WebappUser() { Email = registrationData.Email, UserName = registrationData.Email };
     await _userManager.CreateAsync(user, registrationData.Password);
-    user = await _userManager.FindByEmailAsync(registrationData.Email);
     await _userDataAccess.CreateUser(new()
     {
       Name = registrationData.Name,
