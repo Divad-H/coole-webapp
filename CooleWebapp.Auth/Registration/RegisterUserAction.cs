@@ -30,7 +30,7 @@ public class RegisterUserAction : IBusinessAction<RegistrationData, UserRegistra
       Name = registrationData.Name,
       Initials = registrationData.Initials,
       Title = registrationData.Title,
-      WebappUserId = user.Id
+      WebappUserId = user!.Id
     }, ct);
     var token = await _userManager.GenerateEmailConfirmationTokenAsync(user);
     return new(token);
