@@ -10,5 +10,8 @@ public static class Setup
   {
     serviceDescriptors.AddScoped<IUserRegistration, UserRegistration>();
     serviceDescriptors.AddScoped<IUserManager, UserManager>();
+    serviceDescriptors.AddTransient<RegisterUserAction>();
+    serviceDescriptors.AddTransient<SendConfirmationRequestEmailAction>();
+    serviceDescriptors.AddTransient<ConfirmEmailAction>();
   }
 }

@@ -1,25 +1,18 @@
-﻿using CooleWebapp.Application.EmailService;
-using CooleWebapp.Auth.Managers;
-using CooleWebapp.Core.BusinessActionRunners;
+﻿using CooleWebapp.Core.BusinessActionRunners;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace CooleWebapp.Auth.Registration;
 
 public sealed class UserRegistration : IUserRegistration
 {
   private readonly IRunnerFactory _runnerFactory;
-  private readonly IUserManager _userManager;
-  private readonly IUserDataAccess _userDataAccess;
-  private readonly IEmailSender _emailSender;
+  private readonly IServiceProvider _serviceProvider;
   public UserRegistration(
     IRunnerFactory runnerFactory,
-    IUserManager userManager,
-    IUserDataAccess userDataAccess,
-    IEmailSender emailSender)
+    IServiceProvider serviceProvider)
   {
     _runnerFactory = runnerFactory;
-    _userManager = userManager;
-    _userDataAccess = userDataAccess;
-    _emailSender = emailSender;
+    _serviceProvider = serviceProvider;
   }
 
   public async Task RegisterUser(
@@ -28,18 +21,19 @@ public sealed class UserRegistration : IUserRegistration
     CancellationToken ct)
   {
     var runner = _runnerFactory.CreateTransaction2Runner(
-      new RegisterUserAction(_userManager, _userDataAccess),
+      _serviceProvider.GetRequiredService<RegisterUserAction>(),
       registrationRes => new SendConfirmationRequestDto(
         createEmailLink((registrationRes.Token, registrationData.Email)), 
         registrationData.Name, 
         registrationData.Email),
-      new SendConfirmationRequestEmailAction(_emailSender));
+      _serviceProvider.GetRequiredService<SendConfirmationRequestEmailAction>());
     await runner.Run(registrationData, ct);
   }
 
   public async Task ConfirmEmailAsync(string email, string token, CancellationToken ct)
   {
-    var runner = _runnerFactory.CreateWriterRunner(new ConfirmEmailAction(_userManager));
+    var runner = _runnerFactory.CreateWriterRunner(
+      _serviceProvider.GetRequiredService<ConfirmEmailAction>());
     await runner.Run(new(email, token), ct);
   }
 }
