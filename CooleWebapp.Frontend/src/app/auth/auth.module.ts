@@ -11,6 +11,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { CooleWebappApi } from "../../generated/coole-webapp-api";
 import { DefaultErrorStateMatcher } from "../utilities/error-state-matchers";
 import { AuthRoutingModule } from "./auth-routing.module";
+import { LoginComponent } from "./login/login.component";
 import { RegisterComponent } from "./register/register.component";
 import { ConfirmRegistrationComponent } from "./confirm-registration/confirm-registration.component";
 import { ConfirmEmailComponent } from "./confirm-email/confirm-email.component";
@@ -19,6 +20,7 @@ import { ConfirmEmailComponent } from "./confirm-email/confirm-email.component";
   declarations: [
     RegisterComponent,
     ConfirmRegistrationComponent,
+    LoginComponent,
     ConfirmEmailComponent,
   ],
   imports: [
