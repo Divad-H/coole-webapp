@@ -5,6 +5,7 @@ import { BehaviorSubject, catchError, filter, map, mapTo, of, Subject, Subscribe
 import { CustomValidators } from "../../utilities/cutom-validators";
 import { ParentErrorStateMatcher } from "../../utilities/error-state-matchers";
 import { CooleWebappApi } from '../../../generated/coole-webapp-api';
+import { ActivatedRoute, Router } from "@angular/router";
 
 @Component({
   selector: 'cw-register',
@@ -26,6 +27,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
   constructor(
     formBuilder: FormBuilder,
     private readonly registration: CooleWebappApi.RegistrationClient,
+    private readonly route: ActivatedRoute,
+    private readonly router: Router,
   ) {
     this.parentErrorStateMatcher = new ParentErrorStateMatcher();
     this.form = formBuilder.group({
@@ -116,7 +119,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
         if ((res as any).error) {
           return;
         }
-        // router.navigate(./check-your-email)
+        this.router.navigate(['../confirm-registration'], { relativeTo: this.route });
       })
     );
   }

@@ -27,7 +27,7 @@
       <mat-form-field>
         <input matInput placeholder="Email" name="email" formControlName="email" required>
         <mat-error>
-          Please provide a valid email address
+          Please provide a valid e-mail address
         </mat-error>
       </mat-form-field>
       <ng-container formGroupName="passwords">
@@ -69,5 +69,5 @@
   </mat-card-content>
 </mat-card>
 <div style="text-align: center">
-  Already have an account? <button style="margin-left: 0.5rem" mat-raised-button>Sign in</button>
+  Already have an account? <a routerLink="../login" style="margin-left: 0.5rem" mat-raised-button>Sign in</a>
 </div>
