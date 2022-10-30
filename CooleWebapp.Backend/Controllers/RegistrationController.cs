@@ -2,6 +2,7 @@
 using CooleWebapp.Backend.ErrorHandling;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
+using System.ComponentModel.DataAnnotations;
 
 namespace CooleWebapp.Backend.Controllers;
 
@@ -30,7 +31,7 @@ public class RegistrationController : ControllerBase
       registrationData,
       (data) =>
       {
-        string url = $"{Request.Scheme}://{Request.Host}/Registration/confirm-email";
+        string url = $"{Request.Scheme}://{Request.Host}/auth/confirm-email";
         var param = new Dictionary<string, string?>() { 
           { "token", data.Token } ,
           { "email", data.Email } 
@@ -41,8 +42,10 @@ public class RegistrationController : ControllerBase
   }
 
   [Route("confirm-email")]
+  [ProducesResponseType(typeof(ErrorData), StatusCodes.Status400BadRequest)]
+  [ProducesResponseType(typeof(ErrorData), StatusCodes.Status404NotFound)]
   [HttpGet]
-  public Task ConfirmEmail(string token, string email, CancellationToken ct)
+  public Task ConfirmEmail([Required]string token, [Required] string email, CancellationToken ct)
   {
     return _userRegistration.ConfirmEmailAsync(email, token, ct);
   }

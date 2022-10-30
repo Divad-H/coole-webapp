@@ -51,15 +51,22 @@ public class AuthenticationController : ControllerBase
       }
 
       // Validate the username/password parameters and ensure the account is not locked out.
-      var result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, lockoutOnFailure: true);
+      var result = await _signInManager.CheckPasswordSignInAsync(user, request.Password, lockoutOnFailure: false);
       if (!result.Succeeded)
       {
-        var properties = new AuthenticationProperties(new Dictionary<string, string?>
-        {
-          [OpenIddictServerAspNetCoreConstants.Properties.Error] = Errors.InvalidGrant,
-          [OpenIddictServerAspNetCoreConstants.Properties.ErrorDescription] =
-                "The username/password couple is invalid."
-        });
+        var properties = result.IsNotAllowed 
+          ? new AuthenticationProperties(new Dictionary<string, string?>
+            {
+              [OpenIddictServerAspNetCoreConstants.Properties.Error] = Errors.InteractionRequired,
+              [OpenIddictServerAspNetCoreConstants.Properties.ErrorDescription] =
+                    "The e-mail address has not been confirmed."
+            })
+          : new AuthenticationProperties(new Dictionary<string, string?>
+            {
+              [OpenIddictServerAspNetCoreConstants.Properties.Error] = Errors.InvalidGrant,
+              [OpenIddictServerAspNetCoreConstants.Properties.ErrorDescription] =
+                    "The username/password couple is invalid."
+            });
 
         return Forbid(properties, OpenIddictServerAspNetCoreDefaults.AuthenticationScheme);
       }

@@ -28,6 +28,7 @@ builder.Services
   .AddIdentity<WebappUser, IdentityRole>(options =>
   {
     options.Password.RequiredLength = 8;
+    options.SignIn.RequireConfirmedEmail = true;
   })
   .AddEntityFrameworkStores<WebappDbContext>()
   .AddDefaultTokenProviders();
