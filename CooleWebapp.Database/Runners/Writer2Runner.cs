@@ -13,7 +13,7 @@ public class Writer2Runner<TIn1, TOut1, TIn2, TOut2> : IActionRunner<TIn1, TOut2
     IBusinessAction<TIn1, TOut1> businessAction1,
     Func<TOut1, TIn2> intermediateFunc,
     IBusinessAction<TIn2, TOut2> businessAction2,
-  WebappDbContext webappDbContext)
+    WebappDbContext webappDbContext)
   {
     _businessAction1 = businessAction1;
     _intermediateFunc = intermediateFunc;
@@ -25,6 +25,7 @@ public class Writer2Runner<TIn1, TOut1, TIn2, TOut2> : IActionRunner<TIn1, TOut2
     var dataOut1 = await _businessAction1.Run(dataIn, ct).ConfigureAwait(false);
     var dataIn2 = _intermediateFunc(dataOut1);
     var res = await _businessAction2.Run(dataIn2, ct).ConfigureAwait(false);
+    await _webappDbContext.SaveChangesAsync(ct);
     return res;
   }
 }
