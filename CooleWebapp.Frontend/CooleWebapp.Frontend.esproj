@@ -10,6 +10,7 @@
     <Folder Include="src\app\auth\login\" />
     <Folder Include="src\app\auth\confirm-email\" />
     <Folder Include="src\app\auth\register\" />
+    <Folder Include="src\app\home\" />
   </ItemGroup>
   <Target Name="NSwag" BeforeTargets="Build">
     <MsBuild Targets="NSwag" Projects="../CooleWebapp.Backend/CooleWebapp.Backend.csproj" Properties="Configuration=$(Configuration)" />
