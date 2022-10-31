@@ -1,7 +1,8 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
-import { BehaviorSubject, filter, map, tap, Subject, Subscriber, switchMap, catchError, of } from "rxjs";
+import { BehaviorSubject, filter, map, tap, Subject, Subscriber, switchMap, catchError, of, take } from "rxjs";
+
 import { AuthService } from "../auth.service";
 
 @Component({
@@ -37,6 +38,13 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.subscriptions.add(
+      this.authService.loggedIn.pipe(
+        take(1),
+        filter(loggedIn => loggedIn)
+      ).subscribe(() => this.router.navigate(['/home']))
+    );
+
     this.subscriptions.add(
       this.route.queryParams.pipe(
         map(params => params['email']),

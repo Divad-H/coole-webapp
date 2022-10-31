@@ -50,6 +50,11 @@ export class AuthService {
     return this.getTokens(body);
   }
 
+  public logout() {
+    this.tokensSub.next(null);
+    localStorage.removeItem('tokens');
+  }
+
   private refresh(tokens: AuthenticationResponse): Observable<AuthenticationResponse> {
     const body = new URLSearchParams();
     body.set('grant_type', 'refresh_token');

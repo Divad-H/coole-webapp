@@ -1,11 +1,12 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, ValidationErrors, Validators } from "@angular/forms";
 import { ErrorStateMatcher } from "@angular/material/core";
-import { BehaviorSubject, catchError, filter, map, mapTo, of, Subject, Subscriber, switchMap, tap } from "rxjs";
+import { BehaviorSubject, catchError, filter, map, mapTo, of, Subject, Subscriber, switchMap, tap, take } from "rxjs";
 import { CustomValidators } from "../../utilities/cutom-validators";
 import { ParentErrorStateMatcher } from "../../utilities/error-state-matchers";
 import { CooleWebappApi } from '../../../generated/coole-webapp-api';
 import { ActivatedRoute, Router } from "@angular/router";
+import { AuthService } from "../auth.service";
 
 @Component({
   selector: 'cw-register',
@@ -29,6 +30,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     private readonly registration: CooleWebappApi.RegistrationClient,
     private readonly route: ActivatedRoute,
     private readonly router: Router,
+    private readonly authService: AuthService,
   ) {
     this.parentErrorStateMatcher = new ParentErrorStateMatcher();
     this.form = formBuilder.group({
@@ -68,6 +70,13 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
+    this.subscriptions.add(
+      this.authService.loggedIn.pipe(
+        take(1),
+        filter(loggedIn => loggedIn)
+      ).subscribe(() => this.router.navigate(['/home']))
+    );
+
     const initialsControl = this.form.get('initials')!;
     this.subscriptions.add(
       this.form.get('name')!.valueChanges.pipe(

@@ -1,6 +1,8 @@
 import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { Router } from "@angular/router";
 import { Observable, shareReplay } from "rxjs";
 import { CooleWebappApi } from '../../generated/coole-webapp-api';
+import { AuthService } from "../auth/auth.service";
 
 @Component({
   templateUrl: './home.component.html',
@@ -13,11 +15,16 @@ export class HomeComponent {
 
   constructor(
     private readonly weatherForecastClient: CooleWebappApi.WeatherForecastClient,
+    private readonly authService: AuthService,
+    private readonly router: Router
   ) {
     this.forecasts = weatherForecastClient.get().pipe(
-      //shareReplay(1)
+      shareReplay(1)
     );
   }
 
-  title = 'CooleWebappFrontend';
+  logout() {
+    this.authService.logout();
+    this.router.navigate(['/auth/login']);
+  }
 }
