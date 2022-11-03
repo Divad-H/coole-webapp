@@ -13,6 +13,11 @@ public record RegistrationData(
   string Email,
   string? Title = null);
 
+public record InitiatePasswordResetData(
+  [Required]
+  string Email
+);
+
 public interface IUserRegistration
 {
   Task RegisterUser(
@@ -20,4 +25,8 @@ public interface IUserRegistration
     Func<(string Token, string Email), string> createEmailLink,
     CancellationToken ct);
   Task ConfirmEmailAsync(string email, string token, CancellationToken ct);
+  Task InitiatePasswordReset(
+    StartInitiatePasswordResetDto initiatePasswordResetDto,
+    Func<(string Token, string Email), string> createEmailLink,
+    CancellationToken ct);
 }

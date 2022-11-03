@@ -1,6 +1,7 @@
 ﻿using CooleWebapp.Auth.Registration;
 using CooleWebapp.Database.Model;
 using CooleWebapp.Core.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace CooleWebapp.Database.Repository;
 
@@ -16,5 +17,10 @@ public sealed class UserDataAccess : IUserDataAccess
   {
     var res = await _dbContext.CoolUsers.AddAsync(user, ct);
     return res.Entity;
+  }
+
+  public Task<CoolUser?> FindUserByWebappUserId(string webappUserId, CancellationToken ct)
+  {
+    return _dbContext.CoolUsers.FirstOrDefaultAsync(u => u.WebappUserId == webappUserId, ct);
   }
 }

@@ -9,9 +9,13 @@ namespace CooleWebapp.Auth.Test.Mocks
     public IReadOnlyCollection<CoolUser> CreatedUsers => _createdUsers;
     public Task<CoolUser> CreateUser(CoolUser user, CancellationToken ct)
     {
-      var newUser = user with { Id = 1 };
       _createdUsers.Add(user);
       return Task.FromResult(user);
+    }
+
+    public Task<CoolUser?> FindUserByWebappUserId(string webappUserId, CancellationToken ct)
+    {
+      return Task.FromResult(CreatedUsers.FirstOrDefault(u => u.WebappUserId == webappUserId));
     }
   }
 }

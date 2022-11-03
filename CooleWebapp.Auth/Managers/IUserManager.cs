@@ -9,4 +9,5 @@ public interface IUserManager
   public Task DeleteAsync(WebappUser user);
   public Task<string> GenerateEmailConfirmationTokenAsync(WebappUser webappUser);
   public Task ConfirmEmailAsync(WebappUser webappUser, string token);
+  public Task<string> GeneratePasswordResetTokenAsync(WebappUser user);
 }

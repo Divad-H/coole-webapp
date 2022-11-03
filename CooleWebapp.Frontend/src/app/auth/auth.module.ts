@@ -15,6 +15,7 @@ import { LoginComponent } from "./login/login.component";
 import { RegisterComponent } from "./register/register.component";
 import { ConfirmRegistrationComponent } from "./confirm-registration/confirm-registration.component";
 import { ConfirmEmailComponent } from "./confirm-email/confirm-email.component";
+import { ResetPasswordComponent } from "./reset-password/reset-password.component";
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { ConfirmEmailComponent } from "./confirm-email/confirm-email.component";
     ConfirmRegistrationComponent,
     LoginComponent,
     ConfirmEmailComponent,
+    ResetPasswordComponent,
   ],
   imports: [
     CommonModule,

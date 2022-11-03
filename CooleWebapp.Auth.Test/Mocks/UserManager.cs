@@ -34,5 +34,11 @@ namespace CooleWebapp.Auth.Test.Mocks
       Assert.Fail("Not expected to be called.");
       throw new InvalidOperationException();
     }
+
+    public Task<string> GeneratePasswordResetTokenAsync(WebappUser user)
+    {
+      Assert.Fail("Not expected to be called.");
+      throw new NotImplementedException();
+    }
   }
 }

@@ -49,4 +49,24 @@ public class RegistrationController : ControllerBase
   {
     return _userRegistration.ConfirmEmailAsync(email, token, ct);
   }
+
+  [Route("initiate-password-reset")]
+  [ProducesResponseType(typeof(ErrorData), StatusCodes.Status400BadRequest)]
+  [ProducesResponseType(typeof(ErrorData), StatusCodes.Status404NotFound)]
+  [HttpPost]
+  public Task InitiatePasswordReset(InitiatePasswordResetData initiatePasswordResetData, CancellationToken ct)
+  {
+    return _userRegistration.InitiatePasswordReset(
+      new(initiatePasswordResetData.Email),
+      data =>
+      {
+        string url = $"{Request.Scheme}://{Request.Host}/auth/set-new-password";
+        var param = new Dictionary<string, string?>() {
+          { "token", data.Token } ,
+          { "email", data.Email }
+        };
+        return QueryHelpers.AddQueryString(url, param);
+      },
+      ct);
+  }
 }

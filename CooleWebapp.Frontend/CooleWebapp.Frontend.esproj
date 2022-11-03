@@ -9,6 +9,7 @@
   <ItemGroup>
     <Folder Include="src\app\auth\login\" />
     <Folder Include="src\app\auth\confirm-email\" />
+    <Folder Include="src\app\auth\reset-password\" />
     <Folder Include="src\app\auth\register\" />
     <Folder Include="src\app\home\" />
   </ItemGroup>

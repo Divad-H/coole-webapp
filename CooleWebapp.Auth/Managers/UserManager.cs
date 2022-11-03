@@ -32,5 +32,8 @@ internal sealed class UserManager : IUserManager
 
   public async Task ConfirmEmailAsync(WebappUser webappUser, string token)
     => ThrowOnError(await _userManager.ConfirmEmailAsync(webappUser, token));
+
+  public Task<string> GeneratePasswordResetTokenAsync(WebappUser user)
+    => _userManager.GeneratePasswordResetTokenAsync(user);
 }
 
