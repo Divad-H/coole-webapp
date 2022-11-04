@@ -8,7 +8,7 @@ import { AuthService } from "../auth.service";
 @Component({
   selector: 'cw-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css'],
+  styleUrls: ['../auth-styles.css'],
   changeDetection: ChangeDetectionStrategy.Default
 })
 export class LoginComponent implements OnInit, OnDestroy {

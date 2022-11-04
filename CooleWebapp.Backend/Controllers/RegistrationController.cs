@@ -57,7 +57,7 @@ public class RegistrationController : ControllerBase
   public Task InitiatePasswordReset(InitiatePasswordResetData initiatePasswordResetData, CancellationToken ct)
   {
     return _userRegistration.InitiatePasswordReset(
-      new(initiatePasswordResetData.Email),
+      initiatePasswordResetData,
       data =>
       {
         string url = $"{Request.Scheme}://{Request.Host}/auth/set-new-password";
@@ -68,5 +68,14 @@ public class RegistrationController : ControllerBase
         return QueryHelpers.AddQueryString(url, param);
       },
       ct);
+  }
+
+  [Route("reset-password")]
+  [ProducesResponseType(typeof(ErrorData), StatusCodes.Status400BadRequest)]
+  [ProducesResponseType(typeof(ErrorData), StatusCodes.Status404NotFound)]
+  [HttpPost]
+  public Task ResetPassword(ResetPasswordData resetPasswordData, CancellationToken ct)
+  {
+    return _userRegistration.ResetPassword(resetPasswordData, ct);
   }
 }

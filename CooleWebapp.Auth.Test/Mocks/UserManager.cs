@@ -1,5 +1,6 @@
 ﻿using CooleWebapp.Auth.Managers;
 using CooleWebapp.Auth.Model;
+using Microsoft.AspNetCore.Identity;
 
 namespace CooleWebapp.Auth.Test.Mocks
 {
@@ -35,7 +36,13 @@ namespace CooleWebapp.Auth.Test.Mocks
       throw new InvalidOperationException();
     }
 
-    public Task<string> GeneratePasswordResetTokenAsync(WebappUser user)
+    public virtual Task<string> GeneratePasswordResetTokenAsync(WebappUser user)
+    {
+      Assert.Fail("Not expected to be called.");
+      throw new NotImplementedException();
+    }
+
+    public virtual Task<IdentityResult> ResetPasswordAsync(WebappUser user, string token, string newPassword)
     {
       Assert.Fail("Not expected to be called.");
       throw new NotImplementedException();

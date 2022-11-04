@@ -11,7 +11,7 @@ import { AuthService } from "../auth.service";
 @Component({
   selector: 'cw-register',
   templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css'],
+  styleUrls: ['../auth-styles.css'],
   changeDetection: ChangeDetectionStrategy.Default
 })
 export class RegisterComponent implements OnInit, OnDestroy {
@@ -60,7 +60,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
           ],
           confirmPassword: ['', Validators.required],
         },
-        { validator: this.passwordsMatch }
+        { validator: CustomValidators.passwordsMatch }
       ),
     })
   }
@@ -133,12 +133,5 @@ export class RegisterComponent implements OnInit, OnDestroy {
     );
   }
 
-  passwordsMatch(group: FormGroup): ValidationErrors | null {
-    const password = group.get('password')!.value;
-    const confirmedPassword = group.get('confirmPassword')!.value;
-
-    return password === confirmedPassword
-      ? null
-      : { passwordsMatch: true };
-  }
+  
 }

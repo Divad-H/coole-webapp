@@ -1,4 +1,4 @@
-import { AbstractControl, ValidationErrors, ValidatorFn } from "@angular/forms";
+import { AbstractControl, FormGroup, ValidationErrors, ValidatorFn } from "@angular/forms";
 
 export namespace CustomValidators {
   
@@ -44,5 +44,14 @@ export namespace CustomValidators {
     return new RegExp("\\s+").test(control.value)
       ? { containsNoWhitespace: true }
       : null;
+  }
+
+  export function passwordsMatch(group: FormGroup): ValidationErrors | null {
+    const password = group.get('password')!.value;
+    const confirmedPassword = group.get('confirmPassword')!.value;
+
+    return password === confirmedPassword
+      ? null
+      : { passwordsMatch: true };
   }
 }

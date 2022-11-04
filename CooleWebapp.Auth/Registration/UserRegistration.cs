@@ -11,13 +11,15 @@ public sealed class UserRegistration : IUserRegistration
   private readonly IFactory<ConfirmEmailAction> _confirmEmailActionFactory;
   private readonly IFactory<SendResetPasswordEmailAction> _sendResetPasswordEmailActionFactory;
   private readonly IFactory<StartInitiatePasswordResetAction> _startResetPasswordActionFactory;
+  private readonly IFactory<ResetPasswordAction> _resetPasswordActionFactory;
   public UserRegistration(
     IRunnerFactory runnerFactory,
     IFactory<RegisterUserAction> registerUserActionFactory,
     IFactory<SendConfirmationRequestEmailAction> sendConfirmationRequestEmailActionFactory,
     IFactory<ConfirmEmailAction> confirmEmailActionFactory,
     IFactory<SendResetPasswordEmailAction> sendResetPasswordEmailActionFactory,
-    IFactory<StartInitiatePasswordResetAction> startResetPasswordActionFactory)
+    IFactory<StartInitiatePasswordResetAction> startResetPasswordActionFactory,
+    IFactory<ResetPasswordAction> resetPasswordActionFactory)
   {
     _runnerFactory = runnerFactory;
     _registerUserActionFactory = registerUserActionFactory;
@@ -25,6 +27,7 @@ public sealed class UserRegistration : IUserRegistration
     _confirmEmailActionFactory = confirmEmailActionFactory;
     _sendResetPasswordEmailActionFactory = sendResetPasswordEmailActionFactory;
     _startResetPasswordActionFactory = startResetPasswordActionFactory;
+    _resetPasswordActionFactory = resetPasswordActionFactory;
   }
 
   public async Task RegisterUser(
@@ -50,16 +53,25 @@ public sealed class UserRegistration : IUserRegistration
   }
 
   public async Task InitiatePasswordReset(
-    StartInitiatePasswordResetDto initiatePasswordResetDto,
+    InitiatePasswordResetData initiatePasswordResetData,
     Func<(string Token, string Email), string> createEmailLink,
     CancellationToken ct)
   {
     var runner = _runnerFactory.CreateWriter2Runner(
       _startResetPasswordActionFactory.Create(),
       token => new SendResetPasswordEmailDto(
-        createEmailLink((token, initiatePasswordResetDto.Email)),
-        initiatePasswordResetDto.Email),
+        createEmailLink((token, initiatePasswordResetData.Email)),
+        initiatePasswordResetData.Email),
       _sendResetPasswordEmailActionFactory.Create());
-    await runner.Run(initiatePasswordResetDto, ct);
+    await runner.Run(new(initiatePasswordResetData.Email), ct);
+  }
+
+  public async Task ResetPassword(ResetPasswordData resetPasswordData, CancellationToken ct)
+  {
+    var runner = _runnerFactory.CreateWriterRunner(
+      _resetPasswordActionFactory.Create());
+    await runner.Run(new(
+      resetPasswordData.Email, resetPasswordData.Token, resetPasswordData.Password
+      ), ct);
   }
 }

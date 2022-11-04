@@ -16,5 +16,6 @@ public static class Setup
     serviceDescriptors.AddScopedFactory<ConfirmEmailAction>();
     serviceDescriptors.AddScopedFactory<SendResetPasswordEmailAction>();
     serviceDescriptors.AddScopedFactory<StartInitiatePasswordResetAction>();
+    serviceDescriptors.AddScopedFactory<ResetPasswordAction>();
   }
 }

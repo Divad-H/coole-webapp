@@ -7,7 +7,7 @@ import { CooleWebappApi } from "../../../generated/coole-webapp-api";
 @Component({
   selector: 'cw-confirm-email',
   templateUrl: './confirm-email.component.html',
-  styleUrls: ['./confirm-email.component.css'],
+  styleUrls: ['../auth-styles.css'],
   changeDetection: ChangeDetectionStrategy.Default
 })
 export class ConfirmEmailComponent implements OnInit, OnDestroy{
