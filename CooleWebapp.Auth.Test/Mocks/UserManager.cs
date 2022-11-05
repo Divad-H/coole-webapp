@@ -42,7 +42,7 @@ namespace CooleWebapp.Auth.Test.Mocks
       throw new NotImplementedException();
     }
 
-    public virtual Task<IdentityResult> ResetPasswordAsync(WebappUser user, string token, string newPassword)
+    public virtual Task ResetPasswordAsync(WebappUser user, string token, string newPassword)
     {
       Assert.Fail("Not expected to be called.");
       throw new NotImplementedException();

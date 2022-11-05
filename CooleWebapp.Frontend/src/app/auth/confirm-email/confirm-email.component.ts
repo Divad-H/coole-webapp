@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { BehaviorSubject, catchError, mapTo, of, Subscription, switchMap } from "rxjs";
+import { BehaviorSubject, catchError, mapTo, of, Subscription, switchMap, throwError } from "rxjs";
 
 import { CooleWebappApi } from "../../../generated/coole-webapp-api";
 
@@ -30,7 +30,9 @@ export class ConfirmEmailComponent implements OnInit, OnDestroy{
   ngOnInit(): void {
     this.subscriptions.add(
       this.route.queryParams.pipe(
-        switchMap(params => this.registration.confirmEmail(params['token'], params['email'])),
+        switchMap(params => (!params['email'] || !params['token']
+          ? throwError(new Error('Invalid link, please check that the link is correct.'))
+          : this.registration.confirmEmail(params['token'], params['email']))),
         mapTo({}),
         catchError(e => {
           if (e.message) {

@@ -11,5 +11,5 @@ public interface IUserManager
   public Task<string> GenerateEmailConfirmationTokenAsync(WebappUser webappUser);
   public Task ConfirmEmailAsync(WebappUser webappUser, string token);
   public Task<string> GeneratePasswordResetTokenAsync(WebappUser user);
-  public Task<IdentityResult> ResetPasswordAsync(WebappUser user, string token, string newPassword);
+  public Task ResetPasswordAsync(WebappUser user, string token, string newPassword);
 }

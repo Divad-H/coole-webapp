@@ -39,13 +39,6 @@ export class LoginComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscriptions.add(
-      this.authService.loggedIn.pipe(
-        take(1),
-        filter(loggedIn => loggedIn)
-      ).subscribe(() => this.router.navigate(['/home']))
-    );
-
-    this.subscriptions.add(
       this.route.queryParams.pipe(
         map(params => params['email']),
         filter(email => !!email)

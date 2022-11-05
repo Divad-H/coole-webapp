@@ -70,13 +70,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.subscriptions.add(
-      this.authService.loggedIn.pipe(
-        take(1),
-        filter(loggedIn => loggedIn)
-      ).subscribe(() => this.router.navigate(['/home']))
-    );
-
     const initialsControl = this.form.get('initials')!;
     this.subscriptions.add(
       this.form.get('name')!.valueChanges.pipe(

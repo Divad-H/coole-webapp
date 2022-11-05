@@ -6,12 +6,19 @@ import { ConfirmRegistrationComponent } from "./confirm-registration/confirm-reg
 import { FinishResetPasswordComponent } from "./finish-reset-password/finish-reset-password.component";
 
 import { LoginComponent } from "./login/login.component";
+import { NotLoggedInGuard } from "./not-logged-in.guard";
 import { RegisterComponent } from "./register/register.component";
 import { ResetPasswordComponent } from "./reset-password/reset-password.component";
 
 const routes: Routes = [
   {
+    path: '',
+    pathMatch: 'full',
+    redirectTo: 'login'
+  },
+  {
     path: 'register',
+    canActivate: [NotLoggedInGuard],
     component: RegisterComponent
   },
   {
@@ -20,18 +27,22 @@ const routes: Routes = [
   },
   {
     path: 'confirm-registration',
+    canActivate: [NotLoggedInGuard],
     component: ConfirmRegistrationComponent
   },
   {
     path: 'login',
+    canActivate: [NotLoggedInGuard],
     component: LoginComponent
   },
   {
     path: 'reset-password',
+    canActivate: [NotLoggedInGuard],
     component: ResetPasswordComponent
   },
   {
     path: 'confirm-initiate-reset-password',
+    canActivate: [NotLoggedInGuard],
     component: ConfirmInitiateResetPasswordComponent
   },
   {

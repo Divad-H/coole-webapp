@@ -2,22 +2,26 @@
 
 namespace CooleWebapp.Auth.Registration;
 
-public record RegistrationData(
-  [Required] string Name,
-  [Required] string Initials,
-  [Required] string Password,
-  [Required] string Email,
-  string? Title = null);
+public record RegistrationData 
+{
+  [Required] public string Name { get; init; } = string.Empty;
+  [Required] public string Initials { get; init; } = string.Empty;
+  [Required] public string Password { get; init; } = string.Empty;
+  [Required] public string Email { get; init; } = string.Empty;
+  public string? Title { get; set; } = null;
+}
 
-public record InitiatePasswordResetData(
-  [Required] string Email
-);
+public record InitiatePasswordResetData 
+{
+  [Required] public string Email { get; init; } = string.Empty;
+}
 
-public record ResetPasswordData(
-  [Required] string Email,
-  [Required] string Token,
-  [Required] string Password
-);
+public record ResetPasswordData 
+{
+  [Required] public string Email { get; init; } = string.Empty;
+  [Required] public string Token { get; init; } = string.Empty;
+  [Required] public string Password { get; init; }  = string.Empty;
+}
 
 public interface IUserRegistration
 {

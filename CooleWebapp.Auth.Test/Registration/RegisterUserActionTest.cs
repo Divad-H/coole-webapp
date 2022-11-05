@@ -30,7 +30,13 @@ namespace CooleWebapp.Auth.Test.Registration
         new UserManagerWithExistingEmail(),
         new UserDataAccess());
       await action.Run(
-        new("Name", "INS", "P@ssw0rd", UserManagerWithExistingEmail.ExistingEmail), 
+        new()
+        {
+          Name = "Name",
+          Initials = "INS",
+          Password = "P@ssw0rd",
+          Email = UserManagerWithExistingEmail.ExistingEmail
+        }, 
         CancellationToken.None);
     }
 
@@ -82,12 +88,14 @@ namespace CooleWebapp.Auth.Test.Registration
         userManagerMock,
         userDataAccessMock);
       var res = await action.Run(
-        new(
-          "Name", 
-          "INS", 
-          UserManagerMock.ExpectedPassword,
-          UserManagerMock.ExpectedEmail,
-          "Title"),
+        new()
+        {
+          Name = "Name",
+          Initials = "INS",
+          Password = UserManagerMock.ExpectedPassword,
+          Email = UserManagerMock.ExpectedEmail,
+          Title = "Title"
+        },
         CancellationToken.None);
       Assert.AreEqual(UserManagerMock.ExpectedToken, res.Token);
       Assert.AreEqual(1, userDataAccessMock.CreatedUsers.Count);

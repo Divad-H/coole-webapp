@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ActivatedRoute, Router } from "@angular/router";
-import { BehaviorSubject, filter, map, tap, Subject, Subscriber, switchMap, catchError, of, take, mapTo, withLatestFrom } from "rxjs";
+import { BehaviorSubject, filter, map, tap, Subject, Subscriber, switchMap, catchError, of, take, mapTo, withLatestFrom, throwError } from "rxjs";
 import { CooleWebappApi } from "../../../generated/coole-webapp-api";
 import { CustomValidators } from "../../utilities/cutom-validators";
 import { ParentErrorStateMatcher } from "../../utilities/error-state-matchers";
@@ -60,20 +60,22 @@ export class FinishResetPasswordComponent implements OnInit, OnDestroy {
       filter(() => this.form.valid),
       tap(() => this.busySubject.next(true)),
       withLatestFrom(this.route.queryParams),
-      switchMap(([_, params]) => this.registration.resetPassword(
-        new CooleWebappApi.ResetPasswordData({
-          password: this.form.value.password,
-          email: params['email'],
-          token: params['token'],
-        })).pipe(
-          mapTo({}),
-          catchError(e => {
-            if (e.message) {
-              this.errorResponseSubject.next(e.message);
-            }
-            return of({ error: true });
-          })
-        ))
+      switchMap(([_, params]) => (!params['email'] || !params['token']
+        ? throwError(new Error('Invalid link, please check that the link is correct.'))
+        : this.registration.resetPassword(
+          new CooleWebappApi.ResetPasswordData({
+            password: this.form.value.password,
+            email: params['email'],
+            token: params['token'],
+          }))).pipe(
+            mapTo({}),
+            catchError(e => {
+              if (e.message) {
+                this.errorResponseSubject.next(e.message);
+              }
+              return of({ error: true });
+            })
+          ))
     ).subscribe(res => {
       this.busySubject.next(false);
       if ((res as any).error) {

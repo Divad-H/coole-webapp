@@ -39,13 +39,6 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.subscriptions.add(
-      this.authService.loggedIn.pipe(
-        take(1),
-        filter(loggedIn => loggedIn)
-      ).subscribe(() => this.router.navigate(['/home']))
-    );
-
     this.submit.pipe(
       tap(() => this.errorResponseSubject.next('')),
       filter(() => this.form.valid),
