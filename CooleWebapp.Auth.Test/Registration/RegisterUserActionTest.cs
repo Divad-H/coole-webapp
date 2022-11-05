@@ -27,6 +27,7 @@ namespace CooleWebapp.Auth.Test.Registration
     public async Task ThrowsClientErrorWhenUserEmailAlreadyExists()
     {
       var action = new RegisterUserAction(
+        new UserRoleStore(),
         new UserManagerWithExistingEmail(),
         new UserDataAccess());
       await action.Run(
@@ -85,6 +86,7 @@ namespace CooleWebapp.Auth.Test.Registration
       var userManagerMock = new UserManagerMock();
       var userDataAccessMock = new UserDataAccess();
       var action = new RegisterUserAction(
+        new UserRoleStore(),
         userManagerMock,
         userDataAccessMock);
       var res = await action.Run(

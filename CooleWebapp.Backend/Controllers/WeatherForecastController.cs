@@ -4,7 +4,7 @@ using OpenIddict.Validation.AspNetCore;
 
 namespace CooleWebapp.Backend.Controllers
 {
-  [Authorize(AuthenticationSchemes = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme)]
+  [Authorize(AuthenticationSchemes = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme, Roles = "Registered")]
   [ApiController]
   [Route("[controller]")]
   public class WeatherForecastController : ControllerBase

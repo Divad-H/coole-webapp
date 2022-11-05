@@ -4,11 +4,10 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace CooleWebapp.Auth.Managers
 {
-  public class UserStore : UserStore<WebappUser>
+  public class RoleStore : RoleStore<IdentityRole>
   {
-    public UserStore(
-      IdentityDbContext<WebappUser> context, 
-      IdentityErrorDescriber? describer = null) : base(context, describer)
+    public RoleStore(IdentityDbContext<WebappUser> context, IdentityErrorDescriber? describer = null)
+      : base(context, describer)
     {
       AutoSaveChanges = false;
     }

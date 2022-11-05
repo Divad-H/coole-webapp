@@ -11,6 +11,7 @@ using CooleWebapp.Database.Repository;
 using CooleWebapp.Core.BusinessActionRunners;
 using CooleWebapp.Database.Runners;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using CooleWebapp.Core.Entities;
 
 namespace CooleWebapp.Database
 {
@@ -37,9 +38,8 @@ namespace CooleWebapp.Database
       return serviceDescriptors;
     }
 
-    const string testUserEmail = "Karl@djimail.de";
-    const string testUserName = "Karl";
-    const string testUserPassword = "Ratte@1";
+    private static readonly IReadOnlyCollection<string> _roles 
+      = new[] { Roles.Registered, Roles.User, Roles.Fridge, Roles.Administrator };
 
     public static async Task InitializeCooleWebappDatabase(IServiceProvider serviceProvider, CancellationToken ct)
     {
@@ -48,13 +48,23 @@ namespace CooleWebapp.Database
       var dbContext = scope.ServiceProvider.GetRequiredService<WebappDbContext>();
       await dbContext.Database.MigrateAsync(ct);
 
-      var userManager = scope.ServiceProvider.GetRequiredService<UserManager<WebappUser>>();
-      var user = await userManager.FindByNameAsync(testUserName);
-      if (user is null) 
-      {
-        user = new WebappUser { UserName = testUserName, Email = testUserEmail };
-        await userManager.CreateAsync(user, testUserPassword);
-      }
+      var roleManager = scope.ServiceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+      foreach(var role in _roles)
+        if (await roleManager.FindByNameAsync(role) is null)
+          await roleManager.CreateAsync(new(role));
+
+      //var userManager = scope.ServiceProvider.GetRequiredService<UserManager<WebappUser>>();
+      //var user = await userManager.FindByNameAsync(testUserName);
+      //if (user is null) 
+      //{
+      //  user = new WebappUser { UserName = testUserName, Email = testUserEmail };
+      //  await userManager.CreateAsync(user, testUserPassword);
+      //  user.EmailConfirmed = true;
+      //  await dbContext.SaveChangesAsync(ct);
+      //  await userManager.AddToRoleAsync(user, role.Name);
+      //}
+      
+      await dbContext.SaveChangesAsync(ct);
     }
   }
 }

@@ -29,7 +29,7 @@ export class AuthService {
   }
 
   private getTokens(body: URLSearchParams): Observable<AuthenticationResponse> {
-    body.set('scope', 'offline_access profile openid');
+    body.set('scope', 'offline_access profile openid roles');
     let options = {
       headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')
     };
