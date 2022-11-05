@@ -1,28 +1,45 @@
-<h1>HOME</h1>
+<cw-toolbar class="fixed-toolbar"></cw-toolbar>
 
-<h1 id="tableLabel">Weather forecast</h1>
+<div class="fill-vertical-flex-container min-h-100">
+  <div class="below-toolbar fill-vertical-flex fill-vertical-flex-container">
+    <mat-drawer-container autosize class="fill-vertical-flex">
+      <mat-drawer [opened]="isSidenavToggled | async" class="sidenav" mode="side">
+        <p>Auto-resizing sidenav</p>
+        <p>Lorem, ipsum dolor sit amet consectetur.</p>
 
-<p>This component demonstrates fetching data from the server.</p>
+      </mat-drawer>
 
-<p *ngIf="!(forecasts | async)"><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationangular">https://aka.ms/jspsintegrationangular</a> for more details.</em></p>
+      <div class="content">
 
-<table *ngIf="(forecasts | async) as fcs">
-  <thead>
-    <tr>
-      <th>Date</th>
-      <th>Temp. (C)</th>
-      <th>Temp. (F)</th>
-      <th>Summary</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let forecast of fcs">
-      <td>{{ forecast.date }}</td>
-      <td>{{ forecast.temperatureC }}</td>
-      <td>{{ forecast.temperatureF }}</td>
-      <td>{{ forecast.summary }}</td>
-    </tr>
-  </tbody>
-</table>
+        <h1 id="tableLabel">Weather forecast</h1>
 
-<button (click)="logout()">Logout</button>
+        <p>This component demonstrates fetching data from the server.</p>
+
+        <p *ngIf="!(forecasts | async)"><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationangular">https://aka.ms/jspsintegrationangular</a> for more details.</em></p>
+
+        <table *ngIf="(forecasts | async) as fcs">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Temp. (C)</th>
+              <th>Temp. (F)</th>
+              <th>Summary</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let forecast of fcs">
+              <td>{{ forecast.date }}</td>
+              <td>{{ forecast.temperatureC }}</td>
+              <td>{{ forecast.temperatureF }}</td>
+              <td>{{ forecast.summary }}</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <button (click)="logout()">Logout</button>
+
+      </div>
+
+    </mat-drawer-container>
+  </div>
+</div>

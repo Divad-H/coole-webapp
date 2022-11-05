@@ -1,0 +1,32 @@
+.fixed-toolbar {
+  position: fixed;
+  width: 100%;
+  top: 0;
+  z-index: 2;
+}
+
+.min-h-100 {
+  min-height: 100%;
+}
+
+.fill-vertical-flex-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.fill-vertical-flex {
+  flex: 1;
+}
+
+.below-toolbar {
+  padding-top: 64px;
+}
+
+.sidenav {
+  padding: 20px;
+  max-width: 95%;
+}
+
+.content {
+  padding: 20px;
+}

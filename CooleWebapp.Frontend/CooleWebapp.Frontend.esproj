@@ -13,7 +13,8 @@
     <Folder Include="src\app\auth\confirm-initiate-reset-password\" />
     <Folder Include="src\app\auth\reset-password\" />
     <Folder Include="src\app\auth\register\" />
-    <Folder Include="src\app\home\" />
+    <Folder Include="src\app\home\sidenav\" />
+    <Folder Include="src\app\home\toolbar\" />
   </ItemGroup>
   <Target Name="NSwag" BeforeTargets="Build">
     <MsBuild Targets="NSwag" Projects="../CooleWebapp.Backend/CooleWebapp.Backend.csproj" Properties="Configuration=$(Configuration)" />
