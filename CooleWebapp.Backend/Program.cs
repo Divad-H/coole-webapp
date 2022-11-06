@@ -68,7 +68,7 @@ builder.Services
     options.UseAspNetCore();
   });
 
-builder.Services.AddWebappAuth();
+builder.Services.AddWebappAuth(builder.Configuration);
 
 builder.Services.AddEmailSender(builder.Configuration);
 
