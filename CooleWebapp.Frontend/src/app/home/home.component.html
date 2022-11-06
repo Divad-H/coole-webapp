@@ -1,45 +1,26 @@
 <cw-toolbar class="fixed-toolbar"></cw-toolbar>
 
 <div class="fill-vertical-flex-container min-h-100">
-  <div class="below-toolbar fill-vertical-flex fill-vertical-flex-container">
-    <mat-drawer-container autosize class="fill-vertical-flex">
-      <mat-drawer [opened]="isSidenavToggled | async" class="sidenav" mode="side">
-        <p>Auto-resizing sidenav</p>
-        <p>Lorem, ipsum dolor sit amet consectetur.</p>
-
-      </mat-drawer>
+  <div class="below-toolbar fill-vertical-flex fill-vertical-flex-container"
+       [style.paddingTop.px]="mobileQuery.matches ? 0 : 64">
+    <mat-sidenav-container autosize class="fill-vertical-flex"
+                           [style.marginTop.px]="mobileQuery.matches ? 56 : 0">
+      <mat-sidenav [opened]="isSidenavToggled | async"
+                   (openedChange)="sidenavToggled($event)"
+                   class="sidenav"
+                   [mode]="mobileQuery.matches ? 'over' : 'side'"
+                   [fixedInViewport]="mobileQuery.matches"
+                   fixedTopGap="56">
+        <mat-nav-list color="primary">
+          <a mat-list-item routerLink="./dashboard">Dashboard</a>
+          <a mat-list-item routerLink="./products">Products</a>
+          <a mat-list-item routerLink="./my-purchases">My Purchases</a>
+        </mat-nav-list>
+      </mat-sidenav>
 
       <div class="content">
-
-        <h1 id="tableLabel">Weather forecast</h1>
-
-        <p>This component demonstrates fetching data from the server.</p>
-
-        <p *ngIf="!(forecasts | async)"><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationangular">https://aka.ms/jspsintegrationangular</a> for more details.</em></p>
-
-        <table *ngIf="(forecasts | async) as fcs">
-          <thead>
-            <tr>
-              <th>Date</th>
-              <th>Temp. (C)</th>
-              <th>Temp. (F)</th>
-              <th>Summary</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr *ngFor="let forecast of fcs">
-              <td>{{ forecast.date }}</td>
-              <td>{{ forecast.temperatureC }}</td>
-              <td>{{ forecast.temperatureF }}</td>
-              <td>{{ forecast.summary }}</td>
-            </tr>
-          </tbody>
-        </table>
-
-        <button (click)="logout()">Logout</button>
-
+        <router-outlet></router-outlet>
       </div>
-
-    </mat-drawer-container>
+    </mat-sidenav-container>
   </div>
 </div>

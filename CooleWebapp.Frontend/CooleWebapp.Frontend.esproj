@@ -13,6 +13,9 @@
     <Folder Include="src\app\auth\confirm-initiate-reset-password\" />
     <Folder Include="src\app\auth\reset-password\" />
     <Folder Include="src\app\auth\register\" />
+    <Folder Include="src\app\home\dashboard\" />
+    <Folder Include="src\app\home\my-purchases\" />
+    <Folder Include="src\app\home\products\" />
     <Folder Include="src\app\home\sidenav\" />
     <Folder Include="src\app\home\toolbar\" />
   </ItemGroup>

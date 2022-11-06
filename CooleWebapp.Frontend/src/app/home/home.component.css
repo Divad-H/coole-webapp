@@ -19,11 +19,10 @@
 }
 
 .below-toolbar {
-  padding-top: 64px;
 }
 
 .sidenav {
-  padding: 20px;
+  width: 200px;
   max-width: 95%;
 }
 

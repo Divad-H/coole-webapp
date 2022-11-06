@@ -1,35 +1,42 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy } from "@angular/core";
 import { Router } from "@angular/router";
 import { Observable, shareReplay } from "rxjs";
-import { CooleWebappApi } from '../../generated/coole-webapp-api';
 import { AuthService } from "../auth/auth.service";
 import { SidenavService } from "./sidenav/sidenav.service";
+import { MediaMatcher } from '@angular/cdk/layout';
 
 @Component({
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HomeComponent {
+export class HomeComponent implements OnDestroy {
 
-  public forecasts: Observable<CooleWebappApi.IWeatherForecast[]>;
   public readonly isSidenavToggled: Observable<boolean>;
+  public readonly mobileQuery: MediaQueryList;
+
+  private _mobileQueryListener: () => void;
 
   constructor(
-    private readonly weatherForecastClient: CooleWebappApi.WeatherForecastClient,
     private readonly authService: AuthService,
     private readonly router: Router,
     readonly sidenavService: SidenavService,
+    private readonly changeDetectorRef: ChangeDetectorRef,
+    private readonly media: MediaMatcher,
   ) {
-    this.forecasts = weatherForecastClient.get().pipe(
-      shareReplay(1)
-    );
 
     this.isSidenavToggled = sidenavService.isToggled;
+
+    this.mobileQuery = media.matchMedia('(max-width: 600px)');
+    this._mobileQueryListener = () => changeDetectorRef.detectChanges();
+    this.mobileQuery.addListener(this._mobileQueryListener);
   }
 
-  logout() {
-    this.authService.logout();
-    this.router.navigate(['/auth/login']);
+  ngOnDestroy(): void {
+    this.mobileQuery.removeListener(this._mobileQueryListener);
+  }
+
+  sidenavToggled(value: boolean) {
+    this.sidenavService.toggle(value);
   }
 }
