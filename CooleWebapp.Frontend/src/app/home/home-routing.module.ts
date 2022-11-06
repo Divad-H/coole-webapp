@@ -1,5 +1,6 @@
 import { NgModule } from "@angular/core";
 import { RouterModule, Routes } from "@angular/router";
+import { RoleGuard } from "../auth/role-guard.service";
 import { DashboardComponent } from "./dashboard/dashboard.component";
 
 import { HomeComponent } from "./home.component";
@@ -23,10 +24,18 @@ const routes: Routes = [
       {
         path: 'my-purchases',
         component: MyPurchasesComponent,
+        canActivate: [RoleGuard],
+        data: {
+          roles: ['User']
+        }
       },
       {
         path: 'products',
         component: ProductsComponent,
+        canActivate: [RoleGuard],
+        data: {
+          roles: ['Administrator']
+        }
       },
     ]
   },

@@ -1,7 +1,8 @@
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
-import { BehaviorSubject, empty, Observable, of, throwError } from "rxjs";
-import { map, flatMap, tap, take, filter } from "rxjs/operators";
+import { BehaviorSubject, empty, Observable, of } from "rxjs";
+import { map, flatMap, tap, take, filter, shareReplay } from "rxjs/operators";
+import jwt_decode from "jwt-decode";
 
 export interface AuthenticationResponse {
   access_token: string,
@@ -17,6 +18,7 @@ export class AuthService {
 
   private readonly tokensSub = new BehaviorSubject<AuthenticationResponse | 'refreshing' | null>(null);
   public readonly loggedIn: Observable<boolean>;
+  public readonly roles: Observable<string[]>;
 
   constructor(
     private readonly http: HttpClient
@@ -26,6 +28,31 @@ export class AuthService {
       this.tokensSub.next(JSON.parse(serializedTokens));
     }
     this.loggedIn = this.tokensSub.pipe(map(tokens => !!tokens));
+    this.roles = this.tokensSub.pipe(
+      filter(tokens => tokens !== 'refreshing'),
+      map(tokens => {
+        if (!tokens) {
+          return [];
+        }
+        if (tokens == 'refreshing') {
+          return [];
+        }
+        try {
+          var decoded = jwt_decode(tokens.id_token) as any;
+          if (!decoded.role) {
+            return []
+          }
+          if (Array.isArray(decoded.role)) {
+            return decoded.role;
+          }
+          return [decoded.role];
+        } catch (e) {
+          console.error(e);
+          return [];
+        }
+      }),
+      shareReplay(1)
+    )
   }
 
   private getTokens(body: URLSearchParams): Observable<AuthenticationResponse> {

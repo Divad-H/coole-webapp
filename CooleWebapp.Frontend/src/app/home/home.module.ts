@@ -13,6 +13,8 @@ import { ToolbarComponent } from "./toolbar/toolbar.component";
 import { DashboardComponent } from "./dashboard/dashboard.component";
 import { MyPurchasesComponent } from "./my-purchases/my-purchases.component";
 import { ProductsComponent } from "./products/products.component";
+import { RequiresRoleDirective } from "../auth/requires-role.directive";
+import { RoleGuard } from "../auth/role-guard.service";
 
 @NgModule({
   declarations: [
@@ -21,6 +23,7 @@ import { ProductsComponent } from "./products/products.component";
     DashboardComponent,
     MyPurchasesComponent,
     ProductsComponent,
+    RequiresRoleDirective,
   ],
   imports: [
     HomeRoutingModule,
@@ -35,6 +38,7 @@ import { ProductsComponent } from "./products/products.component";
   ],
   providers: [
     SidenavService,
+    RoleGuard,
   ]
 })
 
