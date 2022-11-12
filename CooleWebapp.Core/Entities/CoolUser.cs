@@ -1,4 +1,6 @@
-﻿namespace CooleWebapp.Core.Entities;
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace CooleWebapp.Core.Entities;
 
 /// <summary>
 /// Application user data
@@ -16,13 +18,16 @@ public record CoolUser
   /// <summary>
   /// The name of the user
   /// </summary>
+  [MaxLength(256)]
   public string Name { get; set; } = string.Empty;
   /// <summary>
   /// The title of the user (e.g. Lord)
   /// </summary>
+  [MaxLength(256)]
   public string? Title { get; set; }
   /// <summary>
   /// The three letter initials of the user
   /// </summary>
+  [MaxLength(3)]
   public string Initials { get; set; } = string.Empty;
 }
