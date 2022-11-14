@@ -5,6 +5,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule, } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatListModule } from '@angular/material/list';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSortModule } from '@angular/material/sort';
+import { MatTableModule } from '@angular/material/table';
 
 import { HomeRoutingModule } from "./home-routing.module";
 import { HomeComponent } from "./home.component";
@@ -15,6 +19,7 @@ import { MyPurchasesComponent } from "./my-purchases/my-purchases.component";
 import { ProductsComponent } from "./products/products.component";
 import { RequiresRoleDirective } from "../auth/requires-role.directive";
 import { RoleGuard } from "../auth/role-guard.service";
+import { CooleWebappApi } from "../../generated/coole-webapp-api";
 
 @NgModule({
   declarations: [
@@ -31,7 +36,11 @@ import { RoleGuard } from "../auth/role-guard.service";
     MatButtonModule,
     MatIconModule,
     MatListModule,
+    MatPaginatorModule,
+    MatProgressSpinnerModule,
     MatSidenavModule,
+    MatSortModule,
+    MatTableModule,
     MatToolbarModule,
   ],
   exports: [
@@ -39,6 +48,7 @@ import { RoleGuard } from "../auth/role-guard.service";
   providers: [
     SidenavService,
     RoleGuard,
+    CooleWebappApi.AdminProductsClient,
   ]
 })
 

@@ -5,7 +5,9 @@ const PROXY_CONFIG = [
       "/WeatherForecast",
       "/connect/token",
       "/Registration",
-      "/registration"
+      "/registration",
+      "/AdminProducts",
+      "/adminproducts"
     ],
     target: "https://localhost:7038",
     secure: false
