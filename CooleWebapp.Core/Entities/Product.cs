@@ -6,7 +6,7 @@ public enum ProductState
 {
   Available,
   SoldOut,
-  Removed,
+  Hidden,
 }
 
 public record Product

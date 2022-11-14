@@ -2,6 +2,7 @@
 using CooleWebapp.Core.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using System.Reflection;
 
 #nullable disable
@@ -20,5 +21,22 @@ public sealed class WebappDbContext : IdentityDbContext<WebappUser>
     builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
   }
 
+  protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
+  {
+    base.ConfigureConventions(configurationBuilder);
+    configurationBuilder.Properties<DateTime>().HaveConversion<DateTimeUtcConverter>();
+  }
   public DbSet<CoolUser> CoolUsers { get; set; }
+  public DbSet<Product> Products { get; set; }
+  public DbSet<Order> Orders { get; set; }
+  public DbSet<MonthlyClosing> MonthlyClosings { get; set; }
+}
+
+public class DateTimeUtcConverter : ValueConverter<DateTime, DateTime>
+{
+  public DateTimeUtcConverter() : base(
+    x => x,
+    x => DateTime.SpecifyKind(x, DateTimeKind.Utc), 
+    null)
+  { }
 }
