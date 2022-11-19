@@ -4,6 +4,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule, } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatPaginatorModule } from '@angular/material/paginator';
@@ -20,6 +22,7 @@ import { ProductsComponent } from "./products/products.component";
 import { RequiresRoleDirective } from "../auth/requires-role.directive";
 import { RoleGuard } from "../auth/role-guard.service";
 import { CooleWebappApi } from "../../generated/coole-webapp-api";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -33,8 +36,12 @@ import { CooleWebappApi } from "../../generated/coole-webapp-api";
   imports: [
     HomeRoutingModule,
     CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
     MatButtonModule,
+    MatFormFieldModule,
     MatIconModule,
+    MatInputModule,
     MatListModule,
     MatPaginatorModule,
     MatProgressSpinnerModule,

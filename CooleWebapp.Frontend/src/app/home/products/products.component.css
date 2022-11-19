@@ -7,6 +7,7 @@
   position: relative;
   min-height: 540px;
   overflow: auto;
+  background-color: white;
 }
 
 .products-table {
@@ -28,9 +29,18 @@
 
 /* Column Widths */
 .mat-column-price {
-  max-width: 64px;
+  width: 80px !important;
+  text-align: right;
+  padding-right: 8px;
 }
 
 .mat-column-name {
-  max-width: 124px;
+  width: 25% !important;
+}
+
+.mat-column-description {
+}
+
+.mat-column-buttons {
+  width: 80px !important;
 }

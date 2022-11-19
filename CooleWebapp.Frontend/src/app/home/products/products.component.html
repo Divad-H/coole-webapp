@@ -1,4 +1,4 @@
-<p>Products</p>
+<h2>Products</h2>
 
 <div class="products-container mat-elevation-z8">
   <div class="products-loading-shade"
@@ -7,6 +7,22 @@
   </div>
 
   <div class="products-table-container">
+
+    <div style="display: flex; justify-content: space-between; margin: 16px 16px 0px 16px;">
+      <mat-form-field class="example-full-width">
+        <mat-icon matPrefix>search</mat-icon>
+        <mat-label>Search</mat-label>
+        <input type="text" matInput
+               [ngModel]="searchQuery | async"
+               (ngModelChange)="searchQuerySubject.next($event);">
+        <button *ngIf="searchQuery | async" matSuffix mat-icon-button aria-label="Clear"
+                (click)="searchQuerySubject.next('')">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <button mat-raised-button style="height: 40px;">Add Product <mat-icon>add</mat-icon></button>
+    </div>
 
     <table mat-table [dataSource]="(data | async) ?? []" class="products-table"
            matSort matSortActive="name" matSortDisableClear matSortDirection="desc">
@@ -26,8 +42,21 @@
 
       <!-- State Column -->
       <ng-container matColumnDef="price">
-        <th mat-header-cell *matHeaderCellDef>Price (€)</th>
-        <td mat-cell *matCellDef="let row">{{row.price}}</td>
+        <th mat-header-cell *matHeaderCellDef>Price</th>
+        <td mat-cell *matCellDef="let row">{{row.price}} €</td>
+      </ng-container>
+
+      <!-- Buttons Column -->
+      <ng-container matColumnDef="buttons">
+        <th mat-header-cell *matHeaderCellDef></th>
+        <td mat-cell *matCellDef="let row">
+          <button mat-icon-button color="primary" aria-label="Edit Product">
+            <mat-icon>edit</mat-icon>
+          </button>
+          <button mat-icon-button color="primary" aria-label="Delete Product">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </td>
       </ng-container>
 
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
