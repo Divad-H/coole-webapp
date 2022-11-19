@@ -9,6 +9,7 @@ using OpenIddict.Abstractions;
 using CooleWebapp.EmailService;
 using CooleWebapp.Auth.Managers;
 using Microsoft.Extensions.DependencyInjection;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,6 +18,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers(options =>
 {
   options.Filters.Add<HttpResponseExceptionFilter>();
+}).AddJsonOptions(options =>
+{
+  options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
 });
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
