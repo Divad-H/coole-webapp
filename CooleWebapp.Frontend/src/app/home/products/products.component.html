@@ -53,7 +53,8 @@
           <button mat-icon-button color="primary" aria-label="Edit Product">
             <mat-icon>edit</mat-icon>
           </button>
-          <button mat-icon-button color="primary" aria-label="Delete Product">
+          <button mat-icon-button color="warn" aria-label="Delete Product"
+                  (click)="delete(row)">
             <mat-icon>delete</mat-icon>
           </button>
         </td>

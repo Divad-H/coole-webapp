@@ -4,6 +4,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule, } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
@@ -23,10 +24,12 @@ import { RequiresRoleDirective } from "../auth/requires-role.directive";
 import { RoleGuard } from "../auth/role-guard.service";
 import { CooleWebappApi } from "../../generated/coole-webapp-api";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { ConfirmDeleteComponent } from "./products/confirm-delete/confirm-delete.component";
 
 @NgModule({
   declarations: [
     HomeComponent,
+    ConfirmDeleteComponent,
     ToolbarComponent,
     DashboardComponent,
     MyPurchasesComponent,
@@ -39,6 +42,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
     FormsModule,
     ReactiveFormsModule,
     MatButtonModule,
+    MatDialogModule,
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,

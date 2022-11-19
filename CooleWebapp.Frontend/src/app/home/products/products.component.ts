@@ -1,9 +1,11 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild } from "@angular/core";
 import { merge, startWith, switchMap, Subscription, BehaviorSubject, catchError, of, map, distinctUntilChanged, debounceTime, combineLatest, skip } from "rxjs";
 import { MatSort, SortDirection } from '@angular/material/sort';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
 
 import { CooleWebappApi } from "../../../generated/coole-webapp-api";
+import { ConfirmDeleteComponent } from "./confirm-delete/confirm-delete.component";
 
 @Component({
   templateUrl: './products.component.html',
@@ -26,7 +28,10 @@ export class ProductsComponent implements AfterViewInit, OnDestroy {
   @ViewChild(MatPaginator) paginator?: MatPaginator;
   @ViewChild(MatSort) sort?: MatSort;
 
-  constructor(private readonly adminProducts: CooleWebappApi.AdminProductsClient) { }
+  constructor(
+    private readonly adminProducts: CooleWebappApi.AdminProductsClient,
+    private readonly matDialog: MatDialog,
+  ) { }
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
@@ -65,5 +70,18 @@ export class ProductsComponent implements AfterViewInit, OnDestroy {
           }),
         )
         .subscribe(data => this.dataSubject.next(data)));
+  }
+
+  delete(product: CooleWebappApi.Product) {
+    const modalRef = this.matDialog.open(ConfirmDeleteComponent, {
+      data: {
+        product: product
+      }
+    });
+    modalRef.afterClosed().subscribe(confirmed => {
+      if (confirmed) {
+        console.log('delete...');
+      }
+    })
   }
 }
