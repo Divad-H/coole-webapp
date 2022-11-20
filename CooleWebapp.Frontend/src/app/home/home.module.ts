@@ -10,8 +10,10 @@ import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSelectModule } from '@angular/material/select';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
+import { CurrencyMaskModule } from "ng2-currency-mask";
 
 import { HomeRoutingModule } from "./home-routing.module";
 import { HomeComponent } from "./home.component";
@@ -51,10 +53,12 @@ import { ProductDetailsComponent } from "./products/product-details/product-deta
     MatListModule,
     MatPaginatorModule,
     MatProgressSpinnerModule,
+    MatSelectModule,
     MatSidenavModule,
     MatSortModule,
     MatTableModule,
     MatToolbarModule,
+    CurrencyMaskModule,
   ],
   exports: [
   ],

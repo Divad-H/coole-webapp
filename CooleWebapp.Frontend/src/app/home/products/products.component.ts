@@ -1,5 +1,5 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild } from "@angular/core";
-import { merge, startWith, switchMap, Subscription, BehaviorSubject, catchError, of, map, distinctUntilChanged, debounceTime, combineLatest, skip } from "rxjs";
+import { merge, startWith, switchMap, Subscription, BehaviorSubject, catchError, of, map, distinctUntilChanged, debounceTime, combineLatest, skip, filter, empty, Subject } from "rxjs";
 import { MatSort, SortDirection } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -22,6 +22,8 @@ export class ProductsComponent implements AfterViewInit, OnDestroy {
 
   searchQuerySubject = new BehaviorSubject('');
   searchQuery = this.searchQuerySubject.pipe(distinctUntilChanged());
+
+  private readonly refresh = new Subject()
 
   resultsLength = new BehaviorSubject(0);
   isLoadingResults = new BehaviorSubject(false);
@@ -49,9 +51,14 @@ export class ProductsComponent implements AfterViewInit, OnDestroy {
     );
 
     this.subscriptions.add(
-      combineLatest(this.sort!.sortChange.pipe(startWith({})), this.paginator!.page.pipe(startWith({})), searchString)
+      combineLatest(
+        this.sort!.sortChange.pipe(startWith({})),
+        this.paginator!.page.pipe(startWith({})),
+        searchString,
+        this.refresh.pipe(startWith({}))
+      )
         .pipe(
-          switchMap(([_1, _2, search]) => {
+          switchMap(([_1, _2, search, _3]) => {
             this.isLoadingResults.next(true);
             return this.adminProducts.getProducts(
               this.paginator!.pageIndex,
@@ -77,10 +84,16 @@ export class ProductsComponent implements AfterViewInit, OnDestroy {
     const modalRef = this.matDialog.open(ConfirmDeleteComponent, {
       data: { ...product }
     });
-    modalRef.afterClosed().subscribe(confirmed => {
-      if (confirmed) {
-        console.log('delete...');
-      }
+    modalRef.afterClosed().pipe(
+      filter(v => v),
+      switchMap(() => this.adminProducts.deleteProduct(product.id).pipe(
+        catchError(e => {
+          console.error(e);
+          return of({});
+        })
+      ))
+    ).subscribe(() => {
+      this.refresh.next({});
     })
   }
 
@@ -88,11 +101,11 @@ export class ProductsComponent implements AfterViewInit, OnDestroy {
     const modalRef = this.matDialog.open(ProductDetailsComponent, {
       data: { product: product }
     });
-    modalRef.afterClosed().subscribe(confirmed => {
-      if (confirmed) {
-        console.log('save...');
+    modalRef.afterClosed().subscribe(product => {
+      if (product) {
+        this.refresh.next({});
       }
-    })
+    });
   }
 
   add() {
@@ -101,15 +114,8 @@ export class ProductsComponent implements AfterViewInit, OnDestroy {
     });
     modalRef.afterClosed().subscribe(product => {
       if (product) {
-        //const productRequestData = new CooleWebappApi.AddProductRequestModel({
-        //  name: product.name,
-        //  description: product.description,
-        //  price: product.price,
-        //  state: product.state,
-        //});
-        this.adminProducts.addProduct()
-        console.log('add...');
+        this.refresh.next({});
       }
-    })
+    });
   }
 }
