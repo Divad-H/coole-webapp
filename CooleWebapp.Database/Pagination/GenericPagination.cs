@@ -12,7 +12,7 @@ public static class GenericPaging
           (nameof(page.PageSize), "PageSize cannot be zero.");
 
     if (page.PageIndex != 0)
-      query = query.Skip((int)(page.PageIndex * page.PageIndex));
+      query = query.Skip((int)(page.PageIndex * page.PageSize));
 
     return query.Take((int)page.PageSize);
   }
