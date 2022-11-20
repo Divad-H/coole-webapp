@@ -10,6 +10,7 @@ using CooleWebapp.EmailService;
 using CooleWebapp.Auth.Managers;
 using Microsoft.Extensions.DependencyInjection;
 using System.Text.Json.Serialization;
+using CooleWebapp.Images;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,6 +27,7 @@ builder.Services.AddControllers(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApiDocument();
 builder.Services.AddCooleWebappDatabase(builder.Configuration);
+builder.Services.AddImageServices();
 
 builder.Services
   .AddScoped<IUserRoleStore<WebappUser>, UserStore>();

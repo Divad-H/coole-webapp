@@ -39,6 +39,7 @@
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
     <ProjectReference Include="..\CooleWebapp.Database\CooleWebapp.Database.csproj" />
+    <ProjectReference Include="..\CooleWebapp.Images\CooleWebapp.Images.csproj" />
   </ItemGroup>
 
   <Target Name="NSwag">
