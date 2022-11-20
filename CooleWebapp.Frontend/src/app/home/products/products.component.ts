@@ -6,6 +6,7 @@ import { MatPaginator } from '@angular/material/paginator';
 
 import { CooleWebappApi } from "../../../generated/coole-webapp-api";
 import { ConfirmDeleteComponent } from "./confirm-delete/confirm-delete.component";
+import { ProductDetailsComponent } from "./product-details/product-details.component";
 
 @Component({
   templateUrl: './products.component.html',
@@ -15,8 +16,8 @@ import { ConfirmDeleteComponent } from "./confirm-delete/confirm-delete.componen
 export class ProductsComponent implements AfterViewInit, OnDestroy {
 
   private readonly subscriptions = new Subscription();
-  displayedColumns: string[] = ['name', 'description', 'price', 'buttons'];
-  dataSubject = new BehaviorSubject<CooleWebappApi.Product[]>([]);
+  displayedColumns: string[] = ['name', 'description', 'price', 'state', 'buttons'];
+  dataSubject = new BehaviorSubject<CooleWebappApi.IProductResponseModel[]>([]);
   data = this.dataSubject.asObservable();
 
   searchQuerySubject = new BehaviorSubject('');
@@ -57,7 +58,7 @@ export class ProductsComponent implements AfterViewInit, OnDestroy {
               10,
               search == '' ? null : search,
               null,
-              this.sort!.direction == "asc" ? 0 : 1
+              this.sort!.direction == "asc" ? 'ByNameAscending' : 'ByNameDescending'
             ).pipe(catchError(() => of(null)));
           }),
           map(data => {
@@ -72,15 +73,42 @@ export class ProductsComponent implements AfterViewInit, OnDestroy {
         .subscribe(data => this.dataSubject.next(data)));
   }
 
-  delete(product: CooleWebappApi.Product) {
+  delete(product: CooleWebappApi.IProductResponseModel) {
     const modalRef = this.matDialog.open(ConfirmDeleteComponent, {
-      data: {
-        product: product
-      }
+      data: { ...product }
     });
     modalRef.afterClosed().subscribe(confirmed => {
       if (confirmed) {
         console.log('delete...');
+      }
+    })
+  }
+
+  edit(product: CooleWebappApi.IProductResponseModel) {
+    const modalRef = this.matDialog.open(ProductDetailsComponent, {
+      data: { product: product }
+    });
+    modalRef.afterClosed().subscribe(confirmed => {
+      if (confirmed) {
+        console.log('save...');
+      }
+    })
+  }
+
+  add() {
+    const modalRef = this.matDialog.open(ProductDetailsComponent, {
+      data: {}
+    });
+    modalRef.afterClosed().subscribe(product => {
+      if (product) {
+        //const productRequestData = new CooleWebappApi.AddProductRequestModel({
+        //  name: product.name,
+        //  description: product.description,
+        //  price: product.price,
+        //  state: product.state,
+        //});
+        this.adminProducts.addProduct()
+        console.log('add...');
       }
     })
   }

@@ -9,5 +9,5 @@ import { CooleWebappApi } from "../../../../generated/coole-webapp-api";
 })
 export class ConfirmDeleteComponent {
 
-  constructor(@Inject(MAT_DIALOG_DATA) public data: CooleWebappApi.Product) { }
+  constructor(@Inject(MAT_DIALOG_DATA) public data: CooleWebappApi.IProductResponseModel) { }
 }

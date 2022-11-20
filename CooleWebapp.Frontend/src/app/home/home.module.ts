@@ -25,6 +25,7 @@ import { RoleGuard } from "../auth/role-guard.service";
 import { CooleWebappApi } from "../../generated/coole-webapp-api";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { ConfirmDeleteComponent } from "./products/confirm-delete/confirm-delete.component";
+import { ProductDetailsComponent } from "./products/product-details/product-details.component";
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { ConfirmDeleteComponent } from "./products/confirm-delete/confirm-delete
     DashboardComponent,
     MyPurchasesComponent,
     ProductsComponent,
+    ProductDetailsComponent,
     RequiresRoleDirective,
   ],
   imports: [
