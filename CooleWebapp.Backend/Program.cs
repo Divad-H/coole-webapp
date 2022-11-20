@@ -11,6 +11,7 @@ using CooleWebapp.Auth.Managers;
 using Microsoft.Extensions.DependencyInjection;
 using System.Text.Json.Serialization;
 using CooleWebapp.Images;
+using CooleWebapp.Application.Products;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +29,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApiDocument();
 builder.Services.AddCooleWebappDatabase(builder.Configuration);
 builder.Services.AddImageServices();
+builder.Services.AddProductsServices();
 
 builder.Services
   .AddScoped<IUserRoleStore<WebappUser>, UserStore>();
