@@ -49,24 +49,25 @@ export class LoginComponent implements OnInit, OnDestroy {
       })
     );
 
-    this.submit.pipe(
-      tap(() => this.errorResponseSubject.next('')),
-      filter(() => this.form.valid),
-      tap(() => this.busySubject.next(true)),
-      switchMap(() => this.authService.login(this.form.value.email, this.form.value.password).pipe(
-        catchError(e => {
-          if (e.error.error_description) {
-            this.errorResponseSubject.next(e.error.error_description);
-          }
-          return of({ error: true });
-        })
-      ))
-    ).subscribe(res => {
-      this.busySubject.next(false);
-      if ((res as any).error) {
-        return;
-      }
-      this.router.navigate(['/home']);
-    })
+    this.subscriptions.add(
+      this.submit.pipe(
+        tap(() => this.errorResponseSubject.next('')),
+        filter(() => this.form.valid),
+        tap(() => this.busySubject.next(true)),
+        switchMap(() => this.authService.login(this.form.value.email, this.form.value.password).pipe(
+          catchError(e => {
+            if (e.error.error_description) {
+              this.errorResponseSubject.next(e.error.error_description);
+            }
+            return of({ error: true });
+          })
+        ))
+      ).subscribe(res => {
+        this.busySubject.next(false);
+        if ((res as any).error) {
+          return;
+        }
+        this.router.navigate(['/home']);
+      }));
   }
 }
