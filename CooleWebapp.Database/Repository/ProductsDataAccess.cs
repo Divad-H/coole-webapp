@@ -41,8 +41,8 @@ internal class ProductsDataAccess : IProductDataAccess
     var query = _dbContext.Products
       .AsNoTracking();
     if (searchFilter is not null)
-      query = query.Where(prod => prod.Name
-        .Contains(searchFilter, StringComparison.CurrentCultureIgnoreCase));
+      query = query.Where(prod => prod.Name.ToLower()
+        .Contains(searchFilter.ToLower()));
     if (productStateFilter is not null)
       query = query.Where(prod => prod.State == productStateFilter);
     if (sortDirection == SortDirection.ByNameAscending)
