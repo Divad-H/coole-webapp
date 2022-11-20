@@ -138,7 +138,102 @@ namespace CooleWebapp.Database.Migrations
                     b.HasIndex("Number", "CoolUserId")
                         .IsUnique();
 
-                    b.ToTable("MonthlyClosing");
+                    b.ToTable("MonthlyClosings");
+                });
+
+            modelBuilder.Entity("CooleWebapp.Core.Entities.Order", b =>
+                {
+                    b.Property<ulong>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong>("CoolUserId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong?>("MonthlyClosingId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CoolUserId");
+
+                    b.HasIndex("MonthlyClosingId");
+
+                    b.ToTable("Orders");
+                });
+
+            modelBuilder.Entity("CooleWebapp.Core.Entities.OrderItem", b =>
+                {
+                    b.Property<ulong>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ulong>("OrderId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("TEXT");
+
+                    b.Property<ulong>("ProductId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<ushort>("Quantity")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OrderId");
+
+                    b.ToTable("OrderItem");
+                });
+
+            modelBuilder.Entity("CooleWebapp.Core.Entities.Product", b =>
+                {
+                    b.Property<ulong>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("State")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Products");
+                });
+
+            modelBuilder.Entity("CooleWebapp.Core.Entities.ProductImage", b =>
+                {
+                    b.Property<ulong>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<byte[]>("Data")
+                        .IsRequired()
+                        .HasColumnType("BLOB");
+
+                    b.Property<ulong>("ProductId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId")
+                        .IsUnique();
+
+                    b.ToTable("ProductImages");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -487,6 +582,43 @@ namespace CooleWebapp.Database.Migrations
                     b.Navigation("CoolUser");
                 });
 
+            modelBuilder.Entity("CooleWebapp.Core.Entities.Order", b =>
+                {
+                    b.HasOne("CooleWebapp.Core.Entities.CoolUser", "CoolUser")
+                        .WithMany()
+                        .HasForeignKey("CoolUserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CooleWebapp.Core.Entities.MonthlyClosing", "MonthlyClosing")
+                        .WithMany()
+                        .HasForeignKey("MonthlyClosingId");
+
+                    b.Navigation("CoolUser");
+
+                    b.Navigation("MonthlyClosing");
+                });
+
+            modelBuilder.Entity("CooleWebapp.Core.Entities.OrderItem", b =>
+                {
+                    b.HasOne("CooleWebapp.Core.Entities.Order", "Order")
+                        .WithMany("OrderItems")
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Order");
+                });
+
+            modelBuilder.Entity("CooleWebapp.Core.Entities.ProductImage", b =>
+                {
+                    b.HasOne("CooleWebapp.Core.Entities.Product", null)
+                        .WithOne("ProductImage")
+                        .HasForeignKey("CooleWebapp.Core.Entities.ProductImage", "ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -560,6 +692,16 @@ namespace CooleWebapp.Database.Migrations
                     b.Navigation("Application");
 
                     b.Navigation("Authorization");
+                });
+
+            modelBuilder.Entity("CooleWebapp.Core.Entities.Order", b =>
+                {
+                    b.Navigation("OrderItems");
+                });
+
+            modelBuilder.Entity("CooleWebapp.Core.Entities.Product", b =>
+                {
+                    b.Navigation("ProductImage");
                 });
 
             modelBuilder.Entity("OpenIddict.EntityFrameworkCore.Models.OpenIddictEntityFrameworkCoreApplication", b =>

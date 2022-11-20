@@ -28,6 +28,7 @@ public sealed class WebappDbContext : IdentityDbContext<WebappUser>
   }
   public DbSet<CoolUser> CoolUsers { get; set; }
   public DbSet<Product> Products { get; set; }
+  public DbSet<ProductImage> ProductImages { get; set; }
   public DbSet<Order> Orders { get; set; }
   public DbSet<MonthlyClosing> MonthlyClosings { get; set; }
 }
