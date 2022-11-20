@@ -12,6 +12,7 @@ using CooleWebapp.Core.BusinessActionRunners;
 using CooleWebapp.Database.Runners;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using CooleWebapp.Core.Entities;
+using CooleWebapp.Application.Products.Repository;
 
 namespace CooleWebapp.Database
 {
@@ -34,6 +35,7 @@ namespace CooleWebapp.Database
         .Configure<DatabaseConfig>(configurationBuilder.GetSection(nameof(DatabaseConfig)));
       serviceDescriptors.AddScoped<IdentityDbContext<WebappUser>>(sp => sp.GetRequiredService<WebappDbContext>());
       serviceDescriptors.AddScoped<IUserDataAccess, UserDataAccess>();
+      serviceDescriptors.AddScoped<IProductDataAccess, ProductsDataAccess>();
       serviceDescriptors.AddScoped<IRunnerFactory, RunnerFactory>();
       return serviceDescriptors;
     }

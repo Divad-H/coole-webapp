@@ -41,3 +41,7 @@ public record Page
   [Required] public UInt32 PageIndex { get; }
   [Required] public UInt32 PageSize { get; }
 }
+
+public record Paginated<T>(
+  IReadOnlyCollection<T> Items,
+  Pagination Pagination);
