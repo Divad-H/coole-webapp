@@ -78,7 +78,7 @@ internal class ProductsDataAccess : IProductDataAccess
     var productImage =
       await _dbContext.ProductImages.SingleOrDefaultAsync(pi => pi.ProductId == productId, ct);
     if (productImage is null)
-      throw new ClientError(ErrorType.NotFound, "Could not delete product image, because no image was found.");
+      return;
     _dbContext.ProductImages.Attach(productImage);
     _dbContext.ProductImages.Remove(productImage);
   }
