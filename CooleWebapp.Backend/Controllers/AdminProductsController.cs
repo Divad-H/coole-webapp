@@ -7,7 +7,7 @@ using OpenIddict.Validation.AspNetCore;
 
 namespace CooleWebapp.Backend.Controllers;
 
-//[Authorize(AuthenticationSchemes = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme, Roles = Roles.Administrator)]
+[Authorize(AuthenticationSchemes = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme, Roles = Roles.Administrator)]
 [ApiController]
 [Route("[controller]")]
 public class AdminProductsController : ControllerBase
