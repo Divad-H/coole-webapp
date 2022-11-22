@@ -1,20 +1,23 @@
 <h2 mat-dialog-title>{{ isNewProduct ? 'Add a New Product' : 'Edit Product' }}</h2>
 <form [formGroup]="form" (ngSubmit)="submit.next({})">
-  <mat-dialog-content>
+  <mat-dialog-content style="overflow-x: hidden;">
     <mat-error>
       {{ errorResponse | async }}
     </mat-error>
     <mat-form-field appearance="fill">
+      <mat-label>Name</mat-label>
       <input matInput placeholder="Name" name="name" formControlName="name" required>
       <mat-error>
         Please enter the product name
       </mat-error>
     </mat-form-field>
     <mat-form-field appearance="fill">
+      <mat-label>Description</mat-label>
       <textarea matInput placeholder="Description" name="description" formControlName="description">
       </textarea>
     </mat-form-field>
     <mat-form-field appearance="fill">
+      <mat-label>Price</mat-label>
       <input matInput
              placeholder="Price"
              name="price"
@@ -34,6 +37,34 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
+    <input class="file-input" type="file" (change)="fileChangeEvent($event)" #fileUpload />
+    <button mat-button color="primary"
+            style="margin: 8px"
+            type="button"
+            (click)="fileUpload.click()">
+      Upload an image <mat-icon>file_upload</mat-icon>
+    </button>
+    <button mat-button color="warn"
+            style="margin: 8px"
+            type="button"
+            (click)="clearImage.next({})"
+            [disabled]="!(croppedImage | async)">
+      Clear image <mat-icon>delete</mat-icon>
+    </button>
+
+    <image-cropper style="max-width: 500px; margin: 8px"
+                   [imageFile]="(initialImage | async) ?? undefined"
+                   [imageChangedEvent]="imageChanged | async"
+                   [maintainAspectRatio]="true"
+                   [aspectRatio]="2 / 3"
+                   format="jpeg"
+                   (imageCropped)="imageCropped($event)"
+                   (imageLoaded)="imageLoaded($event)"
+                   (cropperReady)="cropperReady()"
+                   (loadImageFailed)="loadImageFailed()"></image-cropper>
+
+    <!--<img [src]="croppedImage | async" style="width: 400px" />-->
+
   </mat-dialog-content>
   <mat-dialog-actions style="display: flex; justify-content: right;">
     <button mat-flat-button mat-dialog-close>Cancel</button>

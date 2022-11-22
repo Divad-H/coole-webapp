@@ -14,6 +14,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { CurrencyMaskModule } from "ng2-currency-mask";
+import { ImageCropperModule } from 'ngx-image-cropper';
 
 import { HomeRoutingModule } from "./home-routing.module";
 import { HomeComponent } from "./home.component";
@@ -28,6 +29,8 @@ import { CooleWebappApi } from "../../generated/coole-webapp-api";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { ConfirmDeleteComponent } from "./products/confirm-delete/confirm-delete.component";
 import { ProductDetailsComponent } from "./products/product-details/product-details.component";
+import { ErrorStateMatcher } from "@angular/material/core";
+import { DefaultErrorStateMatcher } from "../utilities/error-state-matchers";
 
 @NgModule({
   declarations: [
@@ -59,6 +62,7 @@ import { ProductDetailsComponent } from "./products/product-details/product-deta
     MatTableModule,
     MatToolbarModule,
     CurrencyMaskModule,
+    ImageCropperModule,
   ],
   exports: [
   ],
@@ -66,6 +70,7 @@ import { ProductDetailsComponent } from "./products/product-details/product-deta
     SidenavService,
     RoleGuard,
     CooleWebappApi.AdminProductsClient,
+    { provide: ErrorStateMatcher, useClass: DefaultErrorStateMatcher },
   ]
 })
 

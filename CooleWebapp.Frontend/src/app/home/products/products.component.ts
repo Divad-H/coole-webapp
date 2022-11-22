@@ -118,4 +118,8 @@ export class ProductsComponent implements AfterViewInit, OnDestroy {
       }
     });
   }
+
+  formatPrice(price: number) {
+    return price.toFixed(2);
+  }
 }
