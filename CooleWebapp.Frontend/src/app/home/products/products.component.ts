@@ -1,5 +1,5 @@
 import { AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild } from "@angular/core";
-import { merge, startWith, switchMap, Subscription, BehaviorSubject, catchError, of, map, distinctUntilChanged, debounceTime, combineLatest, skip, filter, empty, Subject } from "rxjs";
+import { merge, startWith, switchMap, Subscription, BehaviorSubject, catchError, of, map, distinctUntilChanged, debounceTime, combineLatest, skip, filter, empty, Subject, mapTo, Observable } from "rxjs";
 import { MatSort, SortDirection } from '@angular/material/sort';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
@@ -7,6 +7,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { CooleWebappApi } from "../../../generated/coole-webapp-api";
 import { ConfirmDeleteComponent } from "./confirm-delete/confirm-delete.component";
 import { ProductDetailsComponent } from "./product-details/product-details.component";
+import { BreakpointObserver, Breakpoints } from "@angular/cdk/layout";
 
 @Component({
   templateUrl: './products.component.html',
@@ -16,7 +17,7 @@ import { ProductDetailsComponent } from "./product-details/product-details.compo
 export class ProductsComponent implements AfterViewInit, OnDestroy {
 
   private readonly subscriptions = new Subscription();
-  displayedColumns: string[] = ['name', 'description', 'price', 'state', 'buttons'];
+  displayedColumns: Observable<string[]>;
   dataSubject = new BehaviorSubject<CooleWebappApi.IProductResponseModel[]>([]);
   data = this.dataSubject.asObservable();
 
@@ -34,7 +35,31 @@ export class ProductsComponent implements AfterViewInit, OnDestroy {
   constructor(
     private readonly adminProducts: CooleWebappApi.AdminProductsClient,
     private readonly matDialog: MatDialog,
-  ) { }
+    private readonly breakpointObserver: BreakpointObserver,
+  ) {
+    this.displayedColumns = merge(
+      this.breakpointObserver
+        .observe([
+          Breakpoints.XSmall,
+        ]).pipe(filter(b => b.matches), mapTo(0)),
+      this.breakpointObserver
+        .observe([
+          Breakpoints.Small,
+        ]).pipe(filter(b => b.matches), mapTo(1)),
+      this.breakpointObserver
+        .observe([
+          Breakpoints.Medium,
+          Breakpoints.Large,
+          Breakpoints.XLarge,
+        ]).pipe(filter(b => b.matches), mapTo(2))
+    ).pipe(
+      map(size => size == 2
+        ? ['name', 'description', 'price', 'state', 'buttons']
+        : size == 1
+          ? ['name', 'price', 'state', 'buttons']
+          : ['name', 'price', 'buttons'])
+    )
+  }
 
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
