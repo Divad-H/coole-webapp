@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, Inject, OnDestroy, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { MatDialogRef, MAT_DIALOG_DATA } from "@angular/material/dialog";
-import { ImageCroppedEvent, LoadedImage } from "ngx-image-cropper";
-import { BehaviorSubject, catchError, filter, of, switchMap, Subject, Subscriber, tap, empty, Observable, map, mapTo, startWith, withLatestFrom } from "rxjs";
+import { ImageCroppedEvent } from "ngx-image-cropper";
+import { BehaviorSubject, catchError, filter, of, switchMap, Subject, Subscriber, tap, empty, Observable, map, mapTo, startWith, withLatestFrom, merge } from "rxjs";
 import { CooleWebappApi } from "../../../../generated/coole-webapp-api";
 import { dataURItoBlob } from "../../../utilities/data-uri-to-blob"
 
@@ -18,7 +18,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   public readonly productId?: number;
   public readonly isNewProduct: boolean;
 
-  public readonly initialImage: Observable<File | null>;
+  public readonly image: Observable<any | null>;
   public readonly clearImage = new Subject();
 
   public readonly submit = new Subject();
@@ -33,7 +33,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: { product?: CooleWebappApi.IProductResponseModel },
     private readonly adminProducts: CooleWebappApi.AdminProductsClient,
     private readonly dialogRef: MatDialogRef<ProductDetailsComponent>,
-    readonly fb: FormBuilder,
+    readonly fb: FormBuilder
   ) {
     this.isNewProduct = data.product?.id == null;
     this.productId = data.product?.id;
@@ -44,16 +44,18 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
       state: [data.product?.state ?? 'Available', Validators.required],
     });
 
-    this.initialImage = this.clearImage.pipe(
-      mapTo(null),
-      startWith(this.productId),
-      switchMap(id => id == null
-        ? of(null)
-        : this.adminProducts.getProductImage(id).pipe(
-          catchError(e => empty()),
-          map(fileResult => new File([fileResult.data], '', { type: 'image/jpeg' }))
-        ))
-    )
+    this.image = merge(
+      this.clearImage.pipe(
+        mapTo(null),
+        startWith(this.productId),
+        switchMap(id => id == null
+          ? of(null)
+          : this.adminProducts.getProductImage(id).pipe(
+            catchError(e => empty()),
+            map(fileResult => new File([fileResult.data], '', { type: 'image/jpeg' }))
+          )),
+      ),
+      this.imageChanged);
   }
 
   ngOnDestroy(): void {
@@ -77,6 +79,7 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
             this.form.value.name,
             this.form.value.description,
             +this.form.value.price,
+            1.23,
             this.form.value.state)
           : this.adminProducts.editProduct(
             image == null ? null : { fileName: '', data: dataURItoBlob(image) },
@@ -107,16 +110,10 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
   croppedImage = new Subject<string | null | undefined>();
 
   fileChangeEvent(event: any): void {
-    this.imageChanged.next(event);
+    this.imageChanged.next(event.target.files[0]);
   }
   imageCropped(event: ImageCroppedEvent) {
     this.croppedImage.next(event.base64);
-  }
-  imageLoaded(image: LoadedImage) {
-    // show cropper
-  }
-  cropperReady() {
-    // cropper ready
   }
   loadImageFailed() {
     // show message

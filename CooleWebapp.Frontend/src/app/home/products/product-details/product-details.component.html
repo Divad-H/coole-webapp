@@ -53,14 +53,11 @@
     </button>
 
     <image-cropper style="max-width: 500px; margin: 8px"
-                   [imageFile]="(initialImage | async) ?? undefined"
-                   [imageChangedEvent]="imageChanged | async"
+                   [imageFile]="(image | async) ?? undefined"
                    [maintainAspectRatio]="true"
                    [aspectRatio]="2 / 3"
                    format="jpeg"
                    (imageCropped)="imageCropped($event)"
-                   (imageLoaded)="imageLoaded($event)"
-                   (cropperReady)="cropperReady()"
                    (loadImageFailed)="loadImageFailed()"></image-cropper>
 
     <!--<img [src]="croppedImage | async" style="width: 400px" />-->
