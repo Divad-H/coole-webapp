@@ -33,12 +33,24 @@ namespace CooleWebapp.Application.Products.Services
       byte[]? productImage,
       CancellationToken ct)
     {
-      throw new NotImplementedException();
+      return _runnerFactory
+        .CreateWriterRunner(_createProductActionFactory.Create())
+        .Run(new()
+        {
+          Description = addProductRequestModel.Description,
+          Name = addProductRequestModel.Name,
+          Price = addProductRequestModel.Price,
+          State = addProductRequestModel.State,
+          Image = productImage,
+        }, ct);
     }
 
     public async Task<byte[]> ReadProductImage(UInt64 productId, CancellationToken ct)
     {
-      throw new NotImplementedException();
+      var imageData = await _productDataAccess.ReadProductImage(productId, ct);
+      if (imageData is null)
+        throw new ClientError(ErrorType.NotFound, "No product image available.");
+      return imageData;
     }
 
     public Task UpdateProduct(
@@ -46,19 +58,47 @@ namespace CooleWebapp.Application.Products.Services
       byte[]? productImage,
       CancellationToken ct)
     {
-      throw new NotImplementedException();
+      return _runnerFactory
+        .CreateWriterRunner(_updateProductActionFactory.Create())
+        .Run(new()
+        {
+          Id = editProductRequestModel.ProductId,
+          Description = editProductRequestModel.Description,
+          Name = editProductRequestModel.Name,
+          Price = editProductRequestModel.Price,
+          State = editProductRequestModel.State,
+          Image = editProductRequestModel.ImageUnchanged ? null : new() { Data = productImage },
+        }, ct);
     }
 
     public async Task<GetProductsResponseModel> ReadProducts(
       GetProductsRequestModel getProductsRequestModel, 
       CancellationToken ct)
     {
-      throw new NotImplementedException();
+      var res = await _productDataAccess
+        .ReadProducts(
+          new(getProductsRequestModel.PageIndex, getProductsRequestModel.PageSize),
+          getProductsRequestModel.SearchFilter,
+          getProductsRequestModel.ProductStateFilter,
+          getProductsRequestModel.SortDirection, ct);
+      
+      return new(
+        res.Pagination,
+        res.Items.Select(p => new ProductResponseModel()
+        {
+          Description = p.Description,
+          Id = p.Id,
+          Name = p.Name,
+          Price = p.Price,
+          State = p.State
+        }).ToImmutableArray());
     }
 
     public Task DeleteProduct(UInt64 productId, CancellationToken ct)
     {
-      throw new NotImplementedException();
+      return _runnerFactory
+        .CreateWriterRunner(_deleteProductActionFactory.Create())
+        .Run(productId, ct);
     }
 
   }
