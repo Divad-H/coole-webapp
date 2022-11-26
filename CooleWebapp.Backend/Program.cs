@@ -12,10 +12,15 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Text.Json.Serialization;
 using CooleWebapp.Images;
 using CooleWebapp.Application.Products;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+
+var cultureInfo = new CultureInfo("en-US");
+CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
 builder.Services.AddControllers(options =>
 {
