@@ -33,7 +33,12 @@ namespace CooleWebapp.Auth.Registration
         new Message(
           new[] { (Name: coolUser.Name, Address: dataIn.Email) }, 
           "Reset your Coole Webapp Password", 
-          dataIn.Link),
+          string.Format(@"<h1>Greetings human being called {0}*,</h1>
+<p>you have requested to reset your password for the CooleWebApp, to do soplease click <a href=""{1}"">here.</a></p>
+<p>If you didn't request it, please ignore this email. In case of multiple of unrequested password reset emails, please contact our <a href=""mailto:oliver.delpy@procom.de"">support</a>.</p>
+<hr />
+<p><sub>*: We are terribly sorry for assuming you have a name.</sub></p>
+", coolUser.Name, dataIn.Link)),
         ct);
       return Unit.Default;
     }

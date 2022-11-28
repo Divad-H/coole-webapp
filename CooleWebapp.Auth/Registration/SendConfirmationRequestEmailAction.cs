@@ -20,7 +20,11 @@ public class SendConfirmationRequestEmailAction : IBusinessAction<SendConfirmati
         new (string Name, string Address)[]{
         (confirmationRequest.Name, Address: confirmationRequest.Email) },
         "Coole Webapp: Confirm E-Mail Address",
-        $"Confirm your e-mail by following this link: {confirmationRequest.ConfirmationLink}"),
+        String.Format(@"<h1>Greetings human being called {0}*,</h1>
+<p>welcome to the CooleWebApp, to complete your registration please click <a href=""{1}"">here.</a></p>
+<hr />
+<p><sub>*: We are terribly sorry for assuming you have a name.</sub></p>
+", confirmationRequest.Name, confirmationRequest.ConfirmationLink)),
       ct);
 
     return Unit.Default;

@@ -29,7 +29,7 @@ internal sealed class EmailSender : IEmailSender
     emailMessage.To.AddRange(message.To.Select(to => new MailboxAddress(to.Name, to.Address)));
     emailMessage.Subject = message.Subject;
 
-    var bodyBuilder = new BodyBuilder { HtmlBody = string.Format("<h2 style='color:red;'>{0}</h2>", message.Content) };
+    var bodyBuilder = new BodyBuilder { HtmlBody = message.Content };
 
     emailMessage.Body = bodyBuilder.ToMessageBody();
     return emailMessage;
