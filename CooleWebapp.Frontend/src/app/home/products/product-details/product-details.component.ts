@@ -79,7 +79,6 @@ export class ProductDetailsComponent implements OnInit, OnDestroy {
             this.form.value.name,
             this.form.value.description,
             +this.form.value.price,
-            1.23,
             this.form.value.state)
           : this.adminProducts.editProduct(
             image == null ? null : { fileName: '', data: dataURItoBlob(image) },
