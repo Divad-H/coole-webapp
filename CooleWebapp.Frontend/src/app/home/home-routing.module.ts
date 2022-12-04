@@ -6,6 +6,7 @@ import { DashboardComponent } from "./dashboard/dashboard.component";
 import { HomeComponent } from "./home.component";
 import { MyPurchasesComponent } from "./my-purchases/my-purchases.component";
 import { ProductsComponent } from "./products/products.component";
+import { ShopComponent } from "./shop/shop.component";
 
 const routes: Routes = [
   {
@@ -24,6 +25,14 @@ const routes: Routes = [
       {
         path: 'my-purchases',
         component: MyPurchasesComponent,
+        canActivate: [RoleGuard],
+        data: {
+          roles: ['User']
+        }
+      },
+      {
+        path: 'shop',
+        component: ShopComponent,
         canActivate: [RoleGuard],
         data: {
           roles: ['User']
