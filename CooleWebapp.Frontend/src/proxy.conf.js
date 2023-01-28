@@ -7,7 +7,9 @@ const PROXY_CONFIG = [
       "/Registration",
       "/registration",
       "/AdminProducts",
-      "/adminproducts"
+      "/adminproducts",
+      "/Shop",
+      "/shop"
     ],
     target: "https://localhost:7038",
     secure: false

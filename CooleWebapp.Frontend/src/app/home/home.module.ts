@@ -31,6 +31,7 @@ import { ConfirmDeleteComponent } from "./products/confirm-delete/confirm-delete
 import { ProductDetailsComponent } from "./products/product-details/product-details.component";
 import { ErrorStateMatcher } from "@angular/material/core";
 import { DefaultErrorStateMatcher } from "../utilities/error-state-matchers";
+import { ShopComponent } from "./shop/shop.component";
 
 @NgModule({
   declarations: [
@@ -42,6 +43,7 @@ import { DefaultErrorStateMatcher } from "../utilities/error-state-matchers";
     ProductsComponent,
     ProductDetailsComponent,
     RequiresRoleDirective,
+    ShopComponent,
   ],
   imports: [
     HomeRoutingModule,
@@ -70,6 +72,7 @@ import { DefaultErrorStateMatcher } from "../utilities/error-state-matchers";
     SidenavService,
     RoleGuard,
     CooleWebappApi.AdminProductsClient,
+    CooleWebappApi.ShopClient,
     { provide: ErrorStateMatcher, useClass: DefaultErrorStateMatcher },
   ]
 })

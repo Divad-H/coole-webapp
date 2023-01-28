@@ -1,0 +1,14 @@
+<section class="products" >
+
+  <div *ngFor="let product of products | async"
+       class="product-card">
+    <div class="product-image">
+      <img [src]="(product.image | async) ?? 'assets/missing-image.png'">
+    </div>
+    <div class="product-info">
+      <h3>{{ product.name }}</h3>
+      <h4>{{ product.price }} €</h4>
+    </div>
+  </div>
+
+</section>

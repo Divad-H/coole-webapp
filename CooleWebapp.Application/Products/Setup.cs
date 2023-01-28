@@ -1,5 +1,6 @@
 ﻿using CooleWebapp.Application.Products.Actions;
 using CooleWebapp.Application.Products.Services;
+using CooleWebapp.Application.Shop.Services;
 using CooleWebapp.Core.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,6 +12,7 @@ namespace CooleWebapp.Application.Products
       this IServiceCollection serviceDescriptors)
     {
       serviceDescriptors.AddScoped<IAdminProducts, AdminProducts>();
+      serviceDescriptors.AddScoped<IProducts, Shop.Services.Products>();
       serviceDescriptors.AddScopedFactory<CreateProductAction>();
       serviceDescriptors.AddScopedFactory<UpdateProductAction>();
       serviceDescriptors.AddScopedFactory<DeleteProductAction>();
