@@ -25,7 +25,11 @@ export class AuthService {
   ) {
     const serializedTokens = localStorage.getItem('tokens');
     if (!!serializedTokens) {
-      this.tokensSub.next(JSON.parse(serializedTokens));
+      const deserialized = JSON.parse(serializedTokens);
+      if (deserialized.expiresAt) {
+        deserialized.expiresAt = new Date(deserialized.expiresAt);
+      }
+      this.tokensSub.next(deserialized);
     }
     this.loggedIn = this.tokensSub.pipe(map(tokens => !!tokens));
     this.roles = this.tokensSub.pipe(
