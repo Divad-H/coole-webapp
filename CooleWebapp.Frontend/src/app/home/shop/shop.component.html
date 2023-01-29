@@ -1,7 +1,8 @@
 <section class="products" >
 
   <div *ngFor="let product of products | async"
-       class="product-card">
+       class="product-card"
+       (click)="openDialog.next(product);">
     <div class="product-image">
       <img [src]="(product.image | async) ?? 'assets/missing-image.png'">
     </div>

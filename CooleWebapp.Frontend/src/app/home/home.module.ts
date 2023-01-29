@@ -32,9 +32,11 @@ import { ProductDetailsComponent } from "./products/product-details/product-deta
 import { ErrorStateMatcher } from "@angular/material/core";
 import { DefaultErrorStateMatcher } from "../utilities/error-state-matchers";
 import { ShopComponent } from "./shop/shop.component";
+import { BuyDialog } from "./shop/buy-dialog/buy-dialog.component";
 
 @NgModule({
   declarations: [
+    BuyDialog,
     HomeComponent,
     ConfirmDeleteComponent,
     ToolbarComponent,

@@ -1,0 +1,27 @@
+<form [formGroup]="form" (submit)="onBuyClick()" class="buy-container">
+  <h1 mat-dialog-title>Buy {{data.product.name}}</h1>
+  <div mat-dialog-content class="buy-content">
+    <img [src]="(data.product.image | async) ?? 'assets/missing-image.png'"
+         class="buy-product-image">
+    <mat-form-field appearance="fill"
+                    style="width: auto; max-width: 180px">
+      <mat-label>Amount</mat-label>
+      <input matInput
+             placeholder="Amount"
+             name="amount"
+             formControlName="amount"
+             required
+             type="number"
+             min="1"
+             step="1">
+      <mat-error>
+        Enter the desired amount
+      </mat-error>
+    </mat-form-field>
+    <div class="buy-total-price">Total: {{ total | async }} €</div>
+  </div>
+  <div mat-dialog-actions align="center">
+    <button class="buy-button" mat-raised-button type="button" (click)="onNoClick()">No Thanks</button>
+    <button class="buy-button" mat-raised-button color="primary" type="submit" cdkFocusInitial>Buy</button>
+  </div>
+</form>
