@@ -21,8 +21,8 @@
     <div class="buy-total-price">Total: {{ total | async }} €</div>
   </div>
   <div mat-dialog-actions align="center">
-    <button class="buy-button" mat-raised-button type="button" (click)="onNoClick()">No Thanks</button>
+    <button class="buy-button" mat-raised-button type="button" (click)="onCloseClick()">No Thanks</button>
     <button class="buy-button" mat-raised-button color="primary" type="submit" cdkFocusInitial [disabled]="busy | async">Buy</button>
-<mat-progress-bar mode="indeterminate" *ngIf="busy | async"></mat-progress-bar>
+    <mat-progress-bar mode="indeterminate" *ngIf="busy | async"></mat-progress-bar>
   </div>
 </form>

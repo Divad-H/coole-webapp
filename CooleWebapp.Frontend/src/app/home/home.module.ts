@@ -12,6 +12,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { CurrencyMaskModule } from "ng2-currency-mask";
@@ -64,6 +65,7 @@ import { BuyDialog } from "./shop/buy-dialog/buy-dialog.component";
     MatProgressSpinnerModule,
     MatSelectModule,
     MatSidenavModule,
+    MatSnackBarModule,
     MatSortModule,
     MatTableModule,
     MatToolbarModule,

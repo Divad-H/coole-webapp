@@ -26,45 +26,48 @@ namespace CooleWebapp.Application.Shop.Actions
     public async Task<Unit> Run(BuyProductsDto dataIn, CancellationToken ct)
     {
       var user = await _userDataAccess.FindUserByWebappUserId(dataIn.WebappUserId, ct)
-        ?? throw new ClientError(ErrorType.NotFound, "User not found");
+        ?? throw new ClientError(ErrorType.NotFound, "No such user.");
       var balance = await _accountingDataAccess.GetBalance(user.Id, ct);
       balance.Version = Guid.NewGuid();
 
       if (!dataIn.Products.Any())
         throw new ClientError(ErrorType.InvalidOperation, "At least one product must be bought");
-      List<OrderItem> items = new();
+      List<OrderItem> orderItems = new();
+
       decimal totalPrice = 0;
-      foreach (var product in dataIn.Products)
+      foreach(var productAmount in dataIn.Products)
       {
-        if (product.Amount == 0)
-          throw new ClientError(ErrorType.InvalidOperation, "Invalid amount (zero)");
-        if (product.Amount > 100)
-          throw new ClientError(ErrorType.InvalidOperation, "Maximum amount is 100");
-        var dbProduct = (await _productDataAccess.GetProduct(product.ProductId, ct))
-          ?? throw new ClientError(ErrorType.NotFound, $"The product with id {product.ProductId} was not found");
-        if (dbProduct.State != ProductState.Available)
-          throw new ClientError(ErrorType.InvalidOperation, $"{dbProduct.Name} is not availiable.");
-        var actualPrice = dbProduct.Price * product.Amount;
-        if (actualPrice != product.ExpectedPrice)
-          throw new ClientError(ErrorType.InvalidOperation, "Actual price differs from displayed price.");
+        if (productAmount.Amount < 1)
+          throw new ClientError(ErrorType.InvalidOperation, "Amount must not be zero.");
+        if (productAmount.Amount > 100)
+          throw new ClientError(ErrorType.InvalidOperation, "Amount must not be larger than 100.");
+        var product = await _productDataAccess.GetProduct(productAmount.ProductId, ct);
+        if (product is null)
+          throw new ClientError(ErrorType.NotFound, $"A product with id {productAmount.ProductId} does not exist.");
+        if (product.State != ProductState.Available)
+          throw new ClientError(ErrorType.InvalidOperation, $"{product.Name} is not available.");
+        var actualPrice = product.Price * productAmount.Amount;
+        if (actualPrice != productAmount.ExpectedPrice)
+          throw new ClientError(ErrorType.InvalidOperation, "The actual price differs from the displayed price.");
         totalPrice += actualPrice;
-        items.Add(new OrderItem()
+        orderItems.Add(new OrderItem()
         {
-          Quantity = (UInt16)product.Amount,
-          Price = actualPrice,
-          ProductId = product.ProductId,
+          Price = product.Price,
+          Quantity = (UInt16)productAmount.Amount,
+          ProductId = product.Id,
         });
       }
-      if (totalPrice > balance.Value)
+
+      if (balance.Value < totalPrice)
         throw new ClientError(ErrorType.InvalidOperation, "Insufficient funds.");
       balance.Value -= totalPrice;
-      Order order = new()
+
+      await _accountingDataAccess.CreateOrder(new()
       {
         CoolUserId = user.Id,
         Timestamp = DateTime.Now,
-        OrderItems = items
-      };
-      await _accountingDataAccess.CreateOrder(order, ct);
+        OrderItems = orderItems
+      }, ct);
 
       return Unit.Default;
     }

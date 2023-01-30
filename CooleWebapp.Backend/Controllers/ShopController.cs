@@ -43,6 +43,8 @@ namespace CooleWebapp.Backend.Controllers
     }
 
     [Route("BuyProducts")]
+    [ProducesResponseType(typeof(ErrorData), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ErrorData), StatusCodes.Status400BadRequest)]
     [HttpPost]
     public Task BuyProducts(BuyProductsRequestModel buyProductsRequestModel, CancellationToken ct)
     {
