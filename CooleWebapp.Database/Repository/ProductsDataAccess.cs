@@ -11,7 +11,7 @@ namespace CooleWebapp.Database.Repository;
 
 internal class ProductsDataAccess : IProductDataAccess
 {
-  WebappDbContext _dbContext;
+  private readonly WebappDbContext _dbContext;
   public ProductsDataAccess(WebappDbContext dbContext)
   {
     _dbContext = dbContext;
@@ -81,5 +81,10 @@ internal class ProductsDataAccess : IProductDataAccess
       return;
     _dbContext.ProductImages.Attach(productImage);
     _dbContext.ProductImages.Remove(productImage);
+  }
+
+  public Task<Product?> GetProduct(ulong productId, CancellationToken ct)
+  {
+    return _dbContext.Products.SingleOrDefaultAsync(p => p.Id == productId, ct);
   }
 }

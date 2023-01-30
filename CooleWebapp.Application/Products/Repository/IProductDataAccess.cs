@@ -21,5 +21,6 @@ namespace CooleWebapp.Application.Products.Repository
 
     Task DeleteProduct(UInt64 productId, CancellationToken ct);
     Task DeleteProductImage(UInt64 productId, CancellationToken ct);
+    Task<Product?> GetProduct(UInt64 productId, CancellationToken ct);
   }
 }
