@@ -1,4 +1,4 @@
-﻿using CooleWebapp.Auth.Registration;
+﻿using CooleWebapp.Application.Users;
 using CooleWebapp.Core.Entities;
 
 namespace CooleWebapp.Auth.Test.Mocks

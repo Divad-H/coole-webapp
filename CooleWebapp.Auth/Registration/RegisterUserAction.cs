@@ -1,4 +1,5 @@
-﻿using CooleWebapp.Auth.DefaultUsers;
+﻿using CooleWebapp.Application.Users;
+using CooleWebapp.Auth.DefaultUsers;
 using CooleWebapp.Auth.Managers;
 using CooleWebapp.Auth.Model;
 using CooleWebapp.Core.BusinessActionRunners;

@@ -12,7 +12,6 @@ namespace CooleWebapp.Application.Products
       this IServiceCollection serviceDescriptors)
     {
       serviceDescriptors.AddScoped<IAdminProducts, AdminProducts>();
-      serviceDescriptors.AddScoped<IProducts, Shop.Services.Products>();
       serviceDescriptors.AddScopedFactory<CreateProductAction>();
       serviceDescriptors.AddScopedFactory<UpdateProductAction>();
       serviceDescriptors.AddScopedFactory<DeleteProductAction>();

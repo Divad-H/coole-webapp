@@ -1,6 +1,6 @@
 ﻿using CooleWebapp.Core.Entities;
 
-namespace CooleWebapp.Auth.Registration;
+namespace CooleWebapp.Application.Users;
 
 public interface IUserDataAccess
 {
