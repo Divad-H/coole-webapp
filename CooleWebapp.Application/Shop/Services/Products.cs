@@ -1,31 +1,33 @@
 ﻿using CooleWebapp.Application.Products.Repository;
 using CooleWebapp.Application.Products.Services;
+using CooleWebapp.Application.Shop.Actions;
+using CooleWebapp.Core.BusinessActionRunners;
 using CooleWebapp.Core.ErrorHandling;
 using CooleWebapp.Core.Utilities;
-using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CooleWebapp.Application.Shop.Services
 {
   internal class Products : IProducts
   {
     private readonly IProductDataAccess _productDataAccess;
+    private readonly IRunnerFactory _runnerFactory;
+    private readonly IFactory<BuyProductsAction> _buyProductsActionFactory;
 
-    public Products(IProductDataAccess productDataAccess)
+    public Products(
+      IProductDataAccess productDataAccess,
+      IRunnerFactory runnerFactory,
+      IFactory<BuyProductsAction> buyProductsActionFactory)
     {
       _productDataAccess = productDataAccess;
+      _runnerFactory = runnerFactory;
+      _buyProductsActionFactory = buyProductsActionFactory;
     }
 
     public async Task<byte[]> ReadProductImage(ulong productId, CancellationToken ct)
     {
-      var imageData = await _productDataAccess.ReadProductImage(productId, ct);
-      if (imageData is null)
-        throw new ClientError(ErrorType.NotFound, "No product image available.");
-      return imageData;
+      return await _productDataAccess.ReadProductImage(productId, ct)
+        ?? throw new ClientError(ErrorType.NotFound, "No product image available.");
     }
 
     public async Task<GetProductsResponseModel> ReadProducts(
@@ -50,6 +52,15 @@ namespace CooleWebapp.Application.Shop.Services
           Price = p.Price,
           State = p.State
         }).ToImmutableArray());
+    }
+
+    public async Task BuyProducts(
+      BuyProductsDto buyProductsDto, 
+      CancellationToken ct)
+    {
+      await _runnerFactory
+        .CreateWriterRunner(_buyProductsActionFactory.Create())
+        .Run(buyProductsDto, ct);
     }
   }
 }

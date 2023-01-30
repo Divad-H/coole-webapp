@@ -1,0 +1,11 @@
+﻿using CooleWebapp.Core.Entities;
+
+namespace CooleWebapp.Application.Accounting.Repository
+{
+  public interface IAccountingDataAccess
+  {
+    Task<Balance> GetBalance(UInt64 coolUserId, CancellationToken ct);
+
+    Task<UInt64> CreateOrder(Order order, CancellationToken ct);
+  }
+}

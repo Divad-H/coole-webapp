@@ -1,9 +1,13 @@
 ﻿using CooleWebapp.Application.Products.Services;
 using CooleWebapp.Application.Shop.Services;
+using CooleWebapp.Auth.Model;
 using CooleWebapp.Backend.ErrorHandling;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using OpenIddict.Validation.AspNetCore;
+using System.Security.Claims;
+using static AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectConstants;
 
 namespace CooleWebapp.Backend.Controllers
 {
@@ -36,6 +40,16 @@ namespace CooleWebapp.Backend.Controllers
     {
       var image = await _products.ReadProductImage(productId, ct);
       return File(image, "image/jpeg");
+    }
+
+    [Route("BuyProducts")]
+    [HttpPost]
+    public Task BuyProducts(BuyProductsRequestModel buyProductsRequestModel, CancellationToken ct)
+    {
+      var userId = User.FindFirstValue(Claims.Subject);
+      return _products.BuyProducts(
+        new() { Products = buyProductsRequestModel.Products, WebappUserId = userId },
+        ct);
     }
   }
 }

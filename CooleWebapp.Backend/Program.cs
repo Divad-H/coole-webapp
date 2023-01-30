@@ -13,6 +13,7 @@ using System.Text.Json.Serialization;
 using CooleWebapp.Images;
 using CooleWebapp.Application.Products;
 using System.Globalization;
+using CooleWebapp.Application.Shop;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -35,6 +36,7 @@ builder.Services.AddOpenApiDocument();
 builder.Services.AddCooleWebappDatabase(builder.Configuration);
 builder.Services.AddImageServices();
 builder.Services.AddProductsServices();
+builder.Services.AddShopServices();
 
 builder.Services
   .AddScoped<IUserRoleStore<WebappUser>, UserStore>();
