@@ -31,6 +31,7 @@ public sealed class WebappDbContext : IdentityDbContext<WebappUser>
   public DbSet<ProductImage> ProductImages { get; set; }
   public DbSet<Order> Orders { get; set; }
   public DbSet<MonthlyClosing> MonthlyClosings { get; set; }
+  public DbSet<Balance> Balance { get; set; }
 }
 
 public class DateTimeUtcConverter : ValueConverter<DateTime, DateTime>

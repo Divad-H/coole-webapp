@@ -12,5 +12,6 @@ public class CoolUserConfiguration : IEntityTypeConfiguration<CoolUser>
     builder.Property(x => x.WebappUserId).IsRequired();
     builder.Property(x => x.Name).IsRequired();
     builder.Property(x => x.Initials).IsRequired();
+    builder.HasOne<Balance>().WithOne(b => b.CoolUser).HasForeignKey<Balance>(x => x.CoolUserId);
   }
 }
