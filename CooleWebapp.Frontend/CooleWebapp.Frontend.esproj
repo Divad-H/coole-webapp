@@ -15,6 +15,7 @@
     <Folder Include="src\app\auth\register\" />
     <Folder Include="src\app\home\dashboard\" />
     <Folder Include="src\app\home\my-purchases\" />
+    <Folder Include="src\app\home\pay-dialog\" />
     <Folder Include="src\app\home\services\" />
     <Folder Include="src\app\home\products\confirm-delete\" />
     <Folder Include="src\app\home\products\product-details\" />

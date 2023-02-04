@@ -1,7 +1,9 @@
-import { ChangeDetectionStrategy, Component } from "@angular/core";
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from "@angular/core";
+import { MatDialog } from "@angular/material/dialog";
 import { Router } from "@angular/router";
-import { Observable } from "rxjs";
+import { switchMap, Observable, Subject, Subscription } from "rxjs";
 import { AuthService } from "../../auth/auth.service";
+import { PayDialogComponent } from "../pay-dialog/pay-dialog.component";
 import { UserBalance, UserBalanceData } from "../services/user-balance.service";
 import { SidenavService } from "../sidenav/sidenav.service";
 
@@ -11,18 +13,41 @@ import { SidenavService } from "../sidenav/sidenav.service";
   styleUrls: ['./toolbar.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ToolbarComponent {
+export class ToolbarComponent implements OnInit, OnDestroy {
 
+  private readonly subscriptions = new Subscription();
   public readonly userBalance: Observable<UserBalanceData | null>;
+  public readonly topUpAccountSubject = new Subject();
 
   constructor(
     private readonly sidenavService: SidenavService,
     private readonly authService: AuthService,
     private readonly router: Router,
     private readonly userBalanceService: UserBalance,
+    private readonly dialog: MatDialog,
   ) {
 
     this.userBalance = userBalanceService.userBalance;
+  }
+
+
+  ngOnDestroy(): void {
+    this.subscriptions.unsubscribe();
+  }
+
+  ngOnInit(): void {
+    this.subscriptions.add(
+      this.topUpAccountSubject.pipe(
+        switchMap((product: any) => {
+          const dialogRef = this.dialog.open(PayDialogComponent, {
+            data: { product },
+          });
+
+          return dialogRef.afterClosed();
+        })
+      ).subscribe(res => {
+        console.log('closed');
+      }));
   }
 
   formatBalance(balance: number | undefined): string | null {

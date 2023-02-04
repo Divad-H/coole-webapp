@@ -1,0 +1,39 @@
+<form [formGroup]="form" (submit)="onPayClick()">
+  <h1 mat-dialog-title>Top up your account</h1>
+  <div mat-dialog-content class="pay-dialog-content">
+    <div class="quick-buttons-container">
+      <button mat-raised-button class="quick-button" type="button" (click)="choose(1)">1.00 €</button>
+      <button mat-raised-button class="quick-button" type="button" (click)="choose(5)">5.00 €</button>
+      <button mat-raised-button class="quick-button" type="button" (click)="choose(10)">10.00 €</button>
+      <button mat-raised-button class="quick-button" type="button" (click)="choose(20)">20.00 €</button>
+    </div>
+    <mat-form-field style="margin: 4px">
+      <mat-label>Amount</mat-label>
+      <input matInput
+             cdkFocusInitial
+             placeholder="Amount"
+             name="amount"
+             formControlName="amount"
+             required
+             currencyMask
+             [options]="{ prefix: '', suffix: '&#x20AC;', precision: 2 }">
+      <mat-error>
+        Enter the desired amount
+      </mat-error>
+    </mat-form-field>
+    <mat-checkbox type="checkbox"
+                  name="confirmation"
+                  formControlName="confirmation"
+                  required>
+      I put the money into the box*
+    </mat-checkbox>
+    <mat-error *ngIf="(submitted | async) && !this.form.get('confirmation')!.valid">
+      Please confirm
+    </mat-error>
+  </div>
+  <div mat-dialog-actions align="center">
+    <button mat-raised-button class="quick-button" type="button" (click)="onCloseClick()">Back</button>
+    <button mat-raised-button class="quick-button" color="primary" type="submit" [disabled]="busy | async">Pay</button>
+    <mat-progress-bar mode="indeterminate" *ngIf="busy | async"></mat-progress-bar>
+  </div>
+</form>

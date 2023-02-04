@@ -10,10 +10,15 @@
   <span class="small-span">
     {{ formatBalance((userBalance | async)?.balance) }}
   </span>
-  <button mat-icon-button>
-    <mat-icon>share</mat-icon>
+  <button mat-icon-button
+          (click)="topUpAccountSubject.next({})"
+          matTooltip="top up your account"
+          *ngIf="(userBalance | async) != null">
+    <mat-icon>payment</mat-icon>
   </button>
-  <button mat-icon-button (click)="logout()">
+  <button mat-icon-button
+          matTooltip="logout"
+          (click)="logout()">
     <mat-icon>logout</mat-icon>
   </button>
 </mat-toolbar>

@@ -7,6 +7,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatListModule } from '@angular/material/list';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -15,6 +16,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
+import { MatTooltipModule } from '@angular/material/tooltip';;
 import { CurrencyMaskModule } from "ng2-currency-mask";
 import { ImageCropperModule } from 'ngx-image-cropper';
 
@@ -36,6 +38,7 @@ import { DefaultErrorStateMatcher } from "../utilities/error-state-matchers";
 import { ShopComponent } from "./shop/shop.component";
 import { BuyDialog } from "./shop/buy-dialog/buy-dialog.component";
 import { UserBalance } from "./services/user-balance.service";
+import { PayDialogComponent } from "./pay-dialog/pay-dialog.component";
 
 @NgModule({
   declarations: [
@@ -49,6 +52,7 @@ import { UserBalance } from "./services/user-balance.service";
     ProductDetailsComponent,
     RequiresRoleDirective,
     ShopComponent,
+    PayDialogComponent,
   ],
   imports: [
     HomeRoutingModule,
@@ -56,6 +60,7 @@ import { UserBalance } from "./services/user-balance.service";
     FormsModule,
     ReactiveFormsModule,
     MatButtonModule,
+    MatCheckboxModule,
     MatDialogModule,
     MatFormFieldModule,
     MatIconModule,
@@ -69,6 +74,7 @@ import { UserBalance } from "./services/user-balance.service";
     MatSnackBarModule,
     MatSortModule,
     MatTableModule,
+    MatTooltipModule,
     MatToolbarModule,
     CurrencyMaskModule,
     ImageCropperModule,
