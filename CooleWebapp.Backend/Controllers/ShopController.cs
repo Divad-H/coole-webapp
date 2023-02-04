@@ -2,6 +2,7 @@
 using CooleWebapp.Application.Shop.Services;
 using CooleWebapp.Auth.Model;
 using CooleWebapp.Backend.ErrorHandling;
+using CooleWebapp.Core.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -42,6 +43,7 @@ namespace CooleWebapp.Backend.Controllers
       return File(image, "image/jpeg");
     }
 
+    [Authorize(AuthenticationSchemes = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme, Roles = Roles.User)]
     [Route("BuyProducts")]
     [ProducesResponseType(typeof(ErrorData), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ErrorData), StatusCodes.Status400BadRequest)]

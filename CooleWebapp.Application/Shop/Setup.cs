@@ -3,15 +3,13 @@ using CooleWebapp.Application.Shop.Services;
 using CooleWebapp.Core.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace CooleWebapp.Application.Shop
+namespace CooleWebapp.Application.Shop;
+public static class Setup
 {
-  public static class Setup
+  public static void AddShopServices(
+    this IServiceCollection serviceDescriptors)
   {
-    public static void AddShopServices(
-      this IServiceCollection serviceDescriptors)
-    {
-      serviceDescriptors.AddScoped<IProducts, Services.Products>();
-      serviceDescriptors.AddScopedFactory<BuyProductsAction>();
-    }
+    serviceDescriptors.AddScoped<IProducts, Services.Products>();
+    serviceDescriptors.AddScopedFactory<BuyProductsAction>();
   }
 }

@@ -14,6 +14,7 @@ using CooleWebapp.Images;
 using CooleWebapp.Application.Products;
 using System.Globalization;
 using CooleWebapp.Application.Shop;
+using CooleWebapp.Application.Accounting;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -37,6 +38,7 @@ builder.Services.AddCooleWebappDatabase(builder.Configuration);
 builder.Services.AddImageServices();
 builder.Services.AddProductsServices();
 builder.Services.AddShopServices();
+builder.Services.AddAccountingServices();
 
 builder.Services
   .AddScoped<IUserRoleStore<WebappUser>, UserStore>();

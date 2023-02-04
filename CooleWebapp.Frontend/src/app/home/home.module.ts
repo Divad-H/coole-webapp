@@ -35,6 +35,7 @@ import { ErrorStateMatcher } from "@angular/material/core";
 import { DefaultErrorStateMatcher } from "../utilities/error-state-matchers";
 import { ShopComponent } from "./shop/shop.component";
 import { BuyDialog } from "./shop/buy-dialog/buy-dialog.component";
+import { UserBalance } from "./services/user-balance.service";
 
 @NgModule({
   declarations: [
@@ -77,8 +78,10 @@ import { BuyDialog } from "./shop/buy-dialog/buy-dialog.component";
   providers: [
     SidenavService,
     RoleGuard,
+    UserBalance,
     CooleWebappApi.AdminProductsClient,
     CooleWebappApi.ShopClient,
+    CooleWebappApi.UserAccountClient,
     { provide: ErrorStateMatcher, useClass: DefaultErrorStateMatcher },
   ]
 })

@@ -1,3 +1,15 @@
 .toolbar-spacer {
   flex: 1 1 auto;
 }
+
+.shrink-text {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.small-span {
+  font-size: medium;
+  align-self: flex-end;
+  margin: 8px;
+}
