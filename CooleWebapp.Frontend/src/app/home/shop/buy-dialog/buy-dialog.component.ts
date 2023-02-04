@@ -35,13 +35,13 @@ export class BuyDialog implements OnInit, OnDestroy {
     });
 
     this.total = this.form.valueChanges.pipe(
-      startWith(1),
-      map(amount => this.form.valid ? this.getTotal(amount) : '...')
+      startWith({amount: 1}),
+      map(value => this.form.valid ? this.getTotal(value.amount) : '...')
     );
   }
 
-  private getTotal(amount: number): number {
-    return amount * this.data.product.price;
+  private getTotal(amount: number | string): number {
+    return +amount * this.data.product.price;
   }
 
   ngOnInit(): void {

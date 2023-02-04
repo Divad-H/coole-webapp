@@ -8,6 +8,11 @@
 
 .buy-product-image {
   width: 100%;
+  height: auto;
+  max-height: 45vh;
+  max-width: 30vh;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .buy-total-price {
