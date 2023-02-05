@@ -4,6 +4,7 @@ import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { BehaviorSubject, catchError, tap, map, mapTo, Observable, of, startWith, Subject, Subscription, switchMap } from 'rxjs';
 import { CooleWebappApi } from '../../../../generated/coole-webapp-api';
+import { UserBalance } from '../../services/user-balance.service';
 import { Product } from '../shop.component';
 
 export interface DialogData {
@@ -28,7 +29,8 @@ export class BuyDialog implements OnInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public readonly data: DialogData,
     private readonly formBuilder: FormBuilder,
     private readonly shopClient: CooleWebappApi.ShopClient,
-    private readonly snackBar: MatSnackBar
+    private readonly snackBar: MatSnackBar,
+    private readonly userBalanceService: UserBalance
   ) {
     this.form = formBuilder.group({
       amount: [1, [Validators.required, Validators.min(1), Validators.pattern('[0-9]*')]]
@@ -64,6 +66,7 @@ export class BuyDialog implements OnInit, OnDestroy {
       ).subscribe(success => {
         this.busy.next(false);
         if (success) {
+          this.userBalanceService.refresh();
           this.snackBar.open(`Enjoy your ${this.data.product.name}!`, 'Close', { duration: 5000 });
           this.dialogRef.close();
         }

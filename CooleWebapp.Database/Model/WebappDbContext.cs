@@ -30,6 +30,7 @@ public sealed class WebappDbContext : IdentityDbContext<WebappUser>
   public DbSet<Product> Products { get; set; }
   public DbSet<ProductImage> ProductImages { get; set; }
   public DbSet<Order> Orders { get; set; }
+  public DbSet<Deposit> Deposits { get; set; }
   public DbSet<MonthlyClosing> MonthlyClosings { get; set; }
   public DbSet<Balance> Balance { get; set; }
 }

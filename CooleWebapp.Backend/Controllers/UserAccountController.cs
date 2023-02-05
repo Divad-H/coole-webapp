@@ -1,4 +1,5 @@
 ﻿using CooleWebapp.Application.Accounting.Services;
+using CooleWebapp.Backend.ErrorHandling;
 using CooleWebapp.Core.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,11 +22,27 @@ namespace CooleWebapp.Backend.Controllers
     }
 
     [Route("GetBalance")]
+    [ProducesDefaultResponseType(typeof(UserBalanceResponseModel))]
+    [ProducesResponseType(typeof(ErrorData), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ErrorData), StatusCodes.Status400BadRequest)]
     [HttpGet]
     public Task<UserBalanceResponseModel> GetBalance(CancellationToken ct)
     {
       var userId = User.FindFirstValue(Claims.Subject);
       return _userAccount.GetUserBalance(userId, ct);
+    }
+
+    [Route("AddBalance")]
+    [ProducesDefaultResponseType(typeof(UserBalanceResponseModel))]
+    [ProducesResponseType(typeof(ErrorData), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ErrorData), StatusCodes.Status400BadRequest)]
+    [HttpPost]
+    public Task<UserBalanceResponseModel> AddBalance(
+      AddBalanceRequestModel addBalanceRequestModel,
+      CancellationToken ct)
+    {
+      var userId = User.FindFirstValue(Claims.Subject);
+      return _userAccount.AddBalance(userId, addBalanceRequestModel.Amount, ct);
     }
   }
 }

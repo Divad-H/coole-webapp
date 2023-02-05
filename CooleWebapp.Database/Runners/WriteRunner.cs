@@ -21,3 +21,4 @@ internal class WriteRunner<TIn, TOut> : IActionRunner<TIn, TOut>
     return res;
   }
 }
+

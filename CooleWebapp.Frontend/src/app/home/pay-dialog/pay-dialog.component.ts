@@ -1,7 +1,9 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { MatDialogRef } from "@angular/material/dialog";
-import { BehaviorSubject, Subscriber } from "rxjs";
+import { MatSnackBar } from "@angular/material/snack-bar";
+import { BehaviorSubject, Subject, Subscriber, switchMap, tap } from "rxjs";
+import { UserBalance } from "../services/user-balance.service";
 
 
 @Component({
@@ -15,10 +17,13 @@ export class PayDialogComponent implements OnInit, OnDestroy {
   public readonly submitted = new BehaviorSubject(false);
   private readonly subscriptions = new Subscriber();
   public readonly form: FormGroup;
+  private readonly paySubject = new Subject<number>();
 
   constructor(
     public readonly dialogRef: MatDialogRef<PayDialogComponent>,
-    private readonly fb: FormBuilder
+    private readonly fb: FormBuilder,
+    private readonly userBalanceService: UserBalance,
+    private readonly snackBar: MatSnackBar,
   ) {
     this.form = fb.group({
       amount: [null, [Validators.required, Validators.min(1)]],
@@ -30,7 +35,20 @@ export class PayDialogComponent implements OnInit, OnDestroy {
     this.subscriptions.unsubscribe();
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    this.subscriptions.add(
+      this.paySubject.pipe(
+        tap(() => this.busy.next(true)),
+        switchMap(amount => this.userBalanceService.addBalance(amount)),
+      ).subscribe(success => {
+        this.busy.next(false);
+        if (success) {
+          this.snackBar.open('Payment successful', 'Close', { duration: 5000 })
+          this.dialogRef.close();
+        }
+      })
+    );
+  }
 
   onCloseClick(): void {
     this.dialogRef.close();
@@ -38,6 +56,9 @@ export class PayDialogComponent implements OnInit, OnDestroy {
 
   onPayClick(): void {
     this.submitted.next(true);
+    if (this.form.valid) {
+      this.paySubject.next(+this.form.value.amount);
+    }
   }
 
   choose(amount: number): void {

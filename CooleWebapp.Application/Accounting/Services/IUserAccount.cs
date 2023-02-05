@@ -8,8 +8,18 @@ namespace CooleWebapp.Application.Accounting.Services
     [Required] public decimal Balance { get; init; }
   }
 
+
+  public record AddBalanceRequestModel
+  {
+    [Required] public decimal Amount { get; init; }
+  }
+
   public interface IUserAccount
   {
     Task<UserBalanceResponseModel> GetUserBalance(string webappUserId, CancellationToken ct);
+    Task<UserBalanceResponseModel> AddBalance(
+      string webappUserId, 
+      decimal amount,
+      CancellationToken ct);
   }
 }

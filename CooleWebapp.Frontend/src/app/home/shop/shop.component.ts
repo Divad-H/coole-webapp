@@ -54,9 +54,7 @@ export class ShopComponent implements OnInit, OnDestroy {
 
           return dialogRef.afterClosed();
         })
-      ).subscribe(res => {
-        console.log('closed');
-      }));
+      ).subscribe());
   }
 
   ngOnDestroy(): void {

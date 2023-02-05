@@ -1,6 +1,10 @@
-﻿using CooleWebapp.Application.Accounting.Repository;
+﻿using CooleWebapp.Application.Accounting.Actions;
+using CooleWebapp.Application.Accounting.Repository;
+using CooleWebapp.Application.Products.Actions;
 using CooleWebapp.Application.Users;
+using CooleWebapp.Core.BusinessActionRunners;
 using CooleWebapp.Core.ErrorHandling;
+using CooleWebapp.Core.Utilities;
 
 namespace CooleWebapp.Application.Accounting.Services
 {
@@ -8,12 +12,34 @@ namespace CooleWebapp.Application.Accounting.Services
   {
     private readonly IAccountingDataAccess _accountingDataAccess;
     private readonly IUserDataAccess _userDataAccess;
+    private readonly IRunnerFactory _runnerFactory;
+    private readonly IFactory<AddBalanceAction> _addBalanceActionFactory;
     public UserAccount(
       IAccountingDataAccess balanceDataAccess,
-      IUserDataAccess userDataAccess)
+      IUserDataAccess userDataAccess,
+      IRunnerFactory runnerFactory,
+      IFactory<AddBalanceAction> addBalanceActionFactory)
     {
       _accountingDataAccess = balanceDataAccess;
       _userDataAccess = userDataAccess;
+      _runnerFactory = runnerFactory;
+      _addBalanceActionFactory = addBalanceActionFactory;
+    }
+
+    public async Task<UserBalanceResponseModel> AddBalance(
+      string webappUserId,
+      decimal amount,
+      CancellationToken ct)
+    {
+      var user = await _userDataAccess.FindUserByWebappUserId(webappUserId, ct)
+        ?? throw new ClientError(ErrorType.NotFound, "No such user.");
+      return new()
+      {
+        Balance = await _runnerFactory
+        .CreateWriterRunner(_addBalanceActionFactory.Create())
+        .Run(new(user.Id, amount), ct),
+        UserName = user.Name
+      };
     }
 
     public async Task<UserBalanceResponseModel> GetUserBalance(

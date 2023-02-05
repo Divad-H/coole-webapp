@@ -45,9 +45,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
 
           return dialogRef.afterClosed();
         })
-      ).subscribe(res => {
-        console.log('closed');
-      }));
+      ).subscribe());
   }
 
   formatBalance(balance: number | undefined): string | null {
