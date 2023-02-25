@@ -1,6 +1,5 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
-import { Router } from "@angular/router";
 import { switchMap, Observable, Subject, Subscription } from "rxjs";
 import { AuthService } from "../../auth/auth.service";
 import { PayDialogComponent } from "../pay-dialog/pay-dialog.component";
@@ -22,7 +21,6 @@ export class ToolbarComponent implements OnInit, OnDestroy {
   constructor(
     private readonly sidenavService: SidenavService,
     private readonly authService: AuthService,
-    private readonly router: Router,
     private readonly userBalanceService: UserBalance,
     private readonly dialog: MatDialog,
   ) {
@@ -61,6 +59,5 @@ export class ToolbarComponent implements OnInit, OnDestroy {
 
   logout() {
     this.authService.logout();
-    this.router.navigate(['/auth/login']);
   }
 }

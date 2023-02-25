@@ -3,7 +3,7 @@ import {
   HttpEvent, HttpInterceptor, HttpHandler, HttpRequest
 } from '@angular/common/http';
 
-import { flatMap, map, Observable, of } from 'rxjs';
+import { mergeMap, Observable } from 'rxjs';
 import { AuthService } from './auth.service';
 
 @Injectable()
@@ -16,7 +16,7 @@ export class AuthInterceptor implements HttpInterceptor {
       return next.handle(req);
     }
     return this.authService.getAutoRefreshedToken().pipe(
-      flatMap(r => {
+      mergeMap(r => {
         if (r) {
           req = req.clone({ setHeaders: { Authorization: `Bearer ${r.access_token}` } });
         }
