@@ -45,3 +45,8 @@ public record Page
 public record Paginated<T>(
   IReadOnlyCollection<T> Items,
   Pagination Pagination);
+
+public interface IQueryPaginated
+{
+  Task<Paginated<T>> Execute<T>(Page page, IQueryable<T> query, CancellationToken ct);
+}

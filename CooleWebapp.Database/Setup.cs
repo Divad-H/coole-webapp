@@ -14,6 +14,8 @@ using CooleWebapp.Core.Entities;
 using CooleWebapp.Application.Products.Repository;
 using CooleWebapp.Application.Accounting.Repository;
 using CooleWebapp.Application.Users.Repository;
+using CooleWebapp.Core.Utilities;
+using CooleWebapp.Database.Pagination;
 
 namespace CooleWebapp.Database
 {
@@ -40,6 +42,7 @@ namespace CooleWebapp.Database
       serviceDescriptors.AddScoped<IProductDataAccess, ProductsDataAccess>();
       serviceDescriptors.AddScoped<IAccountingDataAccess, AccountingDataAccess>();
       serviceDescriptors.AddScoped<IRunnerFactory, RunnerFactory>();
+      serviceDescriptors.AddScoped<IQueryPaginated, QueryPaginated>();
       return serviceDescriptors;
     }
 
