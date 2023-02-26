@@ -6,7 +6,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Identity;
 using CooleWebapp.Auth.Model;
-using CooleWebapp.Auth.Registration;
 using CooleWebapp.Database.Repository;
 using CooleWebapp.Core.BusinessActionRunners;
 using CooleWebapp.Database.Runners;
@@ -37,6 +36,7 @@ namespace CooleWebapp.Database
         .Configure<DatabaseConfig>(configurationBuilder.GetSection(nameof(DatabaseConfig)));
       serviceDescriptors.AddScoped<IdentityDbContext<WebappUser>>(sp => sp.GetRequiredService<WebappDbContext>());
       serviceDescriptors.AddScoped<IUserDataAccess, UserDataAccess>();
+      serviceDescriptors.AddScoped<IUserSettingsDataAccess, UserSettingsDataAccess>();
       serviceDescriptors.AddScoped<IProductDataAccess, ProductsDataAccess>();
       serviceDescriptors.AddScoped<IAccountingDataAccess, AccountingDataAccess>();
       serviceDescriptors.AddScoped<IRunnerFactory, RunnerFactory>();
@@ -58,17 +58,6 @@ namespace CooleWebapp.Database
         if (await roleManager.FindByNameAsync(role) is null)
           await roleManager.CreateAsync(new(role));
 
-      //var userManager = scope.ServiceProvider.GetRequiredService<UserManager<WebappUser>>();
-      //var user = await userManager.FindByNameAsync(testUserName);
-      //if (user is null) 
-      //{
-      //  user = new WebappUser { UserName = testUserName, Email = testUserEmail };
-      //  await userManager.CreateAsync(user, testUserPassword);
-      //  user.EmailConfirmed = true;
-      //  await dbContext.SaveChangesAsync(ct);
-      //  await userManager.AddToRoleAsync(user, role.Name);
-      //}
-      
       await dbContext.SaveChangesAsync(ct);
     }
   }

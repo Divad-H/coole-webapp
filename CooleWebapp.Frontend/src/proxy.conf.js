@@ -11,7 +11,9 @@ const PROXY_CONFIG = [
       "/Shop",
       "/shop",
       "/UserAccount",
-      "/useraccount"
+      "/useraccount",
+      "/UserSettings",
+      "/userSettings"
     ],
     target: "https://localhost:7038",
     secure: false

@@ -1,5 +1,6 @@
 ﻿using CooleWebapp.Application.Accounting.Actions;
 using CooleWebapp.Application.Accounting.Services;
+using CooleWebapp.Application.Users.Services;
 using CooleWebapp.Core.Utilities;
 using Microsoft.Extensions.DependencyInjection;
 

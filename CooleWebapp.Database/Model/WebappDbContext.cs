@@ -33,6 +33,7 @@ public sealed class WebappDbContext : IdentityDbContext<WebappUser>
   public DbSet<Deposit> Deposits { get; set; }
   public DbSet<MonthlyClosing> MonthlyClosings { get; set; }
   public DbSet<Balance> Balance { get; set; }
+  public DbSet<UserSettings> UserSettings { get; set; }
 }
 
 public class DateTimeUtcConverter : ValueConverter<DateTime, DateTime>
