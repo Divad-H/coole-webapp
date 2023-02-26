@@ -13,8 +13,8 @@ using CooleWebapp.Database.Runners;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using CooleWebapp.Core.Entities;
 using CooleWebapp.Application.Products.Repository;
-using CooleWebapp.Application.Users;
 using CooleWebapp.Application.Accounting.Repository;
+using CooleWebapp.Application.Users.Repository;
 
 namespace CooleWebapp.Database
 {

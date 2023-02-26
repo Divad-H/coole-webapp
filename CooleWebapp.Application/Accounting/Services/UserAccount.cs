@@ -1,7 +1,7 @@
 ﻿using CooleWebapp.Application.Accounting.Actions;
 using CooleWebapp.Application.Accounting.Repository;
 using CooleWebapp.Application.Products.Actions;
-using CooleWebapp.Application.Users;
+using CooleWebapp.Application.Users.Repository;
 using CooleWebapp.Core.BusinessActionRunners;
 using CooleWebapp.Core.ErrorHandling;
 using CooleWebapp.Core.Utilities;

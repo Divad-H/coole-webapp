@@ -1,5 +1,5 @@
 ﻿using CooleWebapp.Application.EmailService;
-using CooleWebapp.Application.Users;
+using CooleWebapp.Application.Users.Repository;
 using CooleWebapp.Auth.Managers;
 using CooleWebapp.Core.BusinessActionRunners;
 using CooleWebapp.Core.ErrorHandling;
