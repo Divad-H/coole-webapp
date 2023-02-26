@@ -1,24 +1,13 @@
-<h1 id="tableLabel">Weather forecast</h1>
-
-<p>This component demonstrates fetching data from the server.</p>
+<h1>Recent Drinkers</h1>
 
 <p *ngIf="!(recentBuyers | async)"><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationangular">https://aka.ms/jspsintegrationangular</a> for more details.</em></p>
 
-<table *ngIf="(recentBuyers | async)?.buyers as rb">
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Initials</th>
-      <th>Balance</th>
-      <th>CanBuy</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let buyer of rb.items">
-      <td>{{ buyer.name }}</td>
-      <td>{{ buyer.initials }}</td>
-      <td>{{ buyer.balance }}</td>
-      <td>{{ buyer.canBuyOnFridge }}</td>
-    </tr>
-  </tbody>
-</table>
+<div class="users-container" *ngIf="(recentBuyers | async)?.buyers as rb">
+  <div class="user-card" *ngFor="let buyer of rb.items">
+    <div class="user-profile profile-card">{{ buyer.initials }}</div>
+    <div class="user-content">
+      <h3 class="user-name">{{ buyer.name }}</h3>
+      <div class="user-balance">Balance: {{ buyer.balance }} €</div>
+    </div>
+  </div>
+</div>
