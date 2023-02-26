@@ -30,4 +30,9 @@ public record CoolUser
   /// </summary>
   [MaxLength(3)]
   public string Initials { get; set; } = string.Empty;
+
+  public ICollection<Order>? Orders { get; set; }
+  public ICollection<Deposit>? Deposits { get; set; }
+  public Balance? Balance { get; set; }
+  public UserSettings? UserSettings { get; set; }
 }

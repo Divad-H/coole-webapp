@@ -11,7 +11,6 @@ namespace CooleWebapp.Database.Configuration
       builder
         .Property(p => p.Version)
         .IsConcurrencyToken();
-      builder.Property(x => x.CoolUserId).IsRequired();
     }
   }
 }
