@@ -88,6 +88,7 @@ import { PayDialogComponent } from "./pay-dialog/pay-dialog.component";
     CooleWebappApi.AdminProductsClient,
     CooleWebappApi.ShopClient,
     CooleWebappApi.UserAccountClient,
+    CooleWebappApi.DashboardClient,
     { provide: ErrorStateMatcher, useClass: DefaultErrorStateMatcher },
   ]
 })

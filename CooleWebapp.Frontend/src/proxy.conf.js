@@ -12,6 +12,8 @@ const PROXY_CONFIG = [
       "/shop",
       "/UserAccount",
       "/useraccount",
+      "/Dashboard",
+      "/dashboard",
       "/UserSettings",
       "/userSettings"
     ],

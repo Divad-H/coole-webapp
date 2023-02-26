@@ -17,5 +17,10 @@ namespace CooleWebapp.Auth.Test.Mocks
     {
       return Task.FromResult(CreatedUsers.FirstOrDefault(u => u.WebappUserId == webappUserId));
     }
+
+    public IQueryable<CoolUser> GetAllUsers()
+    {
+      throw new NotImplementedException();
+    }
   }
 }

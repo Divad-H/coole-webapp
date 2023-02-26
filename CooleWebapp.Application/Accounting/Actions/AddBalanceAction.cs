@@ -6,7 +6,7 @@ using CooleWebapp.Core.ErrorHandling;
 
 namespace CooleWebapp.Application.Accounting.Actions
 {
-  internal class AddBalanceAction : IBusinessAction<AddBalanceDto, decimal>
+  internal sealed class AddBalanceAction : IBusinessAction<AddBalanceDto, decimal>
   {
     private readonly IAccountingDataAccess _accountingDataAccess;
     public AddBalanceAction(

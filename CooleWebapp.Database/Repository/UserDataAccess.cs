@@ -8,6 +8,7 @@ namespace CooleWebapp.Database.Repository;
 public sealed class UserDataAccess : IUserDataAccess
 {
   private readonly WebappDbContext _dbContext;
+
   public UserDataAccess(WebappDbContext dbContext)
   {
     _dbContext = dbContext;
@@ -22,5 +23,10 @@ public sealed class UserDataAccess : IUserDataAccess
   public Task<CoolUser?> FindUserByWebappUserId(string webappUserId, CancellationToken ct)
   {
     return _dbContext.CoolUsers.FirstOrDefaultAsync(u => u.WebappUserId == webappUserId, ct);
+  }
+
+  public IQueryable<CoolUser> GetAllUsers()
+  {
+    return _dbContext.CoolUsers;
   }
 }

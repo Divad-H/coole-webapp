@@ -22,7 +22,6 @@ import { NotLoggedInGuard } from './auth/not-logged-in.guard';
     BrowserAnimationsModule,
   ],
   providers: [
-    CooleWebappApi.WeatherForecastClient,
     AuthService,
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     AuthGuard,

@@ -2,23 +2,23 @@
 
 <p>This component demonstrates fetching data from the server.</p>
 
-<p *ngIf="!(forecasts | async)"><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationangular">https://aka.ms/jspsintegrationangular</a> for more details.</em></p>
+<p *ngIf="!(recentBuyers | async)"><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationangular">https://aka.ms/jspsintegrationangular</a> for more details.</em></p>
 
-<table *ngIf="(forecasts | async) as fcs">
+<table *ngIf="(recentBuyers | async)?.buyers as rb">
   <thead>
     <tr>
-      <th>Date</th>
-      <th>Temp. (C)</th>
-      <th>Temp. (F)</th>
-      <th>Summary</th>
+      <th>Name</th>
+      <th>Initials</th>
+      <th>Balance</th>
+      <th>CanBuy</th>
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let forecast of fcs">
-      <td>{{ forecast.date }}</td>
-      <td>{{ forecast.temperatureC }}</td>
-      <td>{{ forecast.temperatureF }}</td>
-      <td>{{ forecast.summary }}</td>
+    <tr *ngFor="let buyer of rb.items">
+      <td>{{ buyer.name }}</td>
+      <td>{{ buyer.initials }}</td>
+      <td>{{ buyer.balance }}</td>
+      <td>{{ buyer.canBuyOnFridge }}</td>
     </tr>
   </tbody>
 </table>

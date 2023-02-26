@@ -9,12 +9,12 @@ import { Observable, shareReplay } from "rxjs";
 })
 export class DashboardComponent {
 
-  public forecasts: Observable<CooleWebappApi.IWeatherForecast[]>;
+  public recentBuyers: Observable<CooleWebappApi.IGetRecentBuyersResponeModel>;
 
   constructor(
-    private readonly weatherForecastClient: CooleWebappApi.WeatherForecastClient,
+    private readonly dashboardClient: CooleWebappApi.DashboardClient,
   ) {
-    this.forecasts = weatherForecastClient.get().pipe(
+    this.recentBuyers = dashboardClient.getRecentBuyers(0, 100).pipe(
       shareReplay(1)
     );
   }
