@@ -1,7 +1,10 @@
-﻿using CooleWebapp.Auth.DefaultUsers;
+﻿using CooleWebapp.Application.Users.Services;
+using CooleWebapp.Auth.DefaultUsers;
 using CooleWebapp.Auth.Managers;
+using CooleWebapp.Auth.PinCode;
 using CooleWebapp.Auth.Registration;
 using CooleWebapp.Core.Utilities;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -24,5 +27,7 @@ public static class Setup
 
     serviceDescriptors.Configure<AdministratorsConfiguration>(
       configurationBuilder.GetSection(nameof(AdministratorsConfiguration)));
+    serviceDescriptors.AddScoped<IPinCodeHashing, PinCodeHashing>();
+    serviceDescriptors.AddScoped<IPasswordHasher<DummyUser>, PasswordHasher<DummyUser>>();
   }
 }
