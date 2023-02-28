@@ -21,25 +21,27 @@ internal sealed class UpdateUserSettingsAction : IBusinessAction<UpdateUserSetti
 
   public async Task<Unit> Run(UpdateUserSettingsDto dataIn, CancellationToken ct)
   {
+    if (dataIn.BuyOnFridgePermission != BuyOnFridgePermission.WithPinCode && !string.IsNullOrEmpty(dataIn.BuyOnFridgePinCode))
+      throw new ClientError(ErrorType.InvalidOperation, "Must not send a pin code when no pin code is expected.");
     var settings = await _userSettingsDataAccess.GetUserSettings(dataIn.CoolUserId, ct);
     settings.BuyOnFridgePermission = dataIn.BuyOnFridgePermission;
     if (dataIn.BuyOnFridgePermission == BuyOnFridgePermission.WithPinCode)
     {
-      if (settings.BuyOnFridgePinCodeHash is null && dataIn.BuyOnFridgePinCode is null)
-        throw new ClientError(ErrorType.InvalidOperation, "A pin code must be provided.");
-      if (dataIn.BuyOnFridgePinCode is not null)
+      var pinCode = dataIn.BuyOnFridgePinCode;
+      if (string.IsNullOrEmpty(pinCode) && string.IsNullOrEmpty(settings.BuyOnFridgePinCodeHash))
+        throw new ClientError(ErrorType.InvalidOperation, "Must send a pin code when a pin code is expected.");
+      if (!string.IsNullOrEmpty(pinCode))
       {
-        if (!dataIn.BuyOnFridgePinCode.All(c => c >= '0' && c <= '9'))
-          throw new ClientError(ErrorType.InvalidOperation, "A pin code must only contain digits.");
-        if (dataIn.BuyOnFridgePinCode.Length < 4)
-          throw new ClientError(ErrorType.InvalidOperation, "A pin code must be at least 4 digits long.");
-        settings.BuyOnFridgePinCodeHash = _pinCodeHashing.GetHash(dataIn.BuyOnFridgePinCode);
+        if (!pinCode.All(c => c >= '0' && c <= '9'))
+          throw new ClientError(ErrorType.InvalidOperation, "Pin code must only contain digits.");
+        if (pinCode.Length < 4)
+          throw new ClientError(ErrorType.InvalidOperation, "Pin code must be at least 4 digits long.");
+        settings.BuyOnFridgePinCodeHash = _pinCodeHashing.GetHash(pinCode);
       }
     }
     else
     {
-      if (dataIn.BuyOnFridgePinCode is not null)
-        throw new ClientError(ErrorType.InvalidOperation, "Unexpectedly received pin code.");
+      settings.BuyOnFridgePinCodeHash = null;
     }
     return Unit.Default;
   }

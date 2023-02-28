@@ -1,6 +1,7 @@
 ﻿using CooleWebapp.Application.Users.Repository;
 using CooleWebapp.Core.Entities;
 using CooleWebapp.Core.Utilities;
+using System.Collections.Immutable;
 
 namespace CooleWebapp.Application.Dashboard.Services;
 
@@ -30,21 +31,18 @@ internal class DashboardService : IDashboardService
         u.Initials,
         u.Balance,
         u.UserSettings,
-        Timestamp = u.Deposits!
-        .Select(d => d.Timestamp)
-        .OrderByDescending(d => d)
-        .FirstOrDefault()
+        Timestamp = u.Orders!.Select(o => o.Timestamp).OrderByDescending(t => t).FirstOrDefault()
       })
-      .OrderByDescending(u => u.Timestamp);
-    var res = await _queryPaginated.Execute(new Page(pageIndex, pageSize), query, ct);
-    return new(new(res.Items.Select(d => new BuyerResponseModel(
-      d.Id,
-      d.Name,
-      d.Initials,
-      d.Balance?.Value ?? 0,
-      (d.UserSettings?.BuyOnFridgePermission ?? BuyOnFridgePermission.NotPermitted) 
-        != BuyOnFridgePermission.NotPermitted))
-        .ToArray(),
-      res.Pagination));
+      .OrderByDescending(t => t.Timestamp);
+    var paginated = await _queryPaginated.Execute(new(pageIndex, pageSize), query, ct);
+    return new(new(
+      paginated.Items.Select(item => new BuyerResponseModel(
+        item.Id,
+        item.Name,
+        item.Initials,
+        item.Balance?.Value ?? 0,
+        (item.UserSettings?.BuyOnFridgePermission ?? BuyOnFridgePermission.NotPermitted) != BuyOnFridgePermission.NotPermitted))
+          .ToImmutableArray(),
+      paginated.Pagination));
   }
 }

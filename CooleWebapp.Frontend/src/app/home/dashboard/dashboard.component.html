@@ -1,6 +1,6 @@
 <h1>Recent Drinkers</h1>
 
-<p *ngIf="!(recentBuyers | async)"><em>Loading... Please refresh once the ASP.NET backend has started. See <a href="https://aka.ms/jspsintegrationangular">https://aka.ms/jspsintegrationangular</a> for more details.</em></p>
+<p *ngIf="!(recentBuyers | async)"><em>Loading...</em></p>
 
 <div class="users-container" *ngIf="(recentBuyers | async)?.buyers as rb">
   <div class="user-card" *ngFor="let buyer of rb.items">
