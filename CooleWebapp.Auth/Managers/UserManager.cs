@@ -38,5 +38,8 @@ internal sealed class UserManager : IUserManager
 
   public async Task ResetPasswordAsync(WebappUser user, string token, string newPassword)
     => ThrowOnError(await _userManager.ResetPasswordAsync(user, token, newPassword));
+
+  public Task<IList<WebappUser>> GetUsersInRoleAsync(string roleName)
+    => _userManager.GetUsersInRoleAsync(roleName);
 }
 

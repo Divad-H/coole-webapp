@@ -1,4 +1,5 @@
-﻿using CooleWebapp.Application.Users.Services;
+﻿using CooleWebapp.Application.Users.Repository;
+using CooleWebapp.Application.Users.Services;
 using CooleWebapp.Auth.DefaultUsers;
 using CooleWebapp.Auth.Managers;
 using CooleWebapp.Auth.PinCode;
@@ -18,6 +19,7 @@ public static class Setup
   {
     serviceDescriptors.AddScoped<IUserRegistration, UserRegistration>();
     serviceDescriptors.AddScoped<IUserManager, UserManager>();
+    serviceDescriptors.AddScoped<IUserFilters, UserFilters>();
     serviceDescriptors.AddScopedFactory<RegisterUserAction>();
     serviceDescriptors.AddScopedFactory<SendConfirmationRequestEmailAction>();
     serviceDescriptors.AddScopedFactory<ConfirmEmailAction>();

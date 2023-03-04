@@ -9,12 +9,15 @@ internal class DashboardService : IDashboardService
 {
   private readonly IUserDataAccess _userDataAccess;
   private readonly IQueryPaginated _queryPaginated;
+  private readonly IUserFilters _userFilters;
   public DashboardService(
     IUserDataAccess userDataAccess,
-    IQueryPaginated queryPaginated)
+    IQueryPaginated queryPaginated,
+    IUserFilters userFilters)
   {
     _userDataAccess = userDataAccess;
     _queryPaginated = queryPaginated;
+    _userFilters = userFilters;
   }
 
   public async Task<GetRecentBuyersResponeModel> ReadRecentBuyers(
@@ -22,8 +25,8 @@ internal class DashboardService : IDashboardService
     uint pageSize, 
     CancellationToken ct)
   {
-    var query = _userDataAccess
-      .GetAllUsers()
+    var query = (await _userFilters.FilterRegisteredUsersWithUserRole(_userDataAccess
+      .GetAllUsers()))
       .Select(u => new
       {
         u.Id,

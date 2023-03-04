@@ -1,5 +1,4 @@
 ﻿using CooleWebapp.Auth.Model;
-using Microsoft.AspNetCore.Identity;
 
 namespace CooleWebapp.Auth.Managers;
 
@@ -12,4 +11,5 @@ public interface IUserManager
   public Task ConfirmEmailAsync(WebappUser webappUser, string token);
   public Task<string> GeneratePasswordResetTokenAsync(WebappUser user);
   public Task ResetPasswordAsync(WebappUser user, string token, string newPassword);
+  public Task<IList<WebappUser>> GetUsersInRoleAsync(string roleName);
 }
