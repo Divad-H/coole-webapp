@@ -24,6 +24,7 @@ public class RegistrationController : ControllerBase
   /// <returns>The task of the operation</returns>
   [Route("register")]
   [ProducesResponseType(typeof(ErrorData), StatusCodes.Status400BadRequest)]
+  [ProducesResponseType(typeof(ErrorData), StatusCodes.Status403Forbidden)]
   [HttpPost]
   public Task RegisterUser(RegistrationData registrationData, CancellationToken ct)
   {
