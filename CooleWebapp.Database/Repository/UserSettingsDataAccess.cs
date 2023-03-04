@@ -17,7 +17,11 @@ namespace CooleWebapp.Database.Repository
       var settings = await _dbContext.UserSettings.FirstOrDefaultAsync(s => s.CoolUserId == coolUserId, ct);
       if (settings is null)
       {
-        settings = new() { BuyOnFridgePermission = BuyOnFridgePermission.NotPermitted };
+        settings = new()
+        {
+          BuyOnFridgePermission = BuyOnFridgePermission.NotPermitted,
+          CoolUserId = coolUserId
+        };
         _dbContext.Attach(settings);
       }
       return settings;

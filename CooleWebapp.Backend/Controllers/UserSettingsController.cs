@@ -36,7 +36,7 @@ namespace CooleWebapp.Backend.Controllers
     [Route("UpdateSettings")]
     [ProducesResponseType(typeof(ErrorData), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ErrorData), StatusCodes.Status400BadRequest)]
-    [HttpGet]
+    [HttpPut]
     public Task UpdateSettings(
       UpdateSettingsRequestModel updateSettingsRequestModel, 
       CancellationToken ct)
