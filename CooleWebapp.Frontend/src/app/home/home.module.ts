@@ -39,6 +39,7 @@ import { ShopComponent } from "./shop/shop.component";
 import { BuyDialog } from "./shop/buy-dialog/buy-dialog.component";
 import { UserBalance } from "./services/user-balance.service";
 import { PayDialogComponent } from "./pay-dialog/pay-dialog.component";
+import { SettingsDialogComponent } from "./settings-dialog/settings-dialog.component";
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { PayDialogComponent } from "./pay-dialog/pay-dialog.component";
     RequiresRoleDirective,
     ShopComponent,
     PayDialogComponent,
+    SettingsDialogComponent,
   ],
   imports: [
     HomeRoutingModule,
@@ -89,6 +91,7 @@ import { PayDialogComponent } from "./pay-dialog/pay-dialog.component";
     CooleWebappApi.ShopClient,
     CooleWebappApi.UserAccountClient,
     CooleWebappApi.DashboardClient,
+    CooleWebappApi.UserSettingsClient,
     { provide: ErrorStateMatcher, useClass: DefaultErrorStateMatcher },
   ]
 })

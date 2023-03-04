@@ -17,6 +17,12 @@
     <mat-icon>payment</mat-icon>
   </button>
   <button mat-icon-button
+          (click)="openSettingsSubject.next({})"
+          matTooltip="change settings"
+          *requiresRole="'User'">
+    <mat-icon>settings</mat-icon>
+  </button>
+  <button mat-icon-button
           matTooltip="logout"
           (click)="logout()">
     <mat-icon>logout</mat-icon>

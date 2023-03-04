@@ -4,6 +4,7 @@ import { switchMap, Observable, Subject, Subscription } from "rxjs";
 import { AuthService } from "../../auth/auth.service";
 import { PayDialogComponent } from "../pay-dialog/pay-dialog.component";
 import { UserBalance, UserBalanceData } from "../services/user-balance.service";
+import { SettingsDialogComponent } from "../settings-dialog/settings-dialog.component";
 import { SidenavService } from "../sidenav/sidenav.service";
 
 @Component({
@@ -17,6 +18,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
   private readonly subscriptions = new Subscription();
   public readonly userBalance: Observable<UserBalanceData | null>;
   public readonly topUpAccountSubject = new Subject();
+  public readonly openSettingsSubject = new Subject();
 
   constructor(
     private readonly sidenavService: SidenavService,
@@ -36,10 +38,17 @@ export class ToolbarComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.subscriptions.add(
       this.topUpAccountSubject.pipe(
-        switchMap((product: any) => {
-          const dialogRef = this.dialog.open(PayDialogComponent, {
-            data: { product },
-          });
+        switchMap(() => {
+          const dialogRef = this.dialog.open(PayDialogComponent, { });
+
+          return dialogRef.afterClosed();
+        })
+      ).subscribe());
+
+    this.subscriptions.add(
+      this.openSettingsSubject.pipe(
+        switchMap(() => {
+          const dialogRef = this.dialog.open(SettingsDialogComponent, { });
 
           return dialogRef.afterClosed();
         })
