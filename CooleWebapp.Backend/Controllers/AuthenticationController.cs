@@ -34,10 +34,10 @@ public class AuthenticationController : ControllerBase
     var request = HttpContext.GetOpenIddictServerRequest();
     if (request is null)
       throw new ArgumentNullException(nameof(request));
-    if (request.Username is null)
-      throw new ArgumentNullException(nameof(request.Username));
     if (request.IsPasswordGrantType())
     {
+      if (request.Username is null)
+        throw new ArgumentNullException(nameof(request.Username));
       if (request.Password is null)
         throw new ArgumentNullException(nameof(request.Password));
       var user = await _userManager.FindByNameAsync(request.Username);
