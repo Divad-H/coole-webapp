@@ -2,7 +2,7 @@
 
   <div *ngFor="let product of products | async"
        class="product-card"
-       (click)="openDialog.next(product);">
+       (click)="chooseProduct.next(product);">
     <div class="product-image">
       <img [src]="(product.image | async) ?? 'assets/missing-image.png'">
     </div>

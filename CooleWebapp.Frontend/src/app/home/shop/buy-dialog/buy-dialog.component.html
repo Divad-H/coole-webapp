@@ -1,8 +1,8 @@
 <form [formGroup]="form" (submit)="onBuyClick()" class="buy-container">
-  <h1 mat-dialog-title>Buy {{data.product.name}}</h1>
+  <h1 mat-dialog-title>Buy {{ (product | async)?.name}}</h1>
   <div mat-dialog-content class="buy-content">
     <div style="width: 100%; display: flex; margin-bottom: 0.5rem;">
-      <img [src]="(data.product.image | async) ?? 'assets/missing-image.png'"
+      <img [src]="((product | async)?.image | async) ?? 'assets/missing-image.png'"
            class="buy-product-image">
     </div>
     <mat-form-field style="width: auto; max-width: 180px">

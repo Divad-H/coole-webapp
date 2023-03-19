@@ -1,10 +1,11 @@
 import { BreakpointObserver } from "@angular/cdk/layout";
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from "@angular/core";
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from "@angular/core";
 import { DomSanitizer, SafeUrl } from "@angular/platform-browser";
-import { catchError, map, Observable, of, shareReplay, Subject, Subscription, switchMap } from "rxjs";
-import { MatDialog } from '@angular/material/dialog';
+import { catchError, EMPTY, map, Observable, of, shareReplay, Subject, Subscription, switchMap } from "rxjs";
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { CooleWebappApi } from "../../../generated/coole-webapp-api";
-import { BuyDialog } from "./buy-dialog/buy-dialog.component";
+import { BuyDialog, DialogData } from "./buy-dialog/buy-dialog.component";
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 export type Product = CooleWebappApi.IProductResponseModel & {
   image: Observable<SafeUrl | null>
@@ -13,19 +14,22 @@ export type Product = CooleWebappApi.IProductResponseModel & {
 @Component({
   templateUrl: './shop.component.html',
   styleUrls: ['./shop.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  selector: 'app-shop'
 })
 export class ShopComponent implements OnInit, OnDestroy {
 
   private readonly subscriptions = new Subscription();
   readonly products: Observable<Product[]>;
-  readonly openDialog = new Subject<Product>();
+  readonly chooseProduct = new Subject<Product>();
+
+  @Input() public productChosen: Subject<Product> | undefined;
 
   constructor(
-    private readonly breakpointObserver: BreakpointObserver,
     private readonly shopClient: CooleWebappApi.ShopClient,
     private readonly sanitizer: DomSanitizer,
-    public readonly dialog: MatDialog
+    public readonly dialog: MatDialog,
+    private readonly snackBar: MatSnackBar,
   ) {
     this.products = shopClient.getProducts(new CooleWebappApi.GetShopProductsRequestModel({
       pageIndex: 0, pageSize: 100
@@ -46,13 +50,32 @@ export class ShopComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscriptions.add(
-      this.openDialog.pipe(
+      this.chooseProduct.pipe(
         switchMap(product => {
-          const dialogRef = this.dialog.open(BuyDialog, {
-            data: { product },
-          });
+          if (this.productChosen != null) {
+            this.productChosen.next(product);
+            return EMPTY;
+          } else {
+            let dialogRef: MatDialogRef<BuyDialog, any>;
+            const dialogData: DialogData = {
+              product,
+              actions: {
+                buyProducts: (data: CooleWebappApi.IBuyProductsRequestModel) =>
+                  this.shopClient.buyProducts(new CooleWebappApi.BuyProductsRequestModel(data)),
+                finish: (boughtProduct: string | null) => {
+                  if (boughtProduct != null) {
+                    this.snackBar.open(`Enjoy your ${boughtProduct}!`, 'Close', { duration: 5000 });
+                  }
+                  dialogRef.close();
+                }
+              }
+            }
+            dialogRef = this.dialog.open(BuyDialog, {
+              data: dialogData,
+            });
 
-          return dialogRef.afterClosed();
+            return dialogRef.afterClosed();
+          }
         })
       ).subscribe());
   }

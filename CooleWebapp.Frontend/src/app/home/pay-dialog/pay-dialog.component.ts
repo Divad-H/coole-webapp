@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from "@angular/core";
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, Optional } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { MatDialogRef } from "@angular/material/dialog";
 import { MatSnackBar } from "@angular/material/snack-bar";
@@ -9,7 +9,8 @@ import { UserBalance } from "../services/user-balance.service";
 @Component({
   templateUrl: './pay-dialog.component.html',
   styleUrls: ['./pay-dialog.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  selector: 'app-pay-dialog'
 })
 export class PayDialogComponent implements OnInit, OnDestroy {
 
@@ -20,7 +21,7 @@ export class PayDialogComponent implements OnInit, OnDestroy {
   private readonly paySubject = new Subject<number>();
 
   constructor(
-    public readonly dialogRef: MatDialogRef<PayDialogComponent>,
+    @Optional() public readonly dialogRef: MatDialogRef<PayDialogComponent>,
     private readonly fb: FormBuilder,
     private readonly userBalanceService: UserBalance,
     private readonly snackBar: MatSnackBar,

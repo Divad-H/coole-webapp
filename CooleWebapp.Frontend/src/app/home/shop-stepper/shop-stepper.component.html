@@ -1,0 +1,17 @@
+<h1>Welcome, {{ (buyer | async)?.name }}! What would you like to drink?</h1>
+
+<mat-stepper orientation="vertical" (selectionChange)="onNavigate($event)" linear #stepper>
+  <mat-step [stepControl]="stepOneForm">
+    <ng-template matStepLabel>Choose a product</ng-template>
+    <app-shop [productChosen]="productChosen"></app-shop>
+  </mat-step>
+  <mat-step [stepControl]="stepTwoForm">
+    <ng-template matStepLabel>Choose amount and buy</ng-template>
+    <app-buy-dialog [productChosen]="productChosen" [buyActions]="buyActions"></app-buy-dialog>
+  </mat-step>
+  <mat-step *ngIf="(buyer | async)?.buyOnFridgePermission == 'WithPinCode'"
+            [stepControl]="stepThreeForm">
+    <ng-template matStepLabel>Enter pin code</ng-template>
+    <app-pin-pad [selectedProduct]="productChosen"></app-pin-pad>
+  </mat-step>
+</mat-stepper>

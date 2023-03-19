@@ -3,7 +3,10 @@
 <p *ngIf="!(recentBuyers | async)"><em>Loading...</em></p>
 
 <div class="users-container" *ngIf="(recentBuyers | async)?.buyers as rb">
-  <div class="user-card" *ngFor="let buyer of rb.items">
+  <div class="user-card"
+       *ngFor="let buyer of rb.items"
+       [ngClass]="{ clickable: buyer.canBuyOnFridge && (isFridge | async) }"
+       (click)="onCardClick(buyer)">
     <div class="user-profile profile-card">{{ buyer.initials }}</div>
     <div class="user-content">
       <h3 class="user-name">{{ buyer.name }}</h3>

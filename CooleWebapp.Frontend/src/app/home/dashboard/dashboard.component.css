@@ -50,3 +50,7 @@
 .user-balance {
   text-align: right;
 }
+
+.clickable {
+  cursor: pointer;
+}

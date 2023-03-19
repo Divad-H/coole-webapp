@@ -6,6 +6,7 @@ import { DashboardComponent } from "./dashboard/dashboard.component";
 import { HomeComponent } from "./home.component";
 import { MyPurchasesComponent } from "./my-purchases/my-purchases.component";
 import { ProductsComponent } from "./products/products.component";
+import { ShopStepperComponent } from "./shop-stepper/shop-stepper.component";
 import { ShopComponent } from "./shop/shop.component";
 
 const routes: Routes = [
@@ -21,6 +22,14 @@ const routes: Routes = [
       {
         path: 'dashboard',
         component: DashboardComponent,
+      },
+      {
+        path: 'dashboard/shop',
+        component: ShopStepperComponent,
+        canActivate: [RoleGuard],
+        data: {
+          roles: ['Fridge']
+        }
       },
       {
         path: 'my-purchases',

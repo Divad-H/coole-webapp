@@ -15,6 +15,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSortModule } from '@angular/material/sort';
+import { MatStepperModule } from '@angular/material/stepper';
 import { MatTableModule } from '@angular/material/table';
 import { MatTooltipModule } from '@angular/material/tooltip';;
 import { CurrencyMaskModule } from "ng2-currency-mask";
@@ -40,6 +41,8 @@ import { BuyDialog } from "./shop/buy-dialog/buy-dialog.component";
 import { UserBalance } from "./services/user-balance.service";
 import { PayDialogComponent } from "./pay-dialog/pay-dialog.component";
 import { SettingsDialogComponent } from "./settings-dialog/settings-dialog.component";
+import { ShopStepperComponent } from "./shop-stepper/shop-stepper.component";
+import { PinPadComponent } from "./shop-stepper/pin-pad/pin-pad.component";
 
 @NgModule({
   declarations: [
@@ -53,8 +56,10 @@ import { SettingsDialogComponent } from "./settings-dialog/settings-dialog.compo
     ProductDetailsComponent,
     RequiresRoleDirective,
     ShopComponent,
+    ShopStepperComponent,
     PayDialogComponent,
     SettingsDialogComponent,
+    PinPadComponent,
   ],
   imports: [
     HomeRoutingModule,
@@ -75,6 +80,7 @@ import { SettingsDialogComponent } from "./settings-dialog/settings-dialog.compo
     MatSidenavModule,
     MatSnackBarModule,
     MatSortModule,
+    MatStepperModule,
     MatTableModule,
     MatTooltipModule,
     MatToolbarModule,
@@ -92,6 +98,7 @@ import { SettingsDialogComponent } from "./settings-dialog/settings-dialog.compo
     CooleWebappApi.UserAccountClient,
     CooleWebappApi.DashboardClient,
     CooleWebappApi.UserSettingsClient,
+    CooleWebappApi.FridgeClient,
     { provide: ErrorStateMatcher, useClass: DefaultErrorStateMatcher },
   ]
 })
