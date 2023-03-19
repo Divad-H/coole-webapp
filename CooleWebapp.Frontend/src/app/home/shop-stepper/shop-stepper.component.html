@@ -1,4 +1,15 @@
-<h1>Welcome, {{ (buyer | async)?.name }}! What would you like to drink?</h1>
+<div class="headline">
+  <button mat-mini-fab color="warn"
+          class="headline-button"
+          (click)="backClicked()">
+    <mat-icon>chevron_left</mat-icon>
+  </button>
+  <h1>
+    Welcome, {{ (buyer | async)?.name ?? '...' }}! What would you like to drink?
+  </h1>
+</div>
+
+
 
 <mat-stepper orientation="vertical" (selectionChange)="onNavigate($event)" linear #stepper>
   <mat-step [stepControl]="stepOneForm">

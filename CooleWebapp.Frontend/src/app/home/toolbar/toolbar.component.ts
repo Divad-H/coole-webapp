@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from "@angular/core";
 import { MatDialog } from "@angular/material/dialog";
-import { switchMap, Observable, Subject, Subscription } from "rxjs";
+import { switchMap, Observable, Subject, Subscription, combineLatest } from "rxjs";
 import { AuthService } from "../../auth/auth.service";
 import { PayDialogComponent } from "../pay-dialog/pay-dialog.component";
 import { UserBalance, UserBalanceData } from "../services/user-balance.service";
@@ -19,6 +19,7 @@ export class ToolbarComponent implements OnInit, OnDestroy {
   public readonly userBalance: Observable<UserBalanceData | null>;
   public readonly topUpAccountSubject = new Subject();
   public readonly openSettingsSubject = new Subject();
+  public readonly disableLogout: Observable<boolean>;
 
   constructor(
     private readonly sidenavService: SidenavService,
@@ -28,6 +29,11 @@ export class ToolbarComponent implements OnInit, OnDestroy {
   ) {
 
     this.userBalance = userBalanceService.userBalance;
+
+    this.disableLogout = combineLatest(
+      [this.authService.roles, this.userBalance],
+      (roles, balance) => !roles.includes('User') && balance != null
+    );
   }
 
 

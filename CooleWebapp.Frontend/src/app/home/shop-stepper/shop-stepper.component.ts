@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { MatStepper } from "@angular/material/stepper";
 import { ActivatedRoute, Router } from "@angular/router";
-import { catchError, EMPTY, empty, map, Observable, of, shareReplay, Subject, Subscription, switchMap, throwError } from "rxjs";
+import { catchError, EMPTY, map, Observable, of, shareReplay, Subject, Subscription, switchMap, throwError } from "rxjs";
 import { CooleWebappApi } from "../../../generated/coole-webapp-api";
 import { UserBalance } from "../services/user-balance.service";
 import { IBuyActions } from "../shop/buy-dialog/buy-dialog.component";
@@ -80,7 +80,7 @@ export class ShopStepperComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.stepTwoForm.patchValue({ valid: true });
                 this.stepper.next();
               } else {
-                this.router.navigate(['..'], { relativeTo: this.route });
+                this.stepper.previous();
               }
             }
           }
@@ -91,13 +91,16 @@ export class ShopStepperComponent implements OnInit, AfterViewInit, OnDestroy {
               if (data.products[0].expectedPrice > (buyer.balance ?? 0)) {
                 return throwError(() => { message: "Insufficient funds." });
               }
-              return of();
+              return of(void 0);
             },
             finish: (boughtProduct: string | null) => {
               if (boughtProduct != null) {
                 this.snackBar.open(`Enjoy your ${boughtProduct}!`, 'Close', { duration: 5000 });
+                this.router.navigate(['..'], { relativeTo: this.route });
+              } else {
+                this.stepper.previous();
+
               }
-              this.router.navigate(['..'], { relativeTo: this.route });
             }
           }
           return res;
@@ -135,6 +138,10 @@ export class ShopStepperComponent implements OnInit, AfterViewInit, OnDestroy {
     if (data.selectedIndex <= 1) {
       this.stepTwoForm.patchValue({ valid: null });
     }
+  }
+
+  backClicked() {
+    this.router.navigate(['..'], { relativeTo: this.route });
   }
 
   ngOnDestroy(): void {

@@ -24,6 +24,7 @@
   </button>
   <button mat-icon-button
           matTooltip="logout"
+          [disabled]="disableLogout | async"
           (click)="logout()">
     <mat-icon>logout</mat-icon>
   </button>

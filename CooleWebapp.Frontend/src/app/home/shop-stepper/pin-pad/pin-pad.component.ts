@@ -73,10 +73,6 @@ export class PinPadComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  cancelClicked() {
-    this.router.navigate(['..'], { relativeTo: this.route });
-  }
-
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }

@@ -1,0 +1,8 @@
+.headline {
+  display: flex;
+  align-items: center;
+}
+
+.headline-button {
+  margin: 0px 16px
+}
