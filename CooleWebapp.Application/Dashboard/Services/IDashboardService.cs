@@ -5,34 +5,16 @@ namespace CooleWebapp.Application.Dashboard.Services;
 
 public record BuyerResponseModel
 {
-  public BuyerResponseModel(
-    UInt64 coolUserId,
-    string name,
-    string initials,
-    decimal balance,
-    bool canBuyOnFridge)
-  {
-    CoolUserId = coolUserId;
-    Name = name;
-    Initials = initials;
-    Balance = balance;
-    CanBuyOnFridge = canBuyOnFridge;
-  }
-
-  [Required] public UInt64 CoolUserId { get; }
-  [Required] public string Name { get; }
-  [Required] public string Initials { get; }
-  [Required] public decimal Balance { get; }
-  [Required] public bool CanBuyOnFridge { get; }
+  [Required] public required UInt64 CoolUserId { get; init; }
+  [Required] public required string Name { get; init; }
+  [Required] public required string Initials { get; init; }
+  [Required] public required decimal Balance { get; init; }
+  [Required] public required bool CanBuyOnFridge { get; init; }
 }
 
 public record GetRecentBuyersResponeModel
 {
-  public GetRecentBuyersResponeModel(Paginated<BuyerResponseModel> buyers)
-  {
-    Buyers = buyers;
-  }
-  [Required] public Paginated<BuyerResponseModel> Buyers { get; }
+  [Required] public required Paginated<BuyerResponseModel> Buyers { get; init; }
 }
 
 public interface IDashboardService

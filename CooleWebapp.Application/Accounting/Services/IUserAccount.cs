@@ -4,14 +4,14 @@ namespace CooleWebapp.Application.Accounting.Services
 {
   public record UserBalanceResponseModel
   {
-    [Required] public string UserName { get; init; } = string.Empty;
-    [Required] public decimal Balance { get; init; }
+    [Required] public required string UserName { get; init; }
+    [Required] public required decimal Balance { get; init; }
   }
 
 
   public record AddBalanceRequestModel
   {
-    [Required] public decimal Amount { get; init; }
+    [Required] public required decimal Amount { get; init; }
   }
 
   public interface IUserAccount

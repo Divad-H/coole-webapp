@@ -5,20 +5,20 @@ namespace CooleWebapp.Application.Shop.Services
 {
   public record GetShopProductsRequestModel
   {
-    public UInt32 PageIndex { get; init; }
-    public UInt32 PageSize { get; init; }
+    public required UInt32 PageIndex { get; init; }
+    public required UInt32 PageSize { get; init; }
   }
 
   public record ProductAmount
   {
-    [Required] public UInt64 ProductId { get; init; }
-    [Required] public UInt32 Amount { get; init; }
-    [Required] public Decimal ExpectedPrice { get; init; }
+    [Required] public required UInt64 ProductId { get; init; }
+    [Required] public required UInt32 Amount { get; init; }
+    [Required] public required Decimal ExpectedPrice { get; init; }
   }
 
   public record BuyProductsRequestModel
   {
-    [Required] public IEnumerable<ProductAmount> Products { get; init; } = Array.Empty<ProductAmount>();
+    [Required] public required IEnumerable<ProductAmount> Products { get; init; }
   }
 
   public interface IProducts

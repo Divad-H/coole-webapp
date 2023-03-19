@@ -2,7 +2,7 @@
 {
   public record BuyProductsDto
   {
-    public string WebappUserId { get; init; } = string.Empty;
-    public IEnumerable<ProductAmount> Products { get; init; } = Array.Empty<ProductAmount>();
+    public required string WebappUserId { get; init; }
+    public required IEnumerable<ProductAmount> Products { get; init; }
   }
 }

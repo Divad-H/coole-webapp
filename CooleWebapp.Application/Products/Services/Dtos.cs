@@ -10,7 +10,7 @@ public record ProductImageDto
 
 public record ProductDataDto
 {
-  [MaxLength(256), Required] public string Name { get; set; } = string.Empty;
+  [MaxLength(256), Required] public required string Name { get; set; }
   public string? Description { get; set; }
   public decimal Price { get; set; }
   public ProductState State { get; set; }
@@ -23,7 +23,7 @@ public record CreateProductDto : ProductDataDto
 
 public record UpdateProductDto : ProductDataDto
 {
-  public UInt64 Id { get; set; }
+  public required UInt64 Id { get; set; }
   public ProductImageDto? Image { get; set; }
 }
 

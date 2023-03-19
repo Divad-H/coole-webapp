@@ -82,16 +82,18 @@ namespace CooleWebapp.Application.Products.Services
           getProductsRequestModel.ProductStateFilter,
           getProductsRequestModel.SortDirection, ct);
       
-      return new(
-        res.Pagination,
-        res.Items.Select(p => new ProductResponseModel()
+      return new()
+      {
+        Pagination = res.Pagination,
+        Products = res.Items.Select(p => new ProductResponseModel()
         {
           Description = p.Description,
           Id = p.Id,
           Name = p.Name,
           Price = p.Price,
           State = p.State
-        }).ToImmutableArray());
+        }).ToImmutableArray()
+      };
     }
 
     public Task DeleteProduct(UInt64 productId, CancellationToken ct)

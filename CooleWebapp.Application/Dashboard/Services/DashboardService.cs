@@ -21,8 +21,8 @@ internal class DashboardService : IDashboardService
   }
 
   public async Task<GetRecentBuyersResponeModel> ReadRecentBuyers(
-    uint pageIndex, 
-    uint pageSize, 
+    uint pageIndex,
+    uint pageSize,
     CancellationToken ct)
   {
     var query = (await _userFilters.FilterRegisteredUsersWithUserRole(_userDataAccess
@@ -38,14 +38,18 @@ internal class DashboardService : IDashboardService
       })
       .OrderByDescending(t => t.Timestamp);
     var paginated = await _queryPaginated.Execute(new(pageIndex, pageSize), query, ct);
-    return new(new(
-      paginated.Items.Select(item => new BuyerResponseModel(
-        item.Id,
-        item.Name,
-        item.Initials,
-        item.Balance?.Value ?? 0,
-        (item.UserSettings?.BuyOnFridgePermission ?? BuyOnFridgePermission.NotPermitted) != BuyOnFridgePermission.NotPermitted))
-          .ToImmutableArray(),
-      paginated.Pagination));
+    return new()
+    {
+      Buyers = new(
+      paginated.Items.Select(item => new BuyerResponseModel()
+      {
+        CoolUserId = item.Id,
+        Name = item.Name,
+        Initials = item.Initials,
+        Balance = item.Balance?.Value ?? 0,
+        CanBuyOnFridge = (item.UserSettings?.BuyOnFridgePermission ?? BuyOnFridgePermission.NotPermitted) != BuyOnFridgePermission.NotPermitted
+      }).ToImmutableArray(),
+      paginated.Pagination)
+    };
   }
 }

@@ -42,16 +42,18 @@ namespace CooleWebapp.Application.Shop.Services
           SortDirection.ByNameAscending, 
           ct);
 
-      return new(
-        res.Pagination,
-        res.Items.Select(p => new ProductResponseModel()
+      return new()
+      {
+        Pagination = res.Pagination,
+        Products = res.Items.Select(p => new ProductResponseModel()
         {
           Description = p.Description,
           Id = p.Id,
           Name = p.Name,
           Price = p.Price,
           State = p.State
-        }).ToImmutableArray());
+        }).ToImmutableArray()
+      };
     }
 
     public async Task BuyProducts(
