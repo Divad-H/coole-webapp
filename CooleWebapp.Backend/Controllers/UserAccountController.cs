@@ -36,6 +36,7 @@ namespace CooleWebapp.Backend.Controllers
     [ProducesDefaultResponseType(typeof(UserBalanceResponseModel))]
     [ProducesResponseType(typeof(ErrorData), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ErrorData), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ErrorData), StatusCodes.Status403Forbidden)]
     [HttpPost]
     public Task<UserBalanceResponseModel> AddBalance(
       AddBalanceRequestModel addBalanceRequestModel,
