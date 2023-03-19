@@ -13,7 +13,9 @@ const PROXY_CONFIG = [
       "/Dashboard",
       "/dashboard",
       "/UserSettings",
-      "/userSettings"
+      "/userSettings",
+      "/Fridge",
+      "/fridge"
     ],
     target: "https://localhost:7038",
     secure: false
