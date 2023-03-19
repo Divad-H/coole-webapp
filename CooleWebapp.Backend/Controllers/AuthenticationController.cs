@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Identity;
 using CooleWebapp.Auth.Model;
 using Microsoft.AspNetCore.Authentication;
 using System.Collections.Immutable;
+using CooleWebapp.Core.ErrorHandling;
 
 namespace CooleWebapp.Backend.Controllers;
 
@@ -33,8 +34,12 @@ public class AuthenticationController : ControllerBase
     var request = HttpContext.GetOpenIddictServerRequest();
     if (request is null)
       throw new ArgumentNullException(nameof(request));
+    if (request.Username is null)
+      throw new ArgumentNullException(nameof(request.Username));
     if (request.IsPasswordGrantType())
     {
+      if (request.Password is null)
+        throw new ArgumentNullException(nameof(request.Password));
       var user = await _userManager.FindByNameAsync(request.Username);
       if (user == null)
         await _userManager.FindByEmailAsync(request.Username);
@@ -79,8 +84,8 @@ public class AuthenticationController : ControllerBase
 
       // Add the claims that will be persisted in the tokens.
       identity.AddClaim(Claims.Subject, await _userManager.GetUserIdAsync(user))
-              .AddClaim(Claims.Email, await _userManager.GetEmailAsync(user))
-              .AddClaim(Claims.Name, await _userManager.GetUserNameAsync(user));
+              .AddClaim(Claims.Email, await _userManager.GetEmailAsync(user) ?? throw new InvalidOperationException())
+              .AddClaim(Claims.Name, await _userManager.GetUserNameAsync(user) ?? throw new InvalidOperationException());
       foreach (var role in await _userManager.GetRolesAsync(user))
         identity.AddClaim(Claims.Role, role, Destinations.AccessToken);
 
@@ -103,7 +108,8 @@ public class AuthenticationController : ControllerBase
         throw new ArgumentNullException(nameof(principal));
 
       // Retrieve the user profile corresponding to the refresh token.
-      var user = await _userManager.FindByIdAsync(principal.GetClaim(Claims.Subject));
+      var user = await _userManager.FindByIdAsync(
+        principal.GetClaim(Claims.Subject) ?? throw new ArgumentNullException());
       if (user == null)
       {
         var properties = new AuthenticationProperties(new Dictionary<string, string?>

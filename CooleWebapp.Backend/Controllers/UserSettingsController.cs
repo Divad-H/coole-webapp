@@ -1,11 +1,12 @@
 ﻿using CooleWebapp.Application.Users.Services;
 using CooleWebapp.Backend.ErrorHandling;
 using CooleWebapp.Core.Entities;
+using CooleWebapp.Core.ErrorHandling;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OpenIddict.Validation.AspNetCore;
 using System.Security.Claims;
-using static AspNet.Security.OpenIdConnect.Primitives.OpenIdConnectConstants;
+using static OpenIddict.Abstractions.OpenIddictConstants;
 
 namespace CooleWebapp.Backend.Controllers
 {
@@ -29,7 +30,8 @@ namespace CooleWebapp.Backend.Controllers
     [HttpGet]
     public Task<GetSettingsResponseModel> GetSettings(CancellationToken ct)
     {
-      var userId = User.FindFirstValue(Claims.Subject);
+      var userId = User.FindFirstValue(Claims.Subject)
+        ?? throw new ClientError(ErrorType.NotFound, "User not found.");
       return _userSettingsService.ReadUserSettings(userId, ct);
     }
 
@@ -41,7 +43,8 @@ namespace CooleWebapp.Backend.Controllers
       UpdateSettingsRequestModel updateSettingsRequestModel, 
       CancellationToken ct)
     {
-      var userId = User.FindFirstValue(Claims.Subject);
+      var userId = User.FindFirstValue(Claims.Subject)
+        ?? throw new ClientError(ErrorType.NotFound, "User not found.");
       return _userSettingsService.UpdateUserSettings(userId, updateSettingsRequestModel, ct);
     }
   }

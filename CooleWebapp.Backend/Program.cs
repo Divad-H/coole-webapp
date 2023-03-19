@@ -1,4 +1,3 @@
-using AspNet.Security.OpenIdConnect.Primitives;
 using CooleWebapp.Auth;
 using CooleWebapp.Auth.Model;
 using CooleWebapp.Backend.ErrorHandling;
@@ -17,6 +16,7 @@ using CooleWebapp.Application.Shop;
 using CooleWebapp.Application.Accounting;
 using CooleWebapp.Application.Users;
 using CooleWebapp.Application.Dashboard;
+using static OpenIddict.Abstractions.OpenIddictConstants;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -72,9 +72,9 @@ builder.Services
       .AllowPasswordFlow()
       .AllowRefreshTokenFlow()
       .RegisterScopes(
-        OpenIdConnectConstants.Scopes.Email,
-        OpenIdConnectConstants.Scopes.Profile,
-        OpenIddictConstants.Scopes.Roles)
+        Scopes.Email,
+        Scopes.Profile,
+        Scopes.Roles)
        // Accept anonymous clients (i.e clients that don't send a client_id).
       .AcceptAnonymousClients()
       .AddDevelopmentEncryptionCertificate()

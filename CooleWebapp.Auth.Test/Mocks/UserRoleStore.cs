@@ -25,17 +25,17 @@ namespace CooleWebapp.Auth.Test.Mocks
       throw new NotImplementedException();
     }
 
-    public Task<WebappUser> FindByIdAsync(string userId, CancellationToken cancellationToken)
+    public Task<WebappUser?> FindByIdAsync(string userId, CancellationToken cancellationToken)
     {
       throw new NotImplementedException();
     }
 
-    public Task<WebappUser> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
+    public Task<WebappUser?> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
     {
       throw new NotImplementedException();
     }
 
-    public Task<string> GetNormalizedUserNameAsync(WebappUser user, CancellationToken cancellationToken)
+    public Task<string?> GetNormalizedUserNameAsync(WebappUser user, CancellationToken cancellationToken)
     {
       throw new NotImplementedException();
     }
@@ -50,7 +50,7 @@ namespace CooleWebapp.Auth.Test.Mocks
       throw new NotImplementedException();
     }
 
-    public Task<string> GetUserNameAsync(WebappUser user, CancellationToken cancellationToken)
+    public Task<string?> GetUserNameAsync(WebappUser user, CancellationToken cancellationToken)
     {
       throw new NotImplementedException();
     }
@@ -70,12 +70,12 @@ namespace CooleWebapp.Auth.Test.Mocks
       throw new NotImplementedException();
     }
 
-    public Task SetNormalizedUserNameAsync(WebappUser user, string normalizedName, CancellationToken cancellationToken)
+    public Task SetNormalizedUserNameAsync(WebappUser user, string? normalizedName, CancellationToken cancellationToken)
     {
       throw new NotImplementedException();
     }
 
-    public Task SetUserNameAsync(WebappUser user, string userName, CancellationToken cancellationToken)
+    public Task SetUserNameAsync(WebappUser user, string? userName, CancellationToken cancellationToken)
     {
       throw new NotImplementedException();
     }
