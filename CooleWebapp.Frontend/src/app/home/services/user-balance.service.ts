@@ -24,21 +24,20 @@ export class UserBalance {
     private readonly fridgeClient: CooleWebappApi.FridgeClient,
     private readonly snackBar: MatSnackBar
   ) {
-    this.userBalance = this.refreshSubject.pipe(
-      switchMap(() => this.auth.roles.pipe(
-        map(roles => roles.includes('User')),
-        switchMap(isUser => 
-          isUser
-            ? concat(
+    this.userBalance = this.auth.roles.pipe(
+      map(roles => roles.includes('User')),
+      switchMap(isUser => 
+        isUser
+          ? this.refreshSubject.pipe(
+              switchMap(() => concat(
               accountClient.getBalance().pipe(
                 catchError(err => of(null))
               ) as Observable<UserBalanceData | null>,
-              this.changedBalance)
-            : merge(
-              this.fridgeBalance,
-              this.changedBalance)
-          )
-      )),
+              this.changedBalance)))
+          : merge(
+            this.fridgeBalance,
+            this.changedBalance)
+      ),
       shareReplay(1)
     )
   }
