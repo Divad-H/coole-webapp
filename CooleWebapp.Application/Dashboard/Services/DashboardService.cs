@@ -1,5 +1,7 @@
-﻿using CooleWebapp.Application.Users.Repository;
+﻿using CooleWebapp.Application.Accounting.Repository;
+using CooleWebapp.Application.Users.Repository;
 using CooleWebapp.Core.Entities;
+using CooleWebapp.Core.ErrorHandling;
 using CooleWebapp.Core.Utilities;
 using System.Collections.Immutable;
 
@@ -10,14 +12,38 @@ internal class DashboardService : IDashboardService
   private readonly IUserDataAccess _userDataAccess;
   private readonly IQueryPaginated _queryPaginated;
   private readonly IUserFilters _userFilters;
+  private readonly IAccountingDataAccess _accountingDataAccess;
+  private readonly IUserSettingsDataAccess _userSettingsDataAccess;
   public DashboardService(
     IUserDataAccess userDataAccess,
+    IAccountingDataAccess accountingDataAccess,
+    IUserSettingsDataAccess userSettingsDataAccess,
     IQueryPaginated queryPaginated,
     IUserFilters userFilters)
   {
     _userDataAccess = userDataAccess;
     _queryPaginated = queryPaginated;
     _userFilters = userFilters;
+    _accountingDataAccess = accountingDataAccess;
+    _userSettingsDataAccess = userSettingsDataAccess;
+  }
+
+  public async Task<GetBuyerResponseModel> ReadBuyerDetails(
+    UInt64 coolUserId, 
+    CancellationToken ct)
+  {
+    var user = await _userDataAccess.GetUser(coolUserId, ct)
+      ?? throw new ClientError(ErrorType.NotFound, "This user was not found.");
+    var balance = await _accountingDataAccess.GetBalance(coolUserId, ct);
+    var permission = (await _userSettingsDataAccess.GetUserSettings(coolUserId, ct))
+      .BuyOnFridgePermission;
+    return new()
+    {
+      CoolUserId = coolUserId,
+      Balance = balance.Value,
+      BuyOnFridgePermission = permission,
+      Name = user.Name,
+    };
   }
 
   public async Task<GetRecentBuyersResponeModel> ReadRecentBuyers(

@@ -23,6 +23,9 @@
   <mat-step *ngIf="(buyer | async)?.buyOnFridgePermission == 'WithPinCode'"
             [stepControl]="stepThreeForm">
     <ng-template matStepLabel>Enter pin code</ng-template>
-    <app-pin-pad [selectedProduct]="productChosen"></app-pin-pad>
+    <app-pin-pad [selectedProduct]="productChosen"
+                 [buyer]="buyer"
+                 [products]="products">
+    </app-pin-pad>
   </mat-step>
 </mat-stepper>

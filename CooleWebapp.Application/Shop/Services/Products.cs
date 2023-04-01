@@ -13,15 +13,18 @@ namespace CooleWebapp.Application.Shop.Services
     private readonly IProductDataAccess _productDataAccess;
     private readonly IRunnerFactory _runnerFactory;
     private readonly IFactory<BuyProductsAction> _buyProductsActionFactory;
+    private readonly IFactory<BuyProductsAsFridgeAction> _buyProductsAsFridgeActionFactory;
 
     public Products(
       IProductDataAccess productDataAccess,
       IRunnerFactory runnerFactory,
-      IFactory<BuyProductsAction> buyProductsActionFactory)
+      IFactory<BuyProductsAction> buyProductsActionFactory,
+      IFactory<BuyProductsAsFridgeAction> buyProductsAsFridgeActionFactory)
     {
       _productDataAccess = productDataAccess;
       _runnerFactory = runnerFactory;
       _buyProductsActionFactory = buyProductsActionFactory;
+      _buyProductsAsFridgeActionFactory = buyProductsAsFridgeActionFactory;
     }
 
     public async Task<byte[]> ReadProductImage(ulong productId, CancellationToken ct)
@@ -63,6 +66,15 @@ namespace CooleWebapp.Application.Shop.Services
       await _runnerFactory
         .CreateWriterRunner(_buyProductsActionFactory.Create())
         .Run(buyProductsDto, ct);
+    }
+
+    public async Task BuyProductsAsFridge(
+      BuyProductsAsFridgeDto buyProductsAsFridgeDto, 
+      CancellationToken ct)
+    {
+      await _runnerFactory
+        .CreateWriterRunner(_buyProductsAsFridgeActionFactory.Create())
+        .Run(buyProductsAsFridgeDto, ct);
     }
   }
 }

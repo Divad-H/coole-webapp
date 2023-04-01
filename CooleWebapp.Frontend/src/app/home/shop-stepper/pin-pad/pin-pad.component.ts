@@ -20,12 +20,15 @@ export class PinPadComponent implements AfterViewInit, OnDestroy {
   public readonly busy = new BehaviorSubject(false);
 
   @Input() public selectedProduct: Observable<CooleWebappApi.IProductResponseModel> | undefined;
+  @Input() public products: Observable<CooleWebappApi.ProductAmount[]> | undefined;
+  @Input() public buyer: Observable<CooleWebappApi.IGetBuyerResponseModel> | undefined;;
 
   constructor(
     private readonly formBuilder: FormBuilder,
     private readonly router: Router,
     private readonly route: ActivatedRoute,
     private readonly snackBar: MatSnackBar,
+    private readonly fridgeClient: CooleWebappApi.FridgeClient,
   ) {
     this.form = formBuilder.group({
       pinCode: [null, Validators.required]
@@ -35,9 +38,17 @@ export class PinPadComponent implements AfterViewInit, OnDestroy {
   ngAfterViewInit(): void {
     this.submit.pipe(
       tap(() => this.busy.next(true)),
+      withLatestFrom(this.products!),
       withLatestFrom(this.selectedProduct!),
-      switchMap(([pinCode, product]) => of(true).pipe(
-        map(() => product.name),
+      withLatestFrom(this.buyer!),
+      switchMap(([[[pinCode, products], selectedProduct], buyer]) => this.fridgeClient.buyProducts(
+        new CooleWebappApi.BuyProductsAsFridgeRequestModel({
+          pinCode: pinCode,
+          products: products,
+          coolUserId: buyer.coolUserId
+        })
+      ).pipe(
+        map(() => selectedProduct.name),
         catchError(err => {
           this.snackBar.open(err.message ?? 'An error occured.', 'Close', { duration: 5000 });
           return of(null);

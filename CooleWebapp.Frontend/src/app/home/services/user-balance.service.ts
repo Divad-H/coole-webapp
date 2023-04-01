@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { MatSnackBar } from "@angular/material/snack-bar";
-import { BehaviorSubject, catchError, concat, map, mapTo, Observable, of, ReplaySubject, shareReplay, startWith, Subject, Subscription, switchMap, take, tap } from "rxjs";
+import { BehaviorSubject, catchError, concat, map, mapTo, merge, Observable, of, ReplaySubject, shareReplay, startWith, Subject, Subscription, switchMap, take, tap } from "rxjs";
 import { CooleWebappApi } from "../../../generated/coole-webapp-api";
 import { AuthService } from "../../auth/auth.service";
 
@@ -21,6 +21,7 @@ export class UserBalance {
   constructor(
     private readonly auth: AuthService,
     private readonly accountClient: CooleWebappApi.UserAccountClient,
+    private readonly fridgeClient: CooleWebappApi.FridgeClient,
     private readonly snackBar: MatSnackBar
   ) {
     this.userBalance = this.refreshSubject.pipe(
@@ -33,7 +34,7 @@ export class UserBalance {
                 catchError(err => of(null))
               ) as Observable<UserBalanceData | null>,
               this.changedBalance)
-            : concat(
+            : merge(
               this.fridgeBalance,
               this.changedBalance)
           )
@@ -47,7 +48,7 @@ export class UserBalance {
       take(1),
       switchMap(id => (id == null
         ? this.accountClient.addBalance(new CooleWebappApi.AddBalanceRequestModel({ amount }))
-        : this.accountClient.addBalance(new CooleWebappApi.AddBalanceRequestModel({ amount })) // TODO: fridge end point
+        : this.fridgeClient.addBalance(new CooleWebappApi.AddBalanceRequestModel({ amount }), id)
       ).pipe(
           tap(res => this.changedBalance.next(res)),
           map(() => true),

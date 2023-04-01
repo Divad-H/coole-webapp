@@ -8,7 +8,7 @@ import { UserBalance } from '../../services/user-balance.service';
 import { Product } from '../shop.component';
 
 export interface IBuyActions {
-  buyProducts: (data: CooleWebappApi.IBuyProductsRequestModel) => Observable<void>;
+  buyProducts: (products: CooleWebappApi.ProductAmount[]) => Observable<void>;
   finish: (boughtProduct: string | null) => void;
 }
 
@@ -80,13 +80,12 @@ export class BuyDialog implements AfterViewInit, OnDestroy {
         switchMap(amount => this.getTotal(amount).pipe(map(total => ({ total, amount })))),
         withLatestFrom(this.product),
         withLatestFrom(this.actions),
-        switchMap(([[d, product], actions]) => actions.buyProducts({
-          products: [new CooleWebappApi.ProductAmount({
+        switchMap(([[d, product], actions]) => actions.buyProducts([new CooleWebappApi.ProductAmount({
             amount: d.amount,
             expectedPrice: d.total,
             productId: product.id
           })]
-        }).pipe(
+        ).pipe(
           map(() => ({ productName: product.name, actions })),
           catchError(err => {
             this.snackBar.open(err.message ?? 'An error occured.', 'Close', { duration: 5000 });

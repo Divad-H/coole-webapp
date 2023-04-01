@@ -29,4 +29,9 @@ public sealed class UserDataAccess : IUserDataAccess
   {
     return _dbContext.CoolUsers;
   }
+
+  public Task<CoolUser?> GetUser(ulong coolUserId, CancellationToken ct)
+  {
+    return _dbContext.CoolUsers.FirstOrDefaultAsync(u => u.Id == coolUserId, ct);
+  }
 }

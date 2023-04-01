@@ -11,5 +11,6 @@ public static class Setup
   {
     serviceDescriptors.AddScoped<IProducts, Services.Products>();
     serviceDescriptors.AddScopedFactory<BuyProductsAction>();
+    serviceDescriptors.AddScopedFactory<BuyProductsAsFridgeAction>();
   }
 }

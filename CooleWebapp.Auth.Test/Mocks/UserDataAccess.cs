@@ -22,5 +22,10 @@ namespace CooleWebapp.Auth.Test.Mocks
     {
       throw new NotImplementedException();
     }
+
+    public Task<CoolUser?> GetUser(ulong coolUserId, CancellationToken ct)
+    {
+      throw new NotImplementedException();
+    }
   }
 }

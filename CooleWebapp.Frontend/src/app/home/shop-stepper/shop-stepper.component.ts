@@ -21,6 +21,7 @@ export class ShopStepperComponent implements OnInit, AfterViewInit, OnDestroy {
   public readonly buyer: Observable<CooleWebappApi.IGetBuyerResponseModel>;
 
   public readonly productChosen = new Subject<Product>();
+  public readonly products = new Subject<CooleWebappApi.ProductAmount[]>();
   public readonly buyActions: Observable<IBuyActions>;
 
   @ViewChild(MatStepper) stepper!: MatStepper;
@@ -69,10 +70,11 @@ export class ShopStepperComponent implements OnInit, AfterViewInit, OnDestroy {
       map(buyer => {
         if (buyer.buyOnFridgePermission == "WithPinCode") {
           const res: IBuyActions = {
-            buyProducts: (data: CooleWebappApi.IBuyProductsRequestModel): Observable<void> => {
-              if (data.products[0].expectedPrice > (buyer.balance ?? 0)) {
+            buyProducts: (products: CooleWebappApi.ProductAmount[]): Observable<void> => {
+              if (products[0].expectedPrice > (buyer.balance ?? 0)) {
                 return throwError(() => { message: "Insufficient funds." });
               }
+              this.products.next(products);
               return of(void 0);
             },
             finish: (boughtProduct: string | null) => {
@@ -87,11 +89,12 @@ export class ShopStepperComponent implements OnInit, AfterViewInit, OnDestroy {
           return res;
         } else {
           const res: IBuyActions = {
-            buyProducts: (data: CooleWebappApi.IBuyProductsRequestModel): Observable<void> => {
-              if (data.products[0].expectedPrice > (buyer.balance ?? 0)) {
+            buyProducts: (products: CooleWebappApi.ProductAmount[]): Observable<void> => {
+              if (products[0].expectedPrice > (buyer.balance ?? 0)) {
                 return throwError(() => { message: "Insufficient funds." });
               }
-              return of(void 0);
+              return this.fridgeClient.buyProducts(
+                new CooleWebappApi.BuyProductsAsFridgeRequestModel({ products, coolUserId: buyer.coolUserId }));
             },
             finish: (boughtProduct: string | null) => {
               if (boughtProduct != null) {

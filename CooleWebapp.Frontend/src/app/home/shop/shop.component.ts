@@ -60,8 +60,8 @@ export class ShopComponent implements OnInit, OnDestroy {
             const dialogData: DialogData = {
               product,
               actions: {
-                buyProducts: (data: CooleWebappApi.IBuyProductsRequestModel) =>
-                  this.shopClient.buyProducts(new CooleWebappApi.BuyProductsRequestModel(data)),
+                buyProducts: (products: CooleWebappApi.ProductAmount[]) =>
+                  this.shopClient.buyProducts(new CooleWebappApi.BuyProductsRequestModel({ products })),
                 finish: (boughtProduct: string | null) => {
                   if (boughtProduct != null) {
                     this.snackBar.open(`Enjoy your ${boughtProduct}!`, 'Close', { duration: 5000 });

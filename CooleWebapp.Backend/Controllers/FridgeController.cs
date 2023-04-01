@@ -1,18 +1,16 @@
-﻿using CooleWebapp.Backend.ErrorHandling;
+﻿using CooleWebapp.Application.Accounting.Services;
+using CooleWebapp.Backend.ErrorHandling;
 using CooleWebapp.Core.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OpenIddict.Validation.AspNetCore;
+using CooleWebapp.Application.Dashboard.Services;
+using CooleWebapp.Application.Shop.Services;
+using CooleWebapp.Core.ErrorHandling;
+using static OpenIddict.Abstractions.OpenIddictConstants;
+using System.Security.Claims;
 
 namespace CooleWebapp.Backend.Controllers;
-
-public record GetBuyerResponseModel
-{
-  public UInt64 CoolUserId { get; set; }
-  public string Name { get; set; } = string.Empty;
-  public decimal Balance { get; set; }
-  public BuyOnFridgePermission BuyOnFridgePermission { get; set; }
-}
 
 
 [Authorize(AuthenticationSchemes = OpenIddictValidationAspNetCoreDefaults.AuthenticationScheme, Roles = Roles.Fridge)]
@@ -20,6 +18,20 @@ public record GetBuyerResponseModel
 [Route("[controller]")]
 public class FridgeController : ControllerBase
 {
+  private readonly IUserAccount _userAccount;
+  private readonly IDashboardService _dashboardService;
+  private readonly IProducts _products;
+
+  public FridgeController(
+    IUserAccount userAccount,
+    IDashboardService dashboardService,
+    IProducts products)
+  {
+    _userAccount = userAccount;
+    _dashboardService = dashboardService;
+    _products = products;
+  }
+
   [Route("GetBuyer")]
   [ProducesDefaultResponseType(typeof(GetBuyerResponseModel))]
   [ProducesResponseType(typeof(ErrorData), StatusCodes.Status400BadRequest)]
@@ -29,12 +41,38 @@ public class FridgeController : ControllerBase
     [FromQuery] UInt64 coolUserId,
     CancellationToken ct)
   {
-    return Task.FromResult(new GetBuyerResponseModel()
-    {
-      CoolUserId = coolUserId,
-      Balance = 10,
-      BuyOnFridgePermission = BuyOnFridgePermission.WithPinCode,
-      Name = "Herbert Lee"
-    });
+    return _dashboardService.ReadBuyerDetails(coolUserId, ct);
+  }
+
+  [Route("AddBalance")]
+  [ProducesDefaultResponseType(typeof(UserBalanceResponseModel))]
+  [ProducesResponseType(typeof(ErrorData), StatusCodes.Status404NotFound)]
+  [ProducesResponseType(typeof(ErrorData), StatusCodes.Status400BadRequest)]
+  [ProducesResponseType(typeof(ErrorData), StatusCodes.Status403Forbidden)]
+  [HttpPost]
+  public Task<UserBalanceResponseModel> AddBalance(
+    AddBalanceRequestModel addBalanceRequestModel,
+    UInt64 coolUserId,
+    CancellationToken ct)
+  {
+    return _userAccount.AddBalance(coolUserId, addBalanceRequestModel.Amount, ct);
+  }
+
+  [Route("BuyProducts")]
+  [ProducesResponseType(typeof(ErrorData), StatusCodes.Status404NotFound)]
+  [ProducesResponseType(typeof(ErrorData), StatusCodes.Status400BadRequest)]
+  [HttpPost]
+  public Task BuyProducts(
+    BuyProductsAsFridgeRequestModel buyProductsRequestModel, 
+    CancellationToken ct)
+  {
+    return _products.BuyProductsAsFridge(
+      new()
+      {
+        Products = buyProductsRequestModel.Products,
+        CoolUserId = buyProductsRequestModel.CoolUserId,
+        PinCode = buyProductsRequestModel.PinCode
+      },
+      ct);
   }
 }

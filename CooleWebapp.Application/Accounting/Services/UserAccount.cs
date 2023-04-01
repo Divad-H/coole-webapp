@@ -26,6 +26,21 @@ namespace CooleWebapp.Application.Accounting.Services
       _addBalanceActionFactory = addBalanceActionFactory;
     }
 
+    private async Task<UserBalanceResponseModel> AddBalance(
+      UInt64 coolUserId,
+      string userName,
+      decimal amount,
+      CancellationToken ct)
+    {
+      return new()
+      {
+        Balance = await _runnerFactory
+        .CreateWriterRunner(_addBalanceActionFactory.Create())
+        .Run(new(coolUserId, amount), ct),
+        UserName = userName
+      };
+    }
+
     public async Task<UserBalanceResponseModel> AddBalance(
       string webappUserId,
       decimal amount,
@@ -33,13 +48,17 @@ namespace CooleWebapp.Application.Accounting.Services
     {
       var user = await _userDataAccess.FindUserByWebappUserId(webappUserId, ct)
         ?? throw new ClientError(ErrorType.NotFound, "No such user.");
-      return new()
-      {
-        Balance = await _runnerFactory
-        .CreateWriterRunner(_addBalanceActionFactory.Create())
-        .Run(new(user.Id, amount), ct),
-        UserName = user.Name
-      };
+      return await AddBalance(user.Id, user.Name, amount, ct);
+    }
+
+    public async Task<UserBalanceResponseModel> AddBalance(
+      UInt64 coolUserId, 
+      decimal amount, 
+      CancellationToken ct)
+    {
+      var user = await _userDataAccess.GetUser(coolUserId, ct)
+        ?? throw new ClientError(ErrorType.NotFound, "This user wasn't found.");
+      return await AddBalance(coolUserId, user.Name, amount, ct);
     }
 
     public async Task<UserBalanceResponseModel> GetUserBalance(

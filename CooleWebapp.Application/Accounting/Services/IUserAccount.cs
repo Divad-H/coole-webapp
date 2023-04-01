@@ -21,5 +21,9 @@ namespace CooleWebapp.Application.Accounting.Services
       string webappUserId, 
       decimal amount,
       CancellationToken ct);
+    Task<UserBalanceResponseModel> AddBalance(
+      UInt64 coolUserId, 
+      decimal amount,
+      CancellationToken ct);
   }
 }

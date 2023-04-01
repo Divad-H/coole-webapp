@@ -11,37 +11,53 @@ namespace CooleWebapp.Application.Shop.Actions
 {
   internal class BuyProductsAction : IBusinessAction<BuyProductsDto, Unit>
   {
+    private readonly IUserDataAccess _userDataAccess;
     private readonly IProductDataAccess _productDataAccess;
     private readonly IAccountingDataAccess _accountingDataAccess;
-    private readonly IUserDataAccess _userDataAccess;
     public BuyProductsAction(
+      IUserDataAccess userDataAccess,
       IProductDataAccess productDataAccess,
-      IAccountingDataAccess balanceDataAccess,
-      IUserDataAccess userDataAccess)
+      IAccountingDataAccess accountingDataAccess)
     {
-      _productDataAccess = productDataAccess;
-      _accountingDataAccess = balanceDataAccess;
       _userDataAccess = userDataAccess;
+      _productDataAccess = productDataAccess;
+      _accountingDataAccess = accountingDataAccess;
     }
+
     public async Task<Unit> Run(BuyProductsDto dataIn, CancellationToken ct)
     {
       var user = await _userDataAccess.FindUserByWebappUserId(dataIn.WebappUserId, ct)
         ?? throw new ClientError(ErrorType.NotFound, "No such user.");
-      var balance = await _accountingDataAccess.GetBalance(user.Id, ct);
+      return await BuyProducts(
+        dataIn.Products,
+        user.Id,
+        _productDataAccess,
+        _accountingDataAccess,
+        ct);
+    }
+
+    public static async Task<Unit> BuyProducts(
+      IEnumerable<ProductAmount> products,
+      UInt64 coolUserId,
+      IProductDataAccess productDataAccess,
+      IAccountingDataAccess accountingDataAccess,
+      CancellationToken ct)
+    {
+      var balance = await accountingDataAccess.GetBalance(coolUserId, ct);
       balance.Version = Guid.NewGuid();
 
-      if (!dataIn.Products.Any())
+      if (!products.Any())
         throw new ClientError(ErrorType.InvalidOperation, "At least one product must be bought");
       List<OrderItem> orderItems = new();
 
       decimal totalPrice = 0;
-      foreach(var productAmount in dataIn.Products)
+      foreach (var productAmount in products)
       {
         if (productAmount.Amount < 1)
           throw new ClientError(ErrorType.InvalidOperation, "Amount must not be zero.");
         if (productAmount.Amount > 100)
           throw new ClientError(ErrorType.InvalidOperation, "Amount must not be larger than 100.");
-        var product = await _productDataAccess.GetProduct(productAmount.ProductId, ct);
+        var product = await productDataAccess.GetProduct(productAmount.ProductId, ct);
         if (product is null)
           throw new ClientError(ErrorType.NotFound, $"A product with id {productAmount.ProductId} does not exist.");
         if (product.State != ProductState.Available)
@@ -62,9 +78,9 @@ namespace CooleWebapp.Application.Shop.Actions
         throw new ClientError(ErrorType.InvalidOperation, "Insufficient funds.");
       balance.Value -= totalPrice;
 
-      await _accountingDataAccess.CreateOrder(new()
+      await accountingDataAccess.CreateOrder(new()
       {
-        CoolUserId = user.Id,
+        CoolUserId = coolUserId,
         Timestamp = DateTime.Now,
         OrderItems = orderItems
       }, ct);

@@ -21,6 +21,13 @@ namespace CooleWebapp.Application.Shop.Services
     [Required] public required IEnumerable<ProductAmount> Products { get; init; }
   }
 
+  public record BuyProductsAsFridgeRequestModel
+  {
+    [Required] public required IEnumerable<ProductAmount> Products { get; init; }
+    [Required] public required UInt64 CoolUserId { get; init; }
+    public string? PinCode { get; init; }
+  }
+
   public interface IProducts
   {
     /// <summary>
@@ -33,5 +40,6 @@ namespace CooleWebapp.Application.Shop.Services
     Task<byte[]> ReadProductImage(UInt64 productId, CancellationToken ct);
 
     Task BuyProducts(BuyProductsDto buyProductsDto, CancellationToken ct);
+    Task BuyProductsAsFridge(BuyProductsAsFridgeDto buyProductsAsFridgeDto, CancellationToken ct);
   }
 }
