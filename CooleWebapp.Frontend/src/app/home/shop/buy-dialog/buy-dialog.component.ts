@@ -88,7 +88,7 @@ export class BuyDialog implements AfterViewInit, OnDestroy {
         ).pipe(
           map(() => ({ productName: product.name, actions })),
           catchError(err => {
-            this.snackBar.open(err.message ?? 'An error occured.', 'Close', { duration: 5000 });
+            this.snackBar.open(err?.message ?? 'An error occured.', 'Close', { duration: 5000 });
             return of(null);
           })
         ))

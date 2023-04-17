@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { MatStepper } from "@angular/material/stepper";
 import { ActivatedRoute, Router } from "@angular/router";
-import { catchError, EMPTY, map, Observable, of, shareReplay, Subject, Subscription, switchMap, throwError } from "rxjs";
+import { catchError, combineLatestWith, EMPTY, map, Observable, of, shareReplay, Subject, Subscription, switchMap, throwError } from "rxjs";
 import { CooleWebappApi } from "../../../generated/coole-webapp-api";
 import { UserBalance } from "../services/user-balance.service";
 import { IBuyActions } from "../shop/buy-dialog/buy-dialog.component";
@@ -67,12 +67,13 @@ export class ShopStepperComponent implements OnInit, AfterViewInit, OnDestroy {
     );
 
     this.buyActions = this.buyer.pipe(
-      map(buyer => {
+      combineLatestWith(this.userBalance.userBalance),
+      map(([buyer, userBalance]) => {
         if (buyer.buyOnFridgePermission == "WithPinCode") {
           const res: IBuyActions = {
             buyProducts: (products: CooleWebappApi.ProductAmount[]): Observable<void> => {
-              if (products[0].expectedPrice > (buyer.balance ?? 0)) {
-                return throwError(() => { message: "Insufficient funds." });
+              if (products[0].expectedPrice > (userBalance?.balance ?? 0)) {
+                return throwError({ message: "Insufficient funds." });
               }
               this.products.next(products);
               return of(void 0);
@@ -90,8 +91,8 @@ export class ShopStepperComponent implements OnInit, AfterViewInit, OnDestroy {
         } else {
           const res: IBuyActions = {
             buyProducts: (products: CooleWebappApi.ProductAmount[]): Observable<void> => {
-              if (products[0].expectedPrice > (buyer.balance ?? 0)) {
-                return throwError(() => { message: "Insufficient funds." });
+              if (products[0].expectedPrice > (userBalance?.balance ?? 0)) {
+                return throwError({ message: "Insufficient funds." });
               }
               return this.fridgeClient.buyProducts(
                 new CooleWebappApi.BuyProductsAsFridgeRequestModel({ products, coolUserId: buyer.coolUserId }));
