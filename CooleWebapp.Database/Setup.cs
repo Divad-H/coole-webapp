@@ -29,10 +29,7 @@ namespace CooleWebapp.Database
         .AddDbContext<WebappDbContext>((sp, options) =>
         {
           var config = sp.GetRequiredService<IOptions<DatabaseConfig>>();
-          var path = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-          string dbPath = Path.Join(path, $"{config.Value.DatabaseName}.sqlite");
-          Directory.GetParent(dbPath)?.Create();
-          options.UseSqlite($"Data Source={dbPath}");
+          options.UseSqlServer(config.Value.DatabaseConnectionString);
           options.UseOpenIddict();
         })
         .Configure<DatabaseConfig>(configurationBuilder.GetSection(nameof(DatabaseConfig)));
