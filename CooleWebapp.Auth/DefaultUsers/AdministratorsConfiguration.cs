@@ -25,5 +25,5 @@ public record AdministratorsConfiguration
   /// "@coolewebapp.com" to register.
   /// </para>
   /// </summary>
-  public string[] AllowedEmailPatterns { get; set; } = new string[] { };
+  public string[] AllowedEmailPatterns { get; set; } = Array.Empty<string>();
 }
