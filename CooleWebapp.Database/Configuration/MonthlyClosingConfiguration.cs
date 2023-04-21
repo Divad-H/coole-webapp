@@ -9,5 +9,6 @@ public class MonthlyClosingConfiguration : IEntityTypeConfiguration<MonthlyClosi
   public void Configure(EntityTypeBuilder<MonthlyClosing> builder)
   {
     builder.HasIndex(c => new { c.Number, c.CoolUserId }).IsUnique();
+    builder.Property(p => p.Balance).HasPrecision(18, 2);
   }
 }
