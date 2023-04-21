@@ -46,4 +46,14 @@
     <Exec Command="$(NSwagExe_Net70) run nswag.json /variables:Configuration=$(Configuration)" EnvironmentVariables="DatabaseConfig__InitializeDatabase=false" />
   </Target>
 
+  <Target Name="PublishAngular" AfterTargets="ComputeFilesToPublish">
+    <ItemGroup>
+      <DistFiles Include="../CooleWebapp.Frontend/dist/coole-webapp-frontend/**" />
+      <ResolvedFileToPublish Include="%(DistFiles.FullPath)" Exclude="@(ResolvedFileToPublish)">
+        <RelativePath>@(DistFiles->'wwwroot/%(RecursiveDir)%(Filename)%(Extension)')</RelativePath>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </ResolvedFileToPublish>
+    </ItemGroup>
+  </Target>
+  
 </Project>

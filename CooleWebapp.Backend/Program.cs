@@ -17,6 +17,7 @@ using CooleWebapp.Application.Accounting;
 using CooleWebapp.Application.Users;
 using CooleWebapp.Application.Dashboard;
 using static OpenIddict.Abstractions.OpenIddictConstants;
+using System.Collections.Generic;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -104,10 +105,13 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseStaticFiles();
 
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.MapFallbackToFile("index.html");
 
 app.Run();
