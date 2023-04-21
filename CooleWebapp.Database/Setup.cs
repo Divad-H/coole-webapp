@@ -28,8 +28,8 @@ namespace CooleWebapp.Database
       serviceDescriptors
         .AddDbContext<WebappDbContext>((sp, options) =>
         {
-          var config = sp.GetRequiredService<IOptions<DatabaseConfig>>();
-          options.UseSqlServer(config.Value.DatabaseConnectionString);
+          var config = sp.GetRequiredService<IOptions<DatabaseConfig>>().Value;
+          options.UseSqlServer(config.DatabaseConnectionString);
           options.UseOpenIddict();
         })
         .Configure<DatabaseConfig>(configurationBuilder.GetSection(nameof(DatabaseConfig)));
@@ -49,6 +49,10 @@ namespace CooleWebapp.Database
     public static async Task InitializeCooleWebappDatabase(IServiceProvider serviceProvider, CancellationToken ct)
     {
       await using var scope = serviceProvider.CreateAsyncScope();
+
+      var config = serviceProvider.GetRequiredService<IOptions<DatabaseConfig>>().Value;
+      if (!config.InitializeDatabase)
+        return;
 
       var dbContext = scope.ServiceProvider.GetRequiredService<WebappDbContext>();
       await dbContext.Database.MigrateAsync(ct);
