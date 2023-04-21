@@ -4,10 +4,8 @@ using CooleWebapp.Backend.ErrorHandling;
 using CooleWebapp.Database;
 using CooleWebapp.Database.Model;
 using Microsoft.AspNetCore.Identity;
-using OpenIddict.Abstractions;
 using CooleWebapp.EmailService;
 using CooleWebapp.Auth.Managers;
-using Microsoft.Extensions.DependencyInjection;
 using System.Text.Json.Serialization;
 using CooleWebapp.Images;
 using CooleWebapp.Application.Products;
@@ -17,7 +15,7 @@ using CooleWebapp.Application.Accounting;
 using CooleWebapp.Application.Users;
 using CooleWebapp.Application.Dashboard;
 using static OpenIddict.Abstractions.OpenIddictConstants;
-using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -78,10 +76,39 @@ builder.Services
         Scopes.Roles)
        // Accept anonymous clients (i.e clients that don't send a client_id).
       .AcceptAnonymousClients()
-      .AddDevelopmentEncryptionCertificate()
-      .AddDevelopmentSigningCertificate()
       .UseAspNetCore()
       .EnableTokenEndpointPassthrough();
+
+    if (builder.Environment.IsDevelopment())
+    {
+      options
+        .AddDevelopmentEncryptionCertificate()
+        .AddDevelopmentSigningCertificate();
+    }
+    else
+    {
+      var thumbprints = builder.Configuration
+        .GetValue<string>("WEBSITE_LOAD_CERTIFICATES")?
+        .Split(',', StringSplitOptions.TrimEntries);
+      var directory = builder.Configuration
+        .GetValue<string>("WEBSITE_PRIVATE_CERTS_PATH");
+      if (thumbprints is not null && thumbprints.Length >= 2)
+      {
+        var certificates = thumbprints
+          .Select(t => Path.Combine(directory ?? "/var/ssl/private/", $"{t}.p12"))
+          .Select(path =>
+          {
+            var bytes = File.ReadAllBytes(path);
+            return new X509Certificate2(bytes);
+          })
+          .ToArray();
+
+        options
+          .AddEncryptionCertificate(certificates[1])
+          .AddSigningCertificate(certificates[0]);
+      }
+    }
+
     options.IgnoreEndpointPermissions();
   })
   .AddValidation(options =>
