@@ -43,7 +43,7 @@
 
   <Target Name="NSwag">
     <Message Importance="High" Text="Generating typescript api clients..." />
-    <Exec Command="$(NSwagExe_Net60) run nswag.json /variables:Configuration=$(Configuration)" EnvironmentVariables="DatabaseConfig__InitializeDatabase=false" />
+    <Exec Command="$(NSwagExe_Net70) run nswag.json /variables:Configuration=$(Configuration)" EnvironmentVariables="DatabaseConfig__InitializeDatabase=false" />
   </Target>
 
 </Project>
