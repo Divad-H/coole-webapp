@@ -1,6 +1,6 @@
 # Coole Webapp
 
-![build workflow](https://github.com/Divad-H/coole-webapp/actions/workflows/dotnet.yml/badge.svg)
+![build workflow](https://github.com/Divad-H/coole-webapp/actions/workflows/main_coole-webapp.yml/badge.svg)
 
 ### Creating Migrations
 
