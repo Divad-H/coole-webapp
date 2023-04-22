@@ -16,6 +16,7 @@ using CooleWebapp.Application.Accounting.Repository;
 using CooleWebapp.Application.Users.Repository;
 using CooleWebapp.Core.Utilities;
 using CooleWebapp.Database.Pagination;
+using Microsoft.Extensions.Logging;
 
 namespace CooleWebapp.Database
 {
@@ -48,12 +49,17 @@ namespace CooleWebapp.Database
 
     public static async Task InitializeCooleWebappDatabase(IServiceProvider serviceProvider, CancellationToken ct)
     {
+      var logger = serviceProvider.GetRequiredService<ILogger<WebappDbContext>>();
       await using var scope = serviceProvider.CreateAsyncScope();
 
       var config = serviceProvider.GetRequiredService<IOptions<DatabaseConfig>>().Value;
       if (!config.InitializeDatabase)
+      {
+        logger.LogInformation("Skipping database initialization");
         return;
+      }
 
+      logger.LogInformation("Initializing database");
       var dbContext = scope.ServiceProvider.GetRequiredService<WebappDbContext>();
       await dbContext.Database.MigrateAsync(ct);
 
@@ -63,6 +69,7 @@ namespace CooleWebapp.Database
           await roleManager.CreateAsync(new(role));
 
       await dbContext.SaveChangesAsync(ct);
+      logger.LogInformation("Successfully initialized database.");
     }
   }
 }
