@@ -25,6 +25,8 @@ var cultureInfo = new CultureInfo("en-US");
 CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
 CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
+builder.Logging.AddAzureWebAppDiagnostics();
+
 builder.Services.AddControllers(options =>
 {
   options.Filters.Add<HttpResponseExceptionFilter>();
