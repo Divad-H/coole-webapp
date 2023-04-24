@@ -17,6 +17,7 @@
         <mat-label>Pin {{ (hasOldPinCode | async) && form.value.buyOnFridgePermission == 'WithPinCode' ? '(unchanged)' : '' }}</mat-label>
         <input matInput
                type="password"
+               autocomplete="new-password"
                placeholder="***"
                name="pinCode"
                formControlName="pinCode"
