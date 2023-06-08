@@ -9,6 +9,12 @@
   align-self: center;
 }
 
+.pin-code-password-field {
+  font-family: text-security-disc;
+  /* Use -webkit-text-security if the browser supports it */
+  -webkit-text-security: disc;
+}
+
 .pin-pad {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
