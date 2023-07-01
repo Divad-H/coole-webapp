@@ -58,7 +58,7 @@ export class BuyDialog implements AfterViewInit, OnDestroy {
   }
 
   private getTotal(amount: number | string): Observable<number> {
-    return this.product.pipe(map(p => +amount * p.price), take(1));
+    return this.product.pipe(map(p => +amount * p.price));
   }
 
   ngAfterViewInit(): void {
@@ -77,7 +77,7 @@ export class BuyDialog implements AfterViewInit, OnDestroy {
     this.subscriptions.add(
       this.buySubject.pipe(
         tap(() => this.busy.next(true)),
-        switchMap(amount => this.getTotal(amount).pipe(map(total => ({ total, amount })))),
+        switchMap(amount => this.getTotal(amount).pipe(take(1), map(total => ({ total, amount })))),
         withLatestFrom(this.product),
         withLatestFrom(this.actions),
         switchMap(([[d, product], actions]) => actions.buyProducts([new CooleWebappApi.ProductAmount({
