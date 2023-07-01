@@ -1,3 +1,4 @@
+import { BreakpointObserver } from "@angular/cdk/layout";
 import { StepperSelectionEvent } from "@angular/cdk/stepper";
 import { AfterViewInit, ChangeDetectionStrategy, Component, OnDestroy, OnInit, ViewChild } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
@@ -30,6 +31,8 @@ export class ShopStepperComponent implements OnInit, AfterViewInit, OnDestroy {
   public readonly stepTwoForm: FormGroup;
   public readonly stepThreeForm: FormGroup;
 
+  public readonly verticalStepper: Observable<boolean>;
+
   constructor(
     private readonly formBuilder: FormBuilder,
     private readonly fridgeClient: CooleWebappApi.FridgeClient,
@@ -37,6 +40,7 @@ export class ShopStepperComponent implements OnInit, AfterViewInit, OnDestroy {
     private readonly route: ActivatedRoute,
     private readonly snackBar: MatSnackBar,
     private readonly userBalance: UserBalance,
+    private readonly breakpointObserver: BreakpointObserver,
   ) {
 
     this.stepOneForm = formBuilder.group({
@@ -111,6 +115,11 @@ export class ShopStepperComponent implements OnInit, AfterViewInit, OnDestroy {
         }
       })
     )
+
+    this.verticalStepper = this.breakpointObserver.observe(['(min-height: 1000px)']).pipe(
+      map(state => state.matches)
+    )
+
   }
 
   ngAfterViewInit(): void {
