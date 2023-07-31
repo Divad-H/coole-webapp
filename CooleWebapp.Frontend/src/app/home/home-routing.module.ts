@@ -8,6 +8,7 @@ import { MyPurchasesComponent } from "./my-purchases/my-purchases.component";
 import { ProductsComponent } from "./products/products.component";
 import { ShopStepperComponent } from "./shop-stepper/shop-stepper.component";
 import { ShopComponent } from "./shop/shop.component";
+import { StatisticsComponent } from "./statistics/statistics.component";
 
 const routes: Routes = [
   {
@@ -54,6 +55,10 @@ const routes: Routes = [
         data: {
           roles: ['Administrator']
         }
+      },
+      {
+        path: 'statistics',
+        component: StatisticsComponent,
       },
     ]
   },

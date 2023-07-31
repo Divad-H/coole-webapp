@@ -1,0 +1,3 @@
+<div>
+  Total number of drinks bought on the platform: {{ (totalPurchases | async)?.totalItems }} ( {{ (totalPurchases | async)?.totalPrice | currency:'EUR':'' }} € )
+</div>

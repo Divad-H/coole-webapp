@@ -43,6 +43,7 @@ import { PayDialogComponent } from "./pay-dialog/pay-dialog.component";
 import { SettingsDialogComponent } from "./settings-dialog/settings-dialog.component";
 import { ShopStepperComponent } from "./shop-stepper/shop-stepper.component";
 import { PinPadComponent } from "./shop-stepper/pin-pad/pin-pad.component";
+import { StatisticsComponent } from "./statistics/statistics.component";
 
 @NgModule({
   declarations: [
@@ -59,6 +60,7 @@ import { PinPadComponent } from "./shop-stepper/pin-pad/pin-pad.component";
     ShopStepperComponent,
     PayDialogComponent,
     SettingsDialogComponent,
+    StatisticsComponent,
     PinPadComponent,
   ],
   imports: [
@@ -99,6 +101,7 @@ import { PinPadComponent } from "./shop-stepper/pin-pad/pin-pad.component";
     CooleWebappApi.DashboardClient,
     CooleWebappApi.UserSettingsClient,
     CooleWebappApi.FridgeClient,
+    CooleWebappApi.StatisticsClient,
     { provide: ErrorStateMatcher, useClass: DefaultErrorStateMatcher },
   ]
 })
