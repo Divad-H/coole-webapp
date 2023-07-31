@@ -6,9 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using OpenIddict.Validation.AspNetCore;
 using CooleWebapp.Application.Dashboard.Services;
 using CooleWebapp.Application.Shop.Services;
-using CooleWebapp.Core.ErrorHandling;
-using static OpenIddict.Abstractions.OpenIddictConstants;
-using System.Security.Claims;
 
 namespace CooleWebapp.Backend.Controllers;
 
