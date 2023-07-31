@@ -5,7 +5,7 @@ import { Observable, shareReplay, Subscription } from "rxjs";
 
 @Component({
   templateUrl: './statistics.component.html',
-  styleUrls: ['./statistics.component.css'],
+  styleUrls: ['./statistics.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-statistics'
 })

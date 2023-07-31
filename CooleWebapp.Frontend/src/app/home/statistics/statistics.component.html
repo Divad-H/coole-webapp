@@ -1,3 +1,18 @@
-<div>
-  Total number of drinks bought on the platform: {{ (totalPurchases | async)?.totalItems }} ( {{ (totalPurchases | async)?.totalPrice | currency:'EUR':'' }} € )
+<div class="grid-container">
+  <div class="single-number-widget mat-elevation-z6"
+       matTooltip="Total money spent by all users">
+    <mat-icon class="big-icon">paid</mat-icon>
+    <div>
+      <h3>{{ (totalPurchases | async)?.totalPrice | currency:'EUR':'' }} €</h3>
+      <p>Total Spent</p>
+    </div>
+  </div>
+  <div class="single-number-widget mat-elevation-z6"
+       matTooltip="Total number of drinks bought by all users">
+    <mat-icon class="big-icon">local_drink</mat-icon>
+    <div>
+      <h3>{{ (totalPurchases | async)?.totalItems }}</h3>
+      <p>Drinks Bought</p>
+    </div>
+  </div>
 </div>

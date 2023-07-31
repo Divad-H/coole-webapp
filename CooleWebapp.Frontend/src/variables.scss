@@ -1,0 +1,6 @@
+@import "node_modules/@angular/material/theming";
+
+$primary-color: mat-palette($mat-indigo);
+$accent-color: mat-palette($mat-pink, A200, A100, A400);
+
+$warn-color: mat-palette($mat-red);
