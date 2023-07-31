@@ -13,9 +13,16 @@ export class StatisticsComponent implements OnInit, OnDestroy {
 
   private readonly subscriptions = new Subscription();
   public readonly totalPurchases: Observable<CooleWebappApi.GetTotalPurchasesResponseModel>;
+  public readonly topSpenders: Observable<CooleWebappApi.GetTopSpendersResponseModel[]>;
 
   constructor(private readonly statisticsClient: CooleWebappApi.StatisticsClient) {
     this.totalPurchases = statisticsClient.getTotalPurchases().pipe(
+      shareReplay(1)
+    );
+
+    this.topSpenders = statisticsClient.getTopSpenders(
+      5, "Total"
+    ).pipe(
       shareReplay(1)
     );
   }

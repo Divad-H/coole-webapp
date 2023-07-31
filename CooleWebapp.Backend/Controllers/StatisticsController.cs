@@ -23,4 +23,14 @@ public class StatisticsController : ControllerBase
   {
     return _statisticsService.GetTotalPurchases(ct);
   }
+
+  [Route("GetTopSpenders")]
+  [ProducesDefaultResponseType(typeof(IReadOnlyCollection<GetTopSpendersResponseModel>))]
+  [HttpGet]
+  public Task<IReadOnlyCollection<GetTopSpendersResponseModel>> GetTopSpenders(
+    [FromQuery] GetTopSpendersRequestModel getTopSpendersRequest,
+    CancellationToken ct)
+  {
+    return _statisticsService.GetTopSpenders(getTopSpendersRequest, ct);
+  }
 }
