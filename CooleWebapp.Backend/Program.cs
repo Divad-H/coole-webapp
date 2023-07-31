@@ -16,6 +16,7 @@ using CooleWebapp.Application.Users;
 using CooleWebapp.Application.Dashboard;
 using static OpenIddict.Abstractions.OpenIddictConstants;
 using System.Security.Cryptography.X509Certificates;
+using CooleWebapp.Statistics;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -44,6 +45,7 @@ builder.Services.AddShopServices();
 builder.Services.AddAccountingServices();
 builder.Services.AddUsersServices();
 builder.Services.AddDashboardServices();
+builder.Services.AddStatisticsServices();
 
 builder.Services
   .AddScoped<IUserRoleStore<WebappUser>, UserStore>();
