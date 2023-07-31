@@ -36,5 +36,15 @@ namespace CooleWebapp.Database.Repository
       }
       return res;
     }
+
+    public Task<IQueryable<Order>> GetAllOrders(CancellationToken ct)
+    {
+      return Task.FromResult<IQueryable<Order>>(_dbContext.Orders);
+    }
+
+    public Task<IQueryable<OrderItem>> GetAllOrderItems(CancellationToken ct)
+    {
+      return Task.FromResult<IQueryable<OrderItem>>(_dbContext.OrderItems);
+    }
   }
 }
