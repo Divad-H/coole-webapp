@@ -44,6 +44,7 @@ import { SettingsDialogComponent } from "./settings-dialog/settings-dialog.compo
 import { ShopStepperComponent } from "./shop-stepper/shop-stepper.component";
 import { PinPadComponent } from "./shop-stepper/pin-pad/pin-pad.component";
 import { StatisticsComponent } from "./statistics/statistics.component";
+import { NgChartsModule } from "ng2-charts";
 
 @NgModule({
   declarations: [
@@ -88,6 +89,7 @@ import { StatisticsComponent } from "./statistics/statistics.component";
     MatToolbarModule,
     CurrencyMaskModule,
     ImageCropperModule,
+    NgChartsModule,
   ],
   exports: [
   ],

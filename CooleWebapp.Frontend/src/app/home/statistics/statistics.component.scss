@@ -35,3 +35,23 @@ h3 {
 p {
   margin-top: 0.5em;
 }
+
+.chart-widget {
+  background: #fff;
+  margin-top: 3rem;
+  padding: 1.5rem;
+}
+
+.chart-container {
+  height: 500px;
+}
+
+.chart-header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.chart-no-data {
+  padding: 250px 24px;
+  text-align: center;
+}
