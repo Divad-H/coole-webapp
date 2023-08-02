@@ -5,7 +5,7 @@
 
 .products-table-container {
   position: relative;
-  min-height: 540px;
+  min-height: 670px;
   overflow: auto;
   background-color: white;
 }
@@ -46,5 +46,5 @@
 }
 
 .mat-column-buttons {
-  width: 80px !important;
+  width: 128px !important;
 }
