@@ -18,6 +18,7 @@ export class ProductsChartComponent implements OnInit, OnDestroy {
 
   public productsChartOptions: ChartConfiguration<'doughnut'>['options'] = {
     responsive: true,
+    maintainAspectRatio: false,
     
     plugins: {
       legend: {
