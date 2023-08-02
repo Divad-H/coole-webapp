@@ -1,6 +1,7 @@
 ﻿using CooleWebapp.Application.Accounting.Repository;
 using CooleWebapp.Application.Users.Repository;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Immutable;
 
 namespace CooleWebapp.Statistics.Services;
 
@@ -19,16 +20,24 @@ internal class StatisticsService : IStatisticsService
   public async Task<GetTotalPurchasesResponseModel> GetTotalPurchases(CancellationToken ct)
   {
     var orderItems = await _accountingDataAccess.GetAllOrderItems(ct);
-    return new() { 
-      TotalItems = (uint)orderItems.Sum(i => (uint)i.Quantity), 
-      TotalPrice = orderItems.Sum(i => i.Price * i.Quantity) 
+    return new()
+    {
+      TotalItems = (uint)orderItems.Sum(i => (uint)i.Quantity),
+      TotalPrice = orderItems.Sum(i => i.Price * i.Quantity)
     };
   }
 
   public async Task<IReadOnlyCollection<GetTopSpendersResponseModel>> GetTopSpenders(
-    GetTopSpendersRequestModel getTopSpendersRequest, 
+    GetTopSpendersRequestModel getTopSpendersRequest,
     CancellationToken ct)
   {
+    await GetPurchasesPerTimeStatistics(
+      new()
+      {
+        PurchaseStatisticsTimePeriod = PurchaseStatisticsTimePeriod.OneYear,
+      },
+      ct);
+
     var startDate = getTopSpendersRequest.TimePeriod switch
     {
       TimePeriod.Total => DateTime.MinValue,
@@ -38,7 +47,7 @@ internal class StatisticsService : IStatisticsService
       TimePeriod.ThisYear => new DateTime(DateTime.Now.Year, 1, 1),
       _ => DateTime.MinValue,
     };
-    
+
     return await (await _accountingDataAccess.GetAllOrders(ct))
       .Where(o => o.Timestamp > startDate)
       .GroupJoin(
@@ -64,5 +73,84 @@ internal class StatisticsService : IStatisticsService
           AmountSpent = spentAmount.Amount,
         })
       .ToArrayAsync(ct);
+  }
+
+  public async Task<GetPurchasesPerTimeStatisticsResponseModel> GetPurchasesPerTimeStatistics(
+    GetPurchasesPerTimeStatisticsRequestModel getPurchasesPerTimeStatisticsRequest,
+    CancellationToken ct)
+  {
+    var orders = await _accountingDataAccess.GetAllOrders(ct);
+
+    if (getPurchasesPerTimeStatisticsRequest.PurchaseStatisticsTimePeriod == PurchaseStatisticsTimePeriod.OneYear)
+    {
+      var startTime = DateTime.Now - TimeSpan.FromDays(365.25);
+      orders = orders.Where(o => o.Timestamp > startTime);
+    }
+
+    var orderItems = await _accountingDataAccess.GetAllOrderItems(ct);
+    if (getPurchasesPerTimeStatisticsRequest.ProductIdFilter is not null)
+    {
+      orderItems = orderItems.Where(o => o.ProductId == getPurchasesPerTimeStatisticsRequest.ProductIdFilter);
+    }
+
+    var res = await orders
+     .GroupJoin(
+        orderItems,
+        o => o.Id, oi => oi.OrderId,
+        (o, ois) => new { Date = new { o.Timestamp.Year, o.Timestamp.Month }, OrderItems = ois })
+     .GroupBy(o => o.Date)
+     .Select(g => new
+     {
+       Date = g.Key,
+       NumberOfPurchases = g.SelectMany(i => i.OrderItems).Sum(i => i.Quantity)
+     })
+     .Where(g => g.NumberOfPurchases > 0)
+     .OrderBy(o => o.Date.Year * 13 + o.Date.Month)
+     .ToArrayAsync();
+
+    if (res.Length == 0)
+    {
+      return new()
+      {
+        StartMonth = 0,
+        StartYear = 0,
+        NumberOfPurchases = Array.Empty<UInt32>()
+      };
+    }
+
+    List<UInt32> numberOfPurchases = new();
+    var startYear = (UInt32)res.First().Date.Year;
+    var startMonth = (UInt32)res.First().Date.Month;
+    var lastYear = (UInt32)res.Last().Date.Year;
+    var lastMonth = (UInt32)res.Last().Date.Month;
+
+    var year = startYear;
+    var month = startMonth;
+    int index = 0;
+    while (year < lastYear || year == lastYear && month <= lastMonth)
+    {
+      if (res[index].Date.Year == year && res[index].Date.Month == month)
+      {
+        numberOfPurchases.Add((UInt32)res[index].NumberOfPurchases);
+        ++index;
+      }
+      else
+      {
+        numberOfPurchases.Add(0);
+      }
+      ++month;
+      if (month > 12)
+      {
+        month = 1;
+        ++year;
+      }
+    }
+
+    return new GetPurchasesPerTimeStatisticsResponseModel()
+    {
+      StartYear = startYear,
+      StartMonth = startMonth,
+      NumberOfPurchases = numberOfPurchases,
+    };
   }
 }

@@ -31,11 +31,39 @@ public record GetTopSpendersRequestModel
   public TimePeriod TimePeriod { get; init; } = TimePeriod.OneMonth;
 }
 
+public enum PurchaseStatisticsTimePeriod
+{
+  OneYear,
+  Total,
+}
+
+public record GetPurchasesPerTimeStatisticsRequestModel
+{
+
+  public UInt64? ProductIdFilter { get; init; }
+  public PurchaseStatisticsTimePeriod PurchaseStatisticsTimePeriod { get; init; }
+    = PurchaseStatisticsTimePeriod.OneYear;
+}
+
+public record GetPurchasesPerTimeStatisticsResponseModel
+{
+  /// <summary>
+  /// Starting month - Januaray is 1
+  /// </summary>
+  [Required] public required UInt32 StartMonth { get; init; }
+  [Required] public required UInt32 StartYear { get; init; }
+  [Required] public required IReadOnlyCollection<UInt32> NumberOfPurchases { get; init; }
+}
+
 public interface IStatisticsService
 {
   Task<GetTotalPurchasesResponseModel> GetTotalPurchases(CancellationToken ct);
 
   Task<IReadOnlyCollection<GetTopSpendersResponseModel>> GetTopSpenders(
     GetTopSpendersRequestModel getTopSpendersRequest, 
+    CancellationToken ct);
+
+  Task<GetPurchasesPerTimeStatisticsResponseModel> GetPurchasesPerTimeStatistics(
+    GetPurchasesPerTimeStatisticsRequestModel getPurchasesPerTimeStatisticsRequest,
     CancellationToken ct);
 }

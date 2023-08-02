@@ -21,7 +21,7 @@ namespace CooleWebapp.Backend.Controllers
     public ShopController(IProducts products)
     {
       _products = products;
-    } 
+    }
 
     [Route("GetProducts")]
     public Task<GetProductsResponseModel> GetProducts(
@@ -29,6 +29,12 @@ namespace CooleWebapp.Backend.Controllers
       CancellationToken ct)
     {
       return _products.ReadProducts(getShopProductsRequestModel, ct);
+    }
+
+    [Route("GetShortProducts")]
+    public Task<IReadOnlyCollection<ShortProductResponseModel>> GetShortProducts(CancellationToken ct)
+    {
+      return _products.ReadShortProducts(ct);
     }
 
     [Route("GetProductImage/{productId}")]
@@ -49,7 +55,7 @@ namespace CooleWebapp.Backend.Controllers
     [HttpPost]
     public Task BuyProducts(BuyProductsRequestModel buyProductsRequestModel, CancellationToken ct)
     {
-      var userId = User.FindFirstValue(Claims.Subject) 
+      var userId = User.FindFirstValue(Claims.Subject)
         ?? throw new ClientError(ErrorType.NotFound, "User not found.");
       return _products.BuyProducts(
         new() { Products = buyProductsRequestModel.Products, WebappUserId = userId },

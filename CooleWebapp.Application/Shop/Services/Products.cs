@@ -5,6 +5,7 @@ using CooleWebapp.Core.BusinessActionRunners;
 using CooleWebapp.Core.ErrorHandling;
 using CooleWebapp.Core.Utilities;
 using System.Collections.Immutable;
+using Microsoft.EntityFrameworkCore;
 
 namespace CooleWebapp.Application.Shop.Services
 {
@@ -57,6 +58,13 @@ namespace CooleWebapp.Application.Shop.Services
           State = p.State
         }).ToImmutableArray()
       };
+    }
+
+    public async Task<IReadOnlyCollection<ShortProductResponseModel>> ReadShortProducts(CancellationToken ct)
+    {
+      return await (await _productDataAccess.ReadAllProducts(ct))
+        .Select(p => new ShortProductResponseModel() { Id = p.Id, Name = p.Name })
+        .ToArrayAsync(ct);
     }
 
     public async Task BuyProducts(

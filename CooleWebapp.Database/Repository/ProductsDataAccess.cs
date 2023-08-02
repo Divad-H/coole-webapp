@@ -87,4 +87,9 @@ internal class ProductsDataAccess : IProductDataAccess
   {
     return _dbContext.Products.SingleOrDefaultAsync(p => p.Id == productId, ct);
   }
+
+  public Task<IQueryable<Product>> ReadAllProducts(CancellationToken ct)
+  {
+    return Task.FromResult<IQueryable<Product>>(_dbContext.Products);
+  }
 }

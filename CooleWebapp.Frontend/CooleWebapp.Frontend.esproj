@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.VisualStudio.JavaScript.Sdk/0.5.26-alpha">
+﻿<Project Sdk="Microsoft.VisualStudio.JavaScript.Sdk/0.5.26-alpha">
   <PropertyGroup Label="Globals">
     <ProjectGuid>2e991ab4-085e-4ab8-b115-3bb8dab60696</ProjectGuid>
   </PropertyGroup>
@@ -20,6 +20,7 @@
     <Folder Include="src\app\home\products\confirm-delete\" />
     <Folder Include="src\app\home\products\product-details\" />
     <Folder Include="src\app\home\sidenav\" />
+    <Folder Include="src\app\home\statistics\purchases-chart\" />
     <Folder Include="src\app\home\statistics\top-spenders\" />
     <Folder Include="src\app\home\toolbar\" />
   </ItemGroup>

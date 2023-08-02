@@ -17,7 +17,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatSortModule } from '@angular/material/sort';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatTableModule } from '@angular/material/table';
-import { MatTooltipModule } from '@angular/material/tooltip';;
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { CurrencyMaskModule } from "ng2-currency-mask";
 import { ImageCropperModule } from 'ngx-image-cropper';
 
@@ -46,6 +46,7 @@ import { PinPadComponent } from "./shop-stepper/pin-pad/pin-pad.component";
 import { StatisticsComponent } from "./statistics/statistics.component";
 import { NgChartsModule } from "ng2-charts";
 import { TopSpendersComponent } from "./statistics/top-spenders/top-spenders.component";
+import { PurchasesChartComponent } from "./statistics/purchases-chart/purchases-chart.component";
 
 @NgModule({
   declarations: [
@@ -64,6 +65,7 @@ import { TopSpendersComponent } from "./statistics/top-spenders/top-spenders.com
     SettingsDialogComponent,
     StatisticsComponent,
     PinPadComponent,
+    PurchasesChartComponent,
     TopSpendersComponent,
   ],
   imports: [

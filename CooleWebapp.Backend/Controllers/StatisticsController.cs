@@ -33,4 +33,14 @@ public class StatisticsController : ControllerBase
   {
     return _statisticsService.GetTopSpenders(getTopSpendersRequest, ct);
   }
+
+  [Route("GetPurchasesPerTimeStatistics")]
+  [ProducesDefaultResponseType(typeof(GetPurchasesPerTimeStatisticsResponseModel))]
+  [HttpGet]
+  public Task<GetPurchasesPerTimeStatisticsResponseModel> GetPurchasesPerTimeStatistics(
+    [FromQuery] GetPurchasesPerTimeStatisticsRequestModel getPurchasesPerTimeStatisticsRequest,
+    CancellationToken ct)
+  {
+    return _statisticsService.GetPurchasesPerTimeStatistics(getPurchasesPerTimeStatisticsRequest, ct);
+  }
 }

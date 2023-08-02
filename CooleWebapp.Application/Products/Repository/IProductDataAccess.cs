@@ -15,6 +15,8 @@ namespace CooleWebapp.Application.Products.Repository
       SortDirection sortDirection,
       CancellationToken ct);
 
+    Task<IQueryable<Product>> ReadAllProducts(CancellationToken ct);
+
     Task<byte[]?> ReadProductImage(UInt64 productId, CancellationToken ct);
 
     Task UpdateProduct(Product product, CancellationToken ct);

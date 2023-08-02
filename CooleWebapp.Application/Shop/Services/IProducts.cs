@@ -37,6 +37,9 @@ namespace CooleWebapp.Application.Shop.Services
       GetShopProductsRequestModel getShopProductsRequestModel,
       CancellationToken ct);
 
+    Task<IReadOnlyCollection<ShortProductResponseModel>> ReadShortProducts(
+      CancellationToken ct);
+
     Task<byte[]> ReadProductImage(UInt64 productId, CancellationToken ct);
 
     Task BuyProducts(BuyProductsDto buyProductsDto, CancellationToken ct);

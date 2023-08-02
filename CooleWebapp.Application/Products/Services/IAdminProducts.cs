@@ -12,6 +12,12 @@ public record ProductResponseModel
   [Required] public required ProductState State { get; set; }
 }
 
+public record ShortProductResponseModel
+{
+  [Required] public required UInt64 Id { get; set; }
+  [MaxLength(256), Required] public required string Name { get; set; }
+}
+
 public record AddProductRequestModel
 {
   [MaxLength(256), Required] public required string Name { get; set; } = string.Empty;
