@@ -1,13 +1,13 @@
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy } from "@angular/core";
 import { Router } from "@angular/router";
-import { Observable, shareReplay } from "rxjs";
+import { Observable } from "rxjs";
 import { AuthService } from "../auth/auth.service";
 import { SidenavService } from "./sidenav/sidenav.service";
 import { MediaMatcher } from '@angular/cdk/layout';
 
 @Component({
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css'],
+  styleUrls: ['./home.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent implements OnDestroy {
