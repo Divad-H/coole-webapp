@@ -1,0 +1,30 @@
+<div class="chart-header">
+  <h2>Top Spenders</h2>
+  <mat-form-field>
+    <mat-label>Time Period</mat-label>
+    <mat-select matNativeControl required
+                [value]="spendersTimePeriod | async"
+                (selectionChange)="spendersTimePeriodChanged($event)">
+      <mat-option value="Total">All Time</mat-option>
+      <mat-option value="OneMonth">One Month</mat-option>
+      <mat-option value="ThisMonth">This Month</mat-option>
+      <mat-option value="OneYear">One Year</mat-option>
+      <mat-option value="ThisYear">This Year</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+<div class="chart-container">
+  <canvas baseChart
+          *ngIf="(spendersChartData | async)?.datasets?.[0]?.data?.length; else noData"
+          [data]="(spendersChartData | async)!"
+          [options]="spendersChartOptions"
+          [legend]=false
+          [type]="'bar'">
+  </canvas>
+</div>
+
+<ng-template #noData>
+  <div class="chart-no-data">
+    There is no data in the selected time period.
+  </div>
+</ng-template>

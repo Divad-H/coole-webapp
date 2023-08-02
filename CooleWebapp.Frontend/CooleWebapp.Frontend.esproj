@@ -20,6 +20,7 @@
     <Folder Include="src\app\home\products\confirm-delete\" />
     <Folder Include="src\app\home\products\product-details\" />
     <Folder Include="src\app\home\sidenav\" />
+    <Folder Include="src\app\home\statistics\top-spenders\" />
     <Folder Include="src\app\home\toolbar\" />
   </ItemGroup>
   <Target Name="NSwag" BeforeTargets="Build">

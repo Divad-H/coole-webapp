@@ -45,6 +45,7 @@ import { ShopStepperComponent } from "./shop-stepper/shop-stepper.component";
 import { PinPadComponent } from "./shop-stepper/pin-pad/pin-pad.component";
 import { StatisticsComponent } from "./statistics/statistics.component";
 import { NgChartsModule } from "ng2-charts";
+import { TopSpendersComponent } from "./statistics/top-spenders/top-spenders.component";
 
 @NgModule({
   declarations: [
@@ -63,6 +64,7 @@ import { NgChartsModule } from "ng2-charts";
     SettingsDialogComponent,
     StatisticsComponent,
     PinPadComponent,
+    TopSpendersComponent,
   ],
   imports: [
     HomeRoutingModule,
