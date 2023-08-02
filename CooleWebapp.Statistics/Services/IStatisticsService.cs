@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore.Design;
+using System.ComponentModel.DataAnnotations;
 
 namespace CooleWebapp.Statistics.Services;
 
@@ -55,15 +56,31 @@ public record GetPurchasesPerTimeStatisticsResponseModel
   [Required] public required IReadOnlyCollection<UInt32> NumberOfPurchases { get; init; }
 }
 
+public record GetProductStatisticsRequestModel
+{
+  public TimePeriod TimePeriod { get; init; } = TimePeriod.Total;
+}
+
+public record GetProductStatisticsResponseModel
+{
+  [Required] public required int NumberOfPurchases { get; init; }
+  [Required] public required UInt64 ProductId { get; init; }
+  [Required] public required string ProductName { get; init; }
+}
+
 public interface IStatisticsService
 {
   Task<GetTotalPurchasesResponseModel> GetTotalPurchases(CancellationToken ct);
 
   Task<IReadOnlyCollection<GetTopSpendersResponseModel>> GetTopSpenders(
-    GetTopSpendersRequestModel getTopSpendersRequest, 
+    GetTopSpendersRequestModel getTopSpendersRequest,
     CancellationToken ct);
 
   Task<GetPurchasesPerTimeStatisticsResponseModel> GetPurchasesPerTimeStatistics(
     GetPurchasesPerTimeStatisticsRequestModel getPurchasesPerTimeStatisticsRequest,
+    CancellationToken ct);
+
+  Task<IReadOnlyCollection<GetProductStatisticsResponseModel>> GetProductStatistics(
+    GetProductStatisticsRequestModel getProductStatisticsRequest,
     CancellationToken ct);
 }

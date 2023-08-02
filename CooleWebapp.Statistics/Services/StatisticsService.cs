@@ -1,4 +1,5 @@
 ﻿using CooleWebapp.Application.Accounting.Repository;
+using CooleWebapp.Application.Products.Repository;
 using CooleWebapp.Application.Users.Repository;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Immutable;
@@ -9,12 +10,15 @@ internal class StatisticsService : IStatisticsService
 {
   private readonly IAccountingDataAccess _accountingDataAccess;
   private readonly IUserDataAccess _userDataAccess;
+  private readonly IProductDataAccess _productDataAccess;
   public StatisticsService(
     IAccountingDataAccess accountingDataAccess,
-    IUserDataAccess userDataAccess)
+    IUserDataAccess userDataAccess,
+    IProductDataAccess productDataAccess)
   {
     _accountingDataAccess = accountingDataAccess;
     _userDataAccess = userDataAccess;
+    _productDataAccess = productDataAccess;
   }
 
   public async Task<GetTotalPurchasesResponseModel> GetTotalPurchases(CancellationToken ct)
@@ -27,18 +31,9 @@ internal class StatisticsService : IStatisticsService
     };
   }
 
-  public async Task<IReadOnlyCollection<GetTopSpendersResponseModel>> GetTopSpenders(
-    GetTopSpendersRequestModel getTopSpendersRequest,
-    CancellationToken ct)
+  private static DateTime TimePeriodToDateTime(TimePeriod timePeriod)
   {
-    await GetPurchasesPerTimeStatistics(
-      new()
-      {
-        PurchaseStatisticsTimePeriod = PurchaseStatisticsTimePeriod.OneYear,
-      },
-      ct);
-
-    var startDate = getTopSpendersRequest.TimePeriod switch
+    return timePeriod switch
     {
       TimePeriod.Total => DateTime.MinValue,
       TimePeriod.OneMonth => DateTime.Now - TimeSpan.FromDays(30.437),
@@ -47,6 +42,13 @@ internal class StatisticsService : IStatisticsService
       TimePeriod.ThisYear => new DateTime(DateTime.Now.Year, 1, 1),
       _ => DateTime.MinValue,
     };
+  }
+
+  public async Task<IReadOnlyCollection<GetTopSpendersResponseModel>> GetTopSpenders(
+    GetTopSpendersRequestModel getTopSpendersRequest,
+    CancellationToken ct)
+  {
+    var startDate = TimePeriodToDateTime(getTopSpendersRequest.TimePeriod);
 
     return await (await _accountingDataAccess.GetAllOrders(ct))
       .Where(o => o.Timestamp > startDate)
@@ -152,5 +154,36 @@ internal class StatisticsService : IStatisticsService
       StartMonth = startMonth,
       NumberOfPurchases = numberOfPurchases,
     };
+  }
+
+  public async Task<IReadOnlyCollection<GetProductStatisticsResponseModel>> GetProductStatistics(
+    GetProductStatisticsRequestModel getProductStatisticsRequest,
+    CancellationToken ct)
+  {
+    var startDate = TimePeriodToDateTime(getProductStatisticsRequest.TimePeriod);
+
+    return await (await _accountingDataAccess.GetAllOrders(ct))
+      .Where(o => o.Timestamp > startDate)
+      .GroupJoin(
+        await _accountingDataAccess.GetAllOrderItems(ct),
+        o => o.Id, oi => oi.OrderId,
+        (o, ois) => ois)
+      .SelectMany(ois => ois)
+      .GroupBy(oi => oi.ProductId)
+      .Select(oi => new
+      {
+        ProductId = oi.Key,
+        NumberOfPurchases = oi.Sum(i => i.Quantity)
+      })
+      .Join(
+        await _productDataAccess.ReadAllProducts(ct),
+        g => g.ProductId, p => p.Id,
+        (g, p) => new GetProductStatisticsResponseModel
+        {
+          ProductId = g.ProductId,
+          ProductName = p.Name,
+          NumberOfPurchases = g.NumberOfPurchases
+        })
+      .ToArrayAsync(ct);
   }
 }

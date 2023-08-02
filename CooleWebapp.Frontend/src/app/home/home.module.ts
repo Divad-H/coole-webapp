@@ -47,6 +47,7 @@ import { StatisticsComponent } from "./statistics/statistics.component";
 import { NgChartsModule } from "ng2-charts";
 import { TopSpendersComponent } from "./statistics/top-spenders/top-spenders.component";
 import { PurchasesChartComponent } from "./statistics/purchases-chart/purchases-chart.component";
+import { ProductsChartComponent } from "./statistics/products-chart/products-chart.component";
 
 @NgModule({
   declarations: [
@@ -65,6 +66,7 @@ import { PurchasesChartComponent } from "./statistics/purchases-chart/purchases-
     SettingsDialogComponent,
     StatisticsComponent,
     PinPadComponent,
+    ProductsChartComponent,
     PurchasesChartComponent,
     TopSpendersComponent,
   ],
