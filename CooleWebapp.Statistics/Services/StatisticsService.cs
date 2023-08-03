@@ -186,4 +186,53 @@ internal class StatisticsService : IStatisticsService
         })
       .ToArrayAsync(ct);
   }
+
+  public async Task<IReadOnlyCollection<GetMostRecentPurchasesResponseModel>> GetMostRecentPurchases(
+    GetMostRecentPurchasesRequestModel getMostRecentPurchasesRequest,
+    CancellationToken ct)
+  {
+    return await (await _accountingDataAccess.GetAllOrders(ct))
+      .OrderByDescending(o => o.Timestamp)
+      .Take(getMostRecentPurchasesRequest.MaxNumberOfPurchases)
+      .Join(
+        await _accountingDataAccess.GetAllOrderItems(ct),
+        o => o.Id, oi => oi.OrderId,
+        (order, orderItem) => new
+        {
+          order.CoolUserId,
+          orderItem.Quantity,
+          orderItem.Price,
+          orderItem.ProductId,
+        }
+      )
+      .Take(getMostRecentPurchasesRequest.MaxNumberOfPurchases)
+      .Join(
+        _userDataAccess.GetAllUsers(),
+        o => o.CoolUserId, u => u.Id,
+        (o, user) => new
+        {
+          o.CoolUserId,
+          o.Quantity,
+          Price = o.Price * o.Quantity,
+          o.ProductId,
+          user.Name,
+          user.Initials
+        }
+      )
+      .Join(
+        await _productDataAccess.ReadAllProducts(ct),
+        o => o.ProductId, p => p.Id,
+        (o, product) => new GetMostRecentPurchasesResponseModel()
+        {
+          BuyerCoolUserId = o.CoolUserId,
+          BuyerInitials = o.Initials,
+          BuyerName = o.Name,
+          Price = o.Price,
+          ProductId = o.ProductId,
+          ProductName = product.Name,
+          Quantity = o.Quantity,
+        }
+      )
+      .ToArrayAsync(ct);
+  }
 }

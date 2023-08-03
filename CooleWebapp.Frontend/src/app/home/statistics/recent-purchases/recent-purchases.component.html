@@ -1,0 +1,32 @@
+<div style="padding: 1.5rem;">
+  <h2>Recent Purchases</h2>
+</div>
+<div class="table-wrapper">
+  <table mat-table *ngIf="recentPurchases | async"
+         [dataSource]="(recentPurchases | async) ?? []"
+         class="">
+
+    <ng-container matColumnDef="initials">
+      <th mat-header-cell *matHeaderCellDef> Buyer </th>
+      <td class="column-small" mat-cell *matCellDef="let element"> {{element.buyerInitials}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="product">
+      <th mat-header-cell *matHeaderCellDef> Product </th>
+      <td class="column-large" mat-cell *matCellDef="let element"> {{element.productName}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="quantity">
+      <th mat-header-cell *matHeaderCellDef> Quantity </th>
+      <td class="column-small" mat-cell *matCellDef="let element"> {{element.quantity}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="price">
+      <th mat-header-cell *matHeaderCellDef> Price </th>
+      <td class="column-small" mat-cell *matCellDef="let element"> {{element.price | currency:'EUR':''}} € </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</div>

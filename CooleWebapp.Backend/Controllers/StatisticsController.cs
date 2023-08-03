@@ -53,4 +53,14 @@ public class StatisticsController : ControllerBase
   {
     return _statisticsService.GetProductStatistics(getProductStatisticsRequest, ct);
   }
+
+  [Route("GetMostRecentPurchases")]
+  [ProducesDefaultResponseType(typeof(IReadOnlyCollection<GetMostRecentPurchasesResponseModel>))]
+  [HttpGet]
+  public Task<IReadOnlyCollection<GetMostRecentPurchasesResponseModel>> GetMostRecentPurchases(
+    [FromQuery] GetMostRecentPurchasesRequestModel getMostRecentPurchasesRequest,
+    CancellationToken ct)
+  {
+    return _statisticsService.GetMostRecentPurchases(getMostRecentPurchasesRequest, ct);
+  }
 }

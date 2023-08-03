@@ -22,7 +22,7 @@ export class ProductsChartComponent implements OnInit, OnDestroy {
     
     plugins: {
       legend: {
-        position: 'right',
+        position: 'bottom',
       },
     }
   };

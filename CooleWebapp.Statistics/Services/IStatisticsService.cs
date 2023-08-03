@@ -68,6 +68,22 @@ public record GetProductStatisticsResponseModel
   [Required] public required string ProductName { get; init; }
 }
 
+public record GetMostRecentPurchasesRequestModel
+{
+  public int MaxNumberOfPurchases { get; init; } = 5;
+}
+
+public record GetMostRecentPurchasesResponseModel
+{
+  [Required] public required string BuyerInitials { get; init; }
+  [Required] public required string BuyerName { get; init; }
+  [Required] public required UInt64 BuyerCoolUserId { get; init; }
+  [Required] public required UInt32 Quantity { get; init; }
+  [Required] public required string ProductName { get; init; }
+  [Required] public required UInt64 ProductId { get; init; }
+  [Required] public required decimal Price { get; init; }
+}
+
 public interface IStatisticsService
 {
   Task<GetTotalPurchasesResponseModel> GetTotalPurchases(CancellationToken ct);
@@ -82,5 +98,9 @@ public interface IStatisticsService
 
   Task<IReadOnlyCollection<GetProductStatisticsResponseModel>> GetProductStatistics(
     GetProductStatisticsRequestModel getProductStatisticsRequest,
+    CancellationToken ct);
+
+  Task<IReadOnlyCollection<GetMostRecentPurchasesResponseModel>> GetMostRecentPurchases(
+    GetMostRecentPurchasesRequestModel getMostRecentPurchasesRequest,
     CancellationToken ct);
 }
