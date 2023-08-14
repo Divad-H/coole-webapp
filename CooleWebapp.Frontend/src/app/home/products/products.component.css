@@ -7,7 +7,7 @@
   position: relative;
   min-height: 670px;
   overflow: auto;
-  background-color: white;
+  background-color: var(--mat-stepper-container-color);
 }
 
 .products-table {

@@ -1,9 +1,10 @@
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from "@angular/core";
-import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, Validators } from "@angular/forms";
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from "@angular/forms";
 import { MatDialogRef } from "@angular/material/dialog";
 import { MatSnackBar } from "@angular/material/snack-bar";
 import { BehaviorSubject, catchError, combineLatest, EMPTY, empty, filter, from, Observable, of, Subject, Subscription, switchMap, take, tap } from "rxjs";
 import { CooleWebappApi } from "../../../generated/coole-webapp-api";
+import { ThemeService } from "../../theme.service";
 import { ParentErrorStateMatcher } from "../../utilities/error-state-matchers";
 
 
@@ -34,11 +35,14 @@ export class SettingsDialogComponent implements OnInit, OnDestroy {
   private readonly pinCodeValidators = [Validators.minLength(4), Validators.pattern("[0-9]*")];
   private readonly formValidators = [this.pinsMatch, this.pinRequired];
 
+  toggleControl = new FormControl(false);
+
   constructor(
     public readonly dialogRef: MatDialogRef<SettingsDialogComponent>,
     fb: FormBuilder,
     private readonly userSettingsClient: CooleWebappApi.UserSettingsClient,
     private readonly snackBar: MatSnackBar,
+    private readonly themeService: ThemeService,
   ) {
 
     this.form = fb.group({
@@ -67,7 +71,7 @@ export class SettingsDialogComponent implements OnInit, OnDestroy {
             confirmPinCode.disable();
           }
         }));
-      
+
     this.subscription.add(
       from(this.userSettingsClient.getSettings())
         .pipe(
@@ -135,6 +139,15 @@ export class SettingsDialogComponent implements OnInit, OnDestroy {
           this.snackBar.open('Settings successfully changed.', 'Close', { duration: 5000 });
           this.dialogRef.close();
         }
+      }));
+
+    this.themeService.darkMode.pipe(
+      take(1),
+    ).subscribe(darkMode => this.toggleControl.setValue(darkMode));
+
+    this.subscription.add(
+      this.toggleControl.valueChanges.subscribe((darkMode) => {
+        this.themeService.setDarkMode(!!darkMode);
       }));
   }
 

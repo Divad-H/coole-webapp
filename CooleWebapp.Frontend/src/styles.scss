@@ -1,0 +1,46 @@
+@use "@angular/material" as mat;
+
+@import "@angular/material/theming";
+@import "variables.scss";
+
+@include mat.core();
+
+$angular-primary: $primary-color;
+$angular-accent: $accent-color;
+
+$angular-warn: $warn-color;
+
+$angular-default-theme: mat.define-light-theme( (
+    color: (
+      primary: $angular-primary,
+      accent: $angular-accent,
+      warn: $angular-warn,
+    ),
+  ) );
+
+@include mat.all-component-themes($angular-default-theme);
+
+$angular-dark-theme: mat.define-dark-theme( (
+    color: (
+      primary: $angular-primary,
+      accent: $angular-accent,
+      warn: $angular-warn,
+    ),
+  ) );
+
+$card-background-color: #FFF;
+
+.darkMode {
+  @include mat.all-component-colors($angular-dark-theme);
+  $card-background-color: #000;
+}
+
+
+@font-face {
+  font-family: 'text-security-disc';
+  src: url('./assets/text-security-disc-compat.eot');
+  src: url('./assets/text-security-disc-compat.eot?#iefix') format('embedded-opentype'),url('./assets/text-security-disc-compat.woff2') format('woff2'),url('./assets/text-security-disc-compat.ttf') format('truetype')
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

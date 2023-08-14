@@ -10,6 +10,7 @@ import { AuthInterceptor } from './auth/auth-interceptor';
 import { AuthService } from './auth/auth.service';
 import { AuthGuard } from './auth/auth-guard.service';
 import { NotLoggedInGuard } from './auth/not-logged-in.guard';
+import { ThemeService } from './theme.service';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { NotLoggedInGuard } from './auth/not-logged-in.guard';
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     AuthGuard,
     NotLoggedInGuard,
+    ThemeService,
   ],
   bootstrap: [AppComponent]
 })

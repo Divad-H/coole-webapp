@@ -13,7 +13,7 @@ export type Product = CooleWebappApi.IProductResponseModel & {
 
 @Component({
   templateUrl: './shop.component.html',
-  styleUrls: ['./shop.component.css'],
+  styleUrls: ['./shop.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-shop'
 })

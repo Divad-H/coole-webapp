@@ -2,8 +2,18 @@
   <h1 mat-dialog-title>Settings</h1>
 
   <div mat-dialog-content style="max-width: 400px;">
+
+    <div style="display: flex; align-items: center;">
+      Dark Mode
+      <div style="flex: 1 0 auto;"></div>
+      <mat-icon class="mr-8">brightness_5</mat-icon>
+      <mat-slide-toggle [formControl]="toggleControl" class="mr-8">
+      </mat-slide-toggle>
+      <mat-icon>bedtime</mat-icon>
+    </div>
+
     <p>If you want to make purchases directly on the fridge, please choose a permission:</p>
-    <mat-form-field >
+    <mat-form-field>
       <mat-label>Permission to buy on fridge</mat-label>
       <mat-select formControlName="buyOnFridgePermission">
         <mat-option *ngFor="let setting of permissionSettings" [value]="setting">

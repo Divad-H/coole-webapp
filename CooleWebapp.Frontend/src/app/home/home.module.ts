@@ -3,6 +3,7 @@ import { NgModule } from "@angular/core";
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule, } from '@angular/material/sidenav';
+import { MatSlideToggleModule, } from '@angular/material/slide-toggle';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -89,6 +90,7 @@ import { RecentPurchasesComponent } from "./statistics/recent-purchases/recent-p
     MatProgressSpinnerModule,
     MatSelectModule,
     MatSidenavModule,
+    MatSlideToggleModule,
     MatSnackBarModule,
     MatSortModule,
     MatStepperModule,
