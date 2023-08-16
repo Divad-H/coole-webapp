@@ -34,4 +34,23 @@ public sealed class UserDataAccess : IUserDataAccess
   {
     return _dbContext.CoolUsers.FirstOrDefaultAsync(u => u.Id == coolUserId, ct);
   }
+
+  public IQueryable<UserWithRoles> GetUsersWithRoles()
+  {
+    return GetAllUsers()
+      .Join(_dbContext.Users, cu => cu.WebappUserId, wu => wu.Id, (cu, wu) => new
+      {
+        Balance = cu.Balance,
+        CoolUserId = cu.Id,
+        Name = cu.Name,
+        WebappUser = wu
+      })
+      .GroupJoin(_dbContext.UserRoles, u => u.WebappUser.Id, r => r.UserId, (u, roles) => new UserWithRoles
+      {
+        Balance = u.Balance,
+        CoolUserId = u.CoolUserId,
+        Name = u.Name,
+        Roles = roles.Join(_dbContext.Roles, r => r.RoleId, r => r.Id, (_, r) => r.NormalizedName).ToArray()
+      });
+  }
 }

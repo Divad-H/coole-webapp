@@ -50,12 +50,16 @@ import { TopSpendersComponent } from "./statistics/top-spenders/top-spenders.com
 import { PurchasesChartComponent } from "./statistics/purchases-chart/purchases-chart.component";
 import { ProductsChartComponent } from "./statistics/products-chart/products-chart.component";
 import { RecentPurchasesComponent } from "./statistics/recent-purchases/recent-purchases.component";
+import { ConfirmDeleteUserComponent } from "./admin-users/confirm-delete/confirm-delete-user.component";
+import { UsersComponent } from "./admin-users/users.component";
+import { UserDetailsComponent } from "./admin-users/user-details/user-details.component";
 
 @NgModule({
   declarations: [
     BuyDialog,
     HomeComponent,
     ConfirmDeleteComponent,
+    ConfirmDeleteUserComponent,
     ToolbarComponent,
     DashboardComponent,
     MyPurchasesComponent,
@@ -72,6 +76,8 @@ import { RecentPurchasesComponent } from "./statistics/recent-purchases/recent-p
     PurchasesChartComponent,
     RecentPurchasesComponent,
     TopSpendersComponent,
+    UsersComponent,
+    UserDetailsComponent,
   ],
   imports: [
     HomeRoutingModule,
@@ -112,6 +118,7 @@ import { RecentPurchasesComponent } from "./statistics/recent-purchases/recent-p
     CooleWebappApi.UserAccountClient,
     CooleWebappApi.DashboardClient,
     CooleWebappApi.UserSettingsClient,
+    CooleWebappApi.AdminUsersClient,
     CooleWebappApi.FridgeClient,
     CooleWebappApi.StatisticsClient,
     { provide: ErrorStateMatcher, useClass: DefaultErrorStateMatcher },

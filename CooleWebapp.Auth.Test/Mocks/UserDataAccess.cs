@@ -27,5 +27,10 @@ namespace CooleWebapp.Auth.Test.Mocks
     {
       throw new NotImplementedException();
     }
+
+    public IQueryable<UserWithRoles> GetUsersWithRoles()
+    {
+      throw new NotImplementedException();
+    }
   }
 }

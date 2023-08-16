@@ -6,6 +6,8 @@ const PROXY_CONFIG = [
       "/registration",
       "/AdminProducts",
       "/adminproducts",
+      "/AdminUsers",
+      "/adminUsers",
       "/Shop",
       "/shop",
       "/UserAccount",
