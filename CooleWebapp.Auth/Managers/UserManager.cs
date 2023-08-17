@@ -1,7 +1,9 @@
-﻿using CooleWebapp.Auth.Model;
+﻿using CooleWebapp.Auth.DefaultUsers;
+using CooleWebapp.Auth.Model;
 using CooleWebapp.Core.Entities;
 using CooleWebapp.Core.ErrorHandling;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.Extensions.Options;
 using System.Data;
 
 namespace CooleWebapp.Auth.Managers;
@@ -10,12 +12,15 @@ internal sealed class UserManager : IUserManager
 {
   private readonly UserManager<WebappUser> _userManager;
   private readonly IUserRoleStore<WebappUser> _userRoleStore;
+  private readonly IOptions<AdministratorsConfiguration> _adminOptions;
   public UserManager(
     UserManager<WebappUser> userManager,
-    IUserRoleStore<WebappUser> userRoleStore)
+    IUserRoleStore<WebappUser> userRoleStore,
+    IOptions<AdministratorsConfiguration> adminOptions)
   {
     _userManager = userManager;
     _userRoleStore = userRoleStore;
+    _adminOptions = adminOptions;
   }
 
   private static void ThrowOnError(IdentityResult identityResult)
@@ -58,6 +63,14 @@ internal sealed class UserManager : IUserManager
       throw new ClientError(ErrorType.NotFound, "The user did not exist.");
     }
 
+    if (_adminOptions.Value.AdministratorEmails.Any(email => user.Email?.Equals(email, StringComparison.OrdinalIgnoreCase) ?? false))
+    {
+      if (!roles.Contains(Roles.Administrator))
+      {
+        throw new ClientError(ErrorType.InvalidOperation, "The administrator role of this user is set by configuration.");
+      }
+    }
+
     async Task updateRole(string roleName)
     {
       var isSelected = roles.Contains(roleName);
@@ -66,14 +79,14 @@ internal sealed class UserManager : IUserManager
       {
         if (!isSelected)
         {
-          await _userManager.RemoveFromRoleAsync(user!, normalizedRole);
+          await _userRoleStore.RemoveFromRoleAsync(user!, normalizedRole, ct).ConfigureAwait(false);
         }
       }
       else
       {
         if (isSelected)
         {
-          await _userManager.AddToRoleAsync(user!, normalizedRole);
+          await _userRoleStore.AddToRoleAsync(user!, normalizedRole, ct).ConfigureAwait(false);
         }
       }
     }

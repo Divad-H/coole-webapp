@@ -63,8 +63,8 @@ export class UserDetailsComponent implements OnInit, OnDestroy {
             })
           ).pipe(
             catchError(e => {
-              if (e?.error?.error_description) {
-                this.errorResponseSubject.next(e.error.error_description);
+              if (e?.message) {
+                this.errorResponseSubject.next(e.message);
               }
               return of({ error: true });
             })
