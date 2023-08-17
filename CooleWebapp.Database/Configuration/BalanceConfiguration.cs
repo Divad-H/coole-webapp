@@ -14,5 +14,6 @@ public class BalanceConfiguration : IEntityTypeConfiguration<Balance>
     builder
       .Property(p => p.Value)
       .HasPrecision(18, 2);
+    builder.HasQueryFilter(b => !b.CoolUser!.IsDeleted);
   }
 }

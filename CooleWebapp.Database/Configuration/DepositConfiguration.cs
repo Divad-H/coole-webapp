@@ -11,5 +11,6 @@ public class DepositConfiguration : IEntityTypeConfiguration<Deposit>
     builder
       .Property(p => p.Amount)
       .HasPrecision(18, 2);
+    builder.HasQueryFilter(d => !d.CoolUser!.IsDeleted);
   }
 }

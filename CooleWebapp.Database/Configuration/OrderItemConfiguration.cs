@@ -11,5 +11,6 @@ public class OrderItemConfiguration : IEntityTypeConfiguration<OrderItem>
     builder
       .Property(p => p.Price)
       .HasPrecision(18, 2);
+    builder.HasQueryFilter(oi => !oi.Order!.CoolUser!.IsDeleted);
   }
 }

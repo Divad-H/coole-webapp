@@ -10,5 +10,6 @@ public class MonthlyClosingConfiguration : IEntityTypeConfiguration<MonthlyClosi
   {
     builder.HasIndex(c => new { c.Number, c.CoolUserId }).IsUnique();
     builder.Property(p => p.Balance).HasPrecision(18, 2);
+    builder.HasQueryFilter(mc => !mc.CoolUser!.IsDeleted);
   }
 }
