@@ -2,7 +2,8 @@
 using CooleWebapp.Application.Products.Repository;
 using CooleWebapp.Application.Users.Repository;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Immutable;
+using System.Linq;
+using System.Data;
 
 namespace CooleWebapp.Statistics.Services;
 
@@ -23,7 +24,8 @@ internal class StatisticsService : IStatisticsService
 
   public async Task<GetTotalPurchasesResponseModel> GetTotalPurchases(CancellationToken ct)
   {
-    var orderItems = await _accountingDataAccess.GetAllOrderItems(ct);
+    var orderItems = (await _accountingDataAccess.GetAllOrderItems(ct))
+      .IgnoreQueryFilters();
     return new()
     {
       TotalItems = (uint)orderItems.Sum(i => (uint)i.Quantity),
@@ -51,6 +53,7 @@ internal class StatisticsService : IStatisticsService
     var startDate = TimePeriodToDateTime(getTopSpendersRequest.TimePeriod);
 
     return await (await _accountingDataAccess.GetAllOrders(ct))
+      .IgnoreQueryFilters()
       .Where(o => o.Timestamp > startDate)
       .GroupJoin(
         await _accountingDataAccess.GetAllOrderItems(ct),
@@ -67,13 +70,22 @@ internal class StatisticsService : IStatisticsService
       .Join(
         _userDataAccess.GetAllUsers(),
          o => o.CoolUserId, u => u.Id,
-        (spentAmount, u) => new GetTopSpendersResponseModel()
+        (spentAmount, u) => new
         {
+          IsDeleted = u.IsDeleted,
           CoolUserId = u.Id,
           Name = u.Name,
           Initials = u.Initials,
           AmountSpent = spentAmount.Amount,
         })
+      .AsAsyncEnumerable()
+      .Select(u => new GetTopSpendersResponseModel()
+      {
+        CoolUserId = u.CoolUserId,
+        Name = u.IsDeleted ? "Deleted" : u.Name,
+        Initials = u.IsDeleted ? "???" : u.Initials,
+        AmountSpent = u.AmountSpent,
+      })
       .ToArrayAsync(ct);
   }
 
@@ -81,7 +93,8 @@ internal class StatisticsService : IStatisticsService
     GetPurchasesPerTimeStatisticsRequestModel getPurchasesPerTimeStatisticsRequest,
     CancellationToken ct)
   {
-    var orders = await _accountingDataAccess.GetAllOrders(ct);
+    var orders = (await _accountingDataAccess.GetAllOrders(ct))
+      .IgnoreQueryFilters();
 
     if (getPurchasesPerTimeStatisticsRequest.PurchaseStatisticsTimePeriod == PurchaseStatisticsTimePeriod.OneYear)
     {
@@ -163,6 +176,7 @@ internal class StatisticsService : IStatisticsService
     var startDate = TimePeriodToDateTime(getProductStatisticsRequest.TimePeriod);
 
     return await (await _accountingDataAccess.GetAllOrders(ct))
+      .IgnoreQueryFilters()
       .Where(o => o.Timestamp > startDate)
       .GroupJoin(
         await _accountingDataAccess.GetAllOrderItems(ct),
@@ -192,6 +206,7 @@ internal class StatisticsService : IStatisticsService
     CancellationToken ct)
   {
     return await (await _accountingDataAccess.GetAllOrders(ct))
+      .IgnoreQueryFilters()
       .OrderByDescending(o => o.Timestamp)
       .Take(getMostRecentPurchasesRequest.MaxNumberOfPurchases)
       .Join(
@@ -216,14 +231,16 @@ internal class StatisticsService : IStatisticsService
           Price = o.Price * o.Quantity,
           o.ProductId,
           user.Name,
-          user.Initials
+          user.Initials,
+          user.IsDeleted
         }
       )
       .Join(
         await _productDataAccess.ReadAllProducts(ct),
         o => o.ProductId, p => p.Id,
-        (o, product) => new GetMostRecentPurchasesResponseModel()
+        (o, product) => new
         {
+          o.IsDeleted,
           BuyerCoolUserId = o.CoolUserId,
           BuyerInitials = o.Initials,
           BuyerName = o.Name,
@@ -233,6 +250,17 @@ internal class StatisticsService : IStatisticsService
           Quantity = o.Quantity,
         }
       )
+      .AsAsyncEnumerable()
+      .Select(o => new GetMostRecentPurchasesResponseModel()
+      {
+        BuyerCoolUserId = o.BuyerCoolUserId,
+        BuyerInitials = o.IsDeleted ? "???" : o.BuyerInitials,
+        BuyerName = o.IsDeleted ? "Deleted" : o.BuyerName,
+        Price = o.Price,
+        ProductId = o.ProductId,
+        ProductName = o.ProductName, 
+        Quantity = o.Quantity,
+      })
       .ToArrayAsync(ct);
   }
 }
