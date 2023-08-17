@@ -88,6 +88,8 @@ public sealed class UserDataAccess : IUserDataAccess
   {
     var user = await GetUser(coolUserId, ct) 
       ?? throw new ClientError(ErrorType.NotFound, "A user with that Id does not exist.");
+    if (user.WebappUserId is null)
+      throw new ClientError(ErrorType.InvalidOperation, "No account exists for that user.");
     await _userManager.SetUserRoles(user.WebappUserId, roles, ct);
   }
 }
