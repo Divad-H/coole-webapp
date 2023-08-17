@@ -30,6 +30,10 @@ public record CoolUser
   /// </summary>
   [MaxLength(3)]
   public string Initials { get; set; } = string.Empty;
+  /// <summary>
+  /// Flag that tells if the user has been deleted
+  /// </summary>
+  public bool IsDeleted { get; set; } = false;
 
   public ICollection<Order>? Orders { get; set; }
   public ICollection<Deposit>? Deposits { get; set; }
