@@ -52,4 +52,9 @@ internal class UserManager : IUserManager
     Assert.Fail("Not expected to be called.");
     throw new NotImplementedException();
   }
+
+  public Task SetUserRoles(string id, IReadOnlyCollection<string> roles, CancellationToken ct)
+  {
+    throw new NotImplementedException();
+  }
 }

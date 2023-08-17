@@ -43,4 +43,16 @@ public class AdminUsersController : ControllerBase
     throw new ClientError(ErrorType.InvalidOperation, "Not implemented");
     //return _adminUsers.DeleteUser(userId, ct);
   }
+
+  [Route("EditUser")]
+  [ProducesDefaultResponseType(typeof(UInt64))]
+  [ProducesResponseType(typeof(ErrorData), StatusCodes.Status404NotFound)]
+  [ProducesResponseType(typeof(ErrorData), StatusCodes.Status400BadRequest)]
+  [HttpPost]
+  public async Task EditUser(
+    [FromBody] EditUserRequestModel user,
+    CancellationToken ct)
+  {
+    await _adminUsers.UpdateUser(user, ct);
+  }
 }

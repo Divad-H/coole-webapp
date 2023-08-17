@@ -12,4 +12,5 @@ public interface IUserManager
   public Task<string> GeneratePasswordResetTokenAsync(WebappUser user);
   public Task ResetPasswordAsync(WebappUser user, string token, string newPassword);
   public Task<IList<WebappUser>> GetUsersInRoleAsync(string roleName);
+  public Task SetUserRoles(string id, IReadOnlyCollection<string> roles, CancellationToken ct);
 }

@@ -13,5 +13,6 @@ public static class Setup
     serviceDescriptors.AddScoped<IUserSettingsService, UserSettingsService>();
     serviceDescriptors.AddScoped<IAdminUsersService, AdminUsersService>();
     serviceDescriptors.AddScopedFactory<UpdateUserSettingsAction>();
+    serviceDescriptors.AddScopedFactory<UpdateUserAction>();
   }
 }

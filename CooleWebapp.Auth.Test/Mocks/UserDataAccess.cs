@@ -32,5 +32,10 @@ namespace CooleWebapp.Auth.Test.Mocks
     {
       throw new NotImplementedException();
     }
+
+    public Task SetUserRoles(ulong coolUserId, IReadOnlyCollection<string> roles, CancellationToken ct)
+    {
+      throw new NotImplementedException();
+    }
   }
 }

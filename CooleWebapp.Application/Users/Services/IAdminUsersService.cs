@@ -36,7 +36,15 @@ public record GetUsersRequestModel
   public required SortDirection SortDirection { get; init; }
 }
 
+public record EditUserRequestModel
+{
+  [Required] public required UInt64 UserId { get; init; }
+  public IReadOnlyCollection<UserRole>? Roles { get; init; }
+}
+
 public interface IAdminUsersService
 {
   Task<GetUsersResponseModel> ReadUsers(GetUsersRequestModel getUsersRequest, CancellationToken ct);
+  Task UpdateUser(EditUserRequestModel editUserRequestModel,
+    CancellationToken ct);
 }

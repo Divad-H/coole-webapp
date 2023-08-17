@@ -1,4 +1,9 @@
-﻿using CooleWebapp.Application.Users.Repository;
+﻿using CooleWebapp.Application.Products.Actions;
+using CooleWebapp.Application.Products.Services;
+using CooleWebapp.Application.Users.Actions;
+using CooleWebapp.Application.Users.Repository;
+using CooleWebapp.Core.BusinessActionRunners;
+using CooleWebapp.Core.Entities;
 using CooleWebapp.Core.Utilities;
 
 namespace CooleWebapp.Application.Users.Services;
@@ -7,12 +12,18 @@ internal sealed class AdminUsersService : IAdminUsersService
 {
   private readonly IUserDataAccess _userDataAccess;
   private readonly IQueryPaginated _queryPaginated;
+  private readonly IRunnerFactory _runnerFactory;
+  private readonly IFactory<UpdateUserAction> _updateUserActionFactory;
   public AdminUsersService(
     IUserDataAccess userDataAccess,
-    IQueryPaginated queryPaginated)
+    IQueryPaginated queryPaginated,
+    IRunnerFactory runnerFactory,
+    IFactory<UpdateUserAction> updateUserActionFactory)
   {
     _userDataAccess = userDataAccess;
     _queryPaginated = queryPaginated;
+    _runnerFactory = runnerFactory;
+    _updateUserActionFactory = updateUserActionFactory;
   }
 
   public async Task<GetUsersResponseModel> ReadUsers(
@@ -55,5 +66,16 @@ internal sealed class AdminUsersService : IAdminUsersService
       })
     };
 
+  }
+
+  public Task UpdateUser(EditUserRequestModel editUserRequestModel, CancellationToken ct)
+  {
+    return _runnerFactory
+      .CreateWriterRunner(_updateUserActionFactory.Create())
+      .Run(new()
+      {
+        Id = editUserRequestModel.UserId,
+        Roles = editUserRequestModel.Roles ?? Array.Empty<UserRole>(),
+      }, ct);
   }
 }
