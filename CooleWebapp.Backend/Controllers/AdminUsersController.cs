@@ -40,8 +40,7 @@ public class AdminUsersController : ControllerBase
   [HttpDelete]
   public Task DeleteUser([FromRoute] UInt64 userId, CancellationToken ct)
   {
-    throw new ClientError(ErrorType.InvalidOperation, "Not implemented");
-    //return _adminUsers.DeleteUser(userId, ct);
+    return _adminUsers.DeleteUser(userId, ct);
   }
 
   [Route("EditUser")]

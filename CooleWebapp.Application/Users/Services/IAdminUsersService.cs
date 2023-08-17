@@ -45,6 +45,7 @@ public record EditUserRequestModel
 public interface IAdminUsersService
 {
   Task<GetUsersResponseModel> ReadUsers(GetUsersRequestModel getUsersRequest, CancellationToken ct);
+  Task DeleteUser(UInt64 userId, CancellationToken ct);
   Task UpdateUser(EditUserRequestModel editUserRequestModel,
     CancellationToken ct);
 }

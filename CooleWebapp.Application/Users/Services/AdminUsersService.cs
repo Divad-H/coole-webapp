@@ -14,16 +14,19 @@ internal sealed class AdminUsersService : IAdminUsersService
   private readonly IQueryPaginated _queryPaginated;
   private readonly IRunnerFactory _runnerFactory;
   private readonly IFactory<UpdateUserAction> _updateUserActionFactory;
+  private readonly IFactory<DeleteUserAction> _deleteUserActionFactory;
   public AdminUsersService(
     IUserDataAccess userDataAccess,
     IQueryPaginated queryPaginated,
     IRunnerFactory runnerFactory,
-    IFactory<UpdateUserAction> updateUserActionFactory)
+    IFactory<UpdateUserAction> updateUserActionFactory,
+    IFactory<DeleteUserAction> deleteUserActionFactory)
   {
     _userDataAccess = userDataAccess;
     _queryPaginated = queryPaginated;
     _runnerFactory = runnerFactory;
     _updateUserActionFactory = updateUserActionFactory;
+    _deleteUserActionFactory = deleteUserActionFactory;
   }
 
   public async Task<GetUsersResponseModel> ReadUsers(
@@ -65,7 +68,13 @@ internal sealed class AdminUsersService : IAdminUsersService
         }).ToArray()
       })
     };
+  }
 
+  public Task DeleteUser(UInt64 userId, CancellationToken ct)
+  {
+    return _runnerFactory
+      .CreateWriterRunner(_deleteUserActionFactory.Create())
+      .Run(userId, ct);
   }
 
   public Task UpdateUser(EditUserRequestModel editUserRequestModel, CancellationToken ct)

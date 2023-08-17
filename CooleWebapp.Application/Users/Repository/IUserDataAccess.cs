@@ -14,6 +14,7 @@ public record UserWithRoles
 public interface IUserDataAccess
 {
   Task<CoolUser> CreateUser(CoolUser user, CancellationToken ct);
+  Task DeleteUser(UInt64 coolUserId, CancellationToken ct);
   Task<CoolUser?> FindUserByWebappUserId(string webappUserId, CancellationToken ct);
   Task<CoolUser?> GetUser(UInt64 coolUserId, CancellationToken ct);
   Task SetUserRoles(UInt64 coolUserId, IReadOnlyCollection<string> roles, CancellationToken ct);

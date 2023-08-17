@@ -14,5 +14,6 @@ public static class Setup
     serviceDescriptors.AddScoped<IAdminUsersService, AdminUsersService>();
     serviceDescriptors.AddScopedFactory<UpdateUserSettingsAction>();
     serviceDescriptors.AddScopedFactory<UpdateUserAction>();
+    serviceDescriptors.AddScopedFactory<DeleteUserAction>();
   }
 }
