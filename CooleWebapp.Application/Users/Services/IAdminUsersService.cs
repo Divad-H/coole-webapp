@@ -17,6 +17,7 @@ public record UserResponseModel
 {
   [Required] public required UInt64 Id { get; init; }
   [MaxLength(256), Required] public required string Name { get; init; }
+  [MaxLength(256), Required] public required string Email { get; init; }
   [Required] public required decimal Balance { get; init; }
   [Required] public required IReadOnlyCollection<UserRole> Roles { get; init; }
 }

@@ -5,7 +5,8 @@ namespace CooleWebapp.Application.Users.Repository;
 public record UserWithRoles
 {
   public required UInt64 CoolUserId { get; init; }
-  public required string Name { get; init; } = string.Empty;
+  public required string Name { get; init; }
+  public string? Email { get; init; }
   public Balance? Balance { get; init; }
   public required IReadOnlyCollection<string?> Roles { get; init; }
 }

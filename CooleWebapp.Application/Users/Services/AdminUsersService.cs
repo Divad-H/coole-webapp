@@ -45,6 +45,7 @@ internal sealed class AdminUsersService : IAdminUsersService
         Name = u.Name,
         Id = u.CoolUserId,
         Balance = u.Balance?.Value ?? 0,
+        Email = u.Email ?? string.Empty,
         Roles = u.Roles.Select(r =>
         {
           if (Enum.TryParse<UserRole>(r, true, out var role))

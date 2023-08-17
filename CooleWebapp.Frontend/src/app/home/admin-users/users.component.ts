@@ -49,15 +49,20 @@ export class UsersComponent implements AfterViewInit, OnDestroy {
       this.breakpointObserver
         .observe([
           Breakpoints.Medium,
+        ]).pipe(filter(b => b.matches), mapTo(2)),
+      this.breakpointObserver
+        .observe([
           Breakpoints.Large,
           Breakpoints.XLarge,
-        ]).pipe(filter(b => b.matches), mapTo(2))
+        ]).pipe(filter(b => b.matches), mapTo(3))
     ).pipe(
-      map(size => size == 2
-        ? ['name', 'balance', 'administrator', 'fridge', 'buttons']
-        : size == 1
-          ? ['name', 'administrator', 'fridge', 'buttons']
-          : ['name', 'buttons'])
+      map(size => size == 3
+        ? ['name', 'email', 'balance', 'administrator', 'fridge', 'buttons']
+        : size == 2
+          ? ['name', 'balance', 'administrator', 'fridge', 'buttons']
+          : size == 1
+            ? ['name', 'administrator', 'fridge', 'buttons']
+            : ['name', 'buttons'])
     )
   }
 

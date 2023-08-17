@@ -43,6 +43,7 @@ public sealed class UserDataAccess : IUserDataAccess
         Balance = cu.Balance,
         CoolUserId = cu.Id,
         Name = cu.Name,
+        Email = wu.Email,
         WebappUser = wu
       })
       .GroupJoin(_dbContext.UserRoles, u => u.WebappUser.Id, r => r.UserId, (u, roles) => new UserWithRoles
@@ -50,6 +51,7 @@ public sealed class UserDataAccess : IUserDataAccess
         Balance = u.Balance,
         CoolUserId = u.CoolUserId,
         Name = u.Name,
+        Email = u.Email,
         Roles = roles.Join(_dbContext.Roles, r => r.RoleId, r => r.Id, (_, r) => r.NormalizedName).ToArray()
       });
   }
