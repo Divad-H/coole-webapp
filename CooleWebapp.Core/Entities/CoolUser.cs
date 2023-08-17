@@ -14,7 +14,7 @@ public record CoolUser
   /// <summary>
   /// The id of the related WebappUser that contains login information
   /// </summary>
-  public string WebappUserId { get; set; } = string.Empty;
+  public string? WebappUserId { get; set; } = string.Empty;
   /// <summary>
   /// The name of the user
   /// </summary>
