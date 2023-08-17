@@ -13,6 +13,11 @@ namespace CooleWebapp.Auth.Test.Mocks
       return Task.FromResult(user);
     }
 
+    public Task DeleteUser(ulong coolUserId, CancellationToken ct)
+    {
+      throw new NotImplementedException();
+    }
+
     public Task<CoolUser?> FindUserByWebappUserId(string webappUserId, CancellationToken ct)
     {
       return Task.FromResult(CreatedUsers.FirstOrDefault(u => u.WebappUserId == webappUserId));

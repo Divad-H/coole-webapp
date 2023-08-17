@@ -29,6 +29,11 @@ internal class UserManager : IUserManager
     throw new InvalidOperationException();
   }
 
+  public Task<WebappUser?> FindByIdAsync(string id)
+  {
+    throw new NotImplementedException();
+  }
+
   public virtual Task<string> GenerateEmailConfirmationTokenAsync(WebappUser webappUser)
   {
     Assert.Fail("Not expected to be called.");
