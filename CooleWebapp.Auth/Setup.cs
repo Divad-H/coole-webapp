@@ -26,6 +26,7 @@ public static class Setup
     serviceDescriptors.AddScopedFactory<SendResetPasswordEmailAction>();
     serviceDescriptors.AddScopedFactory<StartInitiatePasswordResetAction>();
     serviceDescriptors.AddScopedFactory<ResetPasswordAction>();
+    serviceDescriptors.AddScopedFactory<RegenerateConfirmationEmailTokenAction>();
 
     serviceDescriptors.Configure<AdministratorsConfiguration>(
       configurationBuilder.GetSection(nameof(AdministratorsConfiguration)));

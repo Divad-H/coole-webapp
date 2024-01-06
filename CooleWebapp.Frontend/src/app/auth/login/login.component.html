@@ -29,6 +29,11 @@
         <button mat-raised-button color="primary" [disabled]="busy | async">
           Sign in
         </button>
+        <button mat-raised-button color="warn" [disabled]="busy | async" *ngIf="emailUnconfirmed | async"
+                style="margin-left: 10px"
+                (click)="resendVerificationEmail()">
+          Resend verification email
+        </button>
       </mat-card-actions>
       <mat-progress-bar mode="indeterminate" *ngIf="busy | async"></mat-progress-bar>
     </form>

@@ -23,6 +23,11 @@ public record ResetPasswordData
   [Required][MaxLength(256)] public string Password { get; init; }  = string.Empty;
 }
 
+public sealed record ResendConfirmationEmailData
+{
+  [Required][MaxLength(320)] public string Email { get; init; } = string.Empty;
+}
+
 public interface IUserRegistration
 {
   Task RegisterUser(
@@ -35,4 +40,8 @@ public interface IUserRegistration
     Func<(string Token, string Email), string> createEmailLink,
     CancellationToken ct);
   Task ResetPassword(ResetPasswordData resetPasswordData, CancellationToken ct);
+  Task ResendConfirmationEmail(
+    ResendConfirmationEmailData resendConfirmationEmailData,
+    Func<(string Token, string Email), string> createEmailLink,
+    CancellationToken ct);
 }

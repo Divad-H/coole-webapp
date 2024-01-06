@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Identity;
 using CooleWebapp.Auth.Model;
 using Microsoft.AspNetCore.Authentication;
 using System.Collections.Immutable;
-using CooleWebapp.Core.ErrorHandling;
 
 namespace CooleWebapp.Backend.Controllers;
 

@@ -16,6 +16,18 @@ public class RegistrationController : ControllerBase
     _userRegistration = userRegistration;
   }
 
+  private static Func<(string Token, string Email), string> CreateEmailLink(HttpRequest request)
+    => data =>
+    {
+      string url = $"{request.Scheme}://{request.Host}/auth/confirm-email";
+      var param = new Dictionary<string, string?>()
+      {
+        { "token", data.Token } ,
+        { "email", data.Email }
+      };
+      return QueryHelpers.AddQueryString(url, param);
+    };
+
   /// <summary>
   /// Start the registration of a new user
   /// </summary>
@@ -30,15 +42,21 @@ public class RegistrationController : ControllerBase
   {
     return _userRegistration.RegisterUser(
       registrationData,
-      (data) =>
-      {
-        string url = $"{Request.Scheme}://{Request.Host}/auth/confirm-email";
-        var param = new Dictionary<string, string?>() { 
-          { "token", data.Token } ,
-          { "email", data.Email } 
-        };
-        return QueryHelpers.AddQueryString(url, param);
-      },
+      CreateEmailLink(Request),
+      ct);
+  }
+
+  [Route("resend-confirmation-email")]
+  [ProducesResponseType(typeof(ErrorData), StatusCodes.Status400BadRequest)]
+  [ProducesResponseType(typeof(ErrorData), StatusCodes.Status404NotFound)]
+  [HttpPost]
+  public Task ResendConfirmationEmail(
+    ResendConfirmationEmailData resendConfirmationEmailData, 
+    CancellationToken ct)
+  {
+    return _userRegistration.ResendConfirmationEmail(
+      resendConfirmationEmailData,
+      CreateEmailLink(Request),
       ct);
   }
 

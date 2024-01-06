@@ -12,6 +12,7 @@ public sealed class UserRegistration : IUserRegistration
   private readonly IFactory<SendResetPasswordEmailAction> _sendResetPasswordEmailActionFactory;
   private readonly IFactory<StartInitiatePasswordResetAction> _startResetPasswordActionFactory;
   private readonly IFactory<ResetPasswordAction> _resetPasswordActionFactory;
+  private readonly IFactory<RegenerateConfirmationEmailTokenAction> _regenerateConfirmationEmailTokenActionFactory;
   public UserRegistration(
     IRunnerFactory runnerFactory,
     IFactory<RegisterUserAction> registerUserActionFactory,
@@ -19,7 +20,8 @@ public sealed class UserRegistration : IUserRegistration
     IFactory<ConfirmEmailAction> confirmEmailActionFactory,
     IFactory<SendResetPasswordEmailAction> sendResetPasswordEmailActionFactory,
     IFactory<StartInitiatePasswordResetAction> startResetPasswordActionFactory,
-    IFactory<ResetPasswordAction> resetPasswordActionFactory)
+    IFactory<ResetPasswordAction> resetPasswordActionFactory,
+    IFactory<RegenerateConfirmationEmailTokenAction> regenerateConfirmationEmailTokenActionFactory)
   {
     _runnerFactory = runnerFactory;
     _registerUserActionFactory = registerUserActionFactory;
@@ -28,6 +30,7 @@ public sealed class UserRegistration : IUserRegistration
     _sendResetPasswordEmailActionFactory = sendResetPasswordEmailActionFactory;
     _startResetPasswordActionFactory = startResetPasswordActionFactory;
     _resetPasswordActionFactory = resetPasswordActionFactory;
+    _regenerateConfirmationEmailTokenActionFactory = regenerateConfirmationEmailTokenActionFactory;
   }
 
   public async Task RegisterUser(
@@ -73,5 +76,20 @@ public sealed class UserRegistration : IUserRegistration
     await runner.Run(new(
       resetPasswordData.Email, resetPasswordData.Token, resetPasswordData.Password
       ), ct);
+  }
+
+  public async Task ResendConfirmationEmail(
+    ResendConfirmationEmailData resendConfirmationEmailData,
+    Func<(string Token, string Email), string> createEmailLink,
+    CancellationToken ct)
+  {
+    var runner = _runnerFactory.CreateWriter2Runner(
+      _regenerateConfirmationEmailTokenActionFactory.Create(),
+      registrationRes => new SendConfirmationRequestDto(
+        createEmailLink((registrationRes.Token, resendConfirmationEmailData.Email)),
+        "someone who did not confirm their email yet",
+        resendConfirmationEmailData.Email),
+      _sendConfirmationRequestEmailActionFactory.Create());
+    await runner.Run(resendConfirmationEmailData.Email, ct);
   }
 }
