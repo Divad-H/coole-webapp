@@ -132,7 +132,7 @@ await DbSetup.InitializeCooleWebappDatabase(app.Services, app.Lifetime.Applicati
 if (app.Environment.IsDevelopment())
 {
   app.UseOpenApi();
-  app.UseSwaggerUi3();
+  app.UseSwaggerUi();
 }
 
 app.UseHttpsRedirection();
