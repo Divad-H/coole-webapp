@@ -31,7 +31,7 @@ namespace CooleWebapp.Application.Accounting.Actions
         CoolUserId = dataIn.CoolUserId,
         Timestamp = DateTime.Now,
       };
-      await _accountingDataAccess.CreateDeposít(deposit, ct);
+      await _accountingDataAccess.CreateDeposit(deposit, ct);
 
       return balance.Value;
     }

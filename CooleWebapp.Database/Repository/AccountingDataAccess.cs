@@ -13,7 +13,7 @@ namespace CooleWebapp.Database.Repository
       _dbContext = dbContext;
     }
 
-    public async Task<UInt64> CreateDeposít(Deposit deposit, CancellationToken ct)
+    public async Task<UInt64> CreateDeposit(Deposit deposit, CancellationToken ct)
     {
       var res = await _dbContext.Deposits.AddAsync(deposit, ct);
       return res.Entity.Id;
