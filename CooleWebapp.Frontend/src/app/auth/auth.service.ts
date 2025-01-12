@@ -26,7 +26,7 @@ export class AuthService {
     private readonly router: Router,
   ) {
     const serializedTokens = localStorage.getItem('tokens');
-    if (!!serializedTokens) {
+    if (serializedTokens) {
       const deserialized = JSON.parse(serializedTokens);
       if (deserialized.expiresAt) {
         deserialized.expiresAt = new Date(deserialized.expiresAt);
@@ -44,7 +44,7 @@ export class AuthService {
           return [];
         }
         try {
-          var decoded = jwt_decode(tokens.id_token) as any;
+          const decoded = jwt_decode(tokens.id_token) as any;
           if (!decoded.role) {
             return []
           }
@@ -63,7 +63,7 @@ export class AuthService {
 
   private getTokens(body: URLSearchParams): Observable<AuthenticationResponse> {
     body.set('scope', 'offline_access profile openid roles');
-    let options = {
+    const options = {
       headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded')
     };
     return this.http.post('/connect/token', body.toString(), options).pipe(
