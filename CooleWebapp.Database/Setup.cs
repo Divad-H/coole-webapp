@@ -17,6 +17,7 @@ using CooleWebapp.Application.Users.Repository;
 using CooleWebapp.Core.Utilities;
 using CooleWebapp.Database.Pagination;
 using Microsoft.Extensions.Logging;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace CooleWebapp.Database
 {
@@ -30,8 +31,9 @@ namespace CooleWebapp.Database
         .AddDbContext<WebappDbContext>((sp, options) =>
         {
           var config = sp.GetRequiredService<IOptions<DatabaseConfig>>().Value;
-          options.UseSqlServer(config.DatabaseConnectionString);
+          options.UseNpgsql(config.DatabaseConnectionString, x => x.MigrationsHistoryTable("__efmigrationshistory", "public")).ReplaceService<IHistoryRepository, LoweredCaseMigrationHistoryRepository>();
           options.UseOpenIddict();
+          options.UseSnakeCaseNamingConvention();
         })
         .Configure<DatabaseConfig>(configurationBuilder.GetSection(nameof(DatabaseConfig)));
       serviceDescriptors.AddScoped<IdentityDbContext<WebappUser>>(sp => sp.GetRequiredService<WebappDbContext>());
