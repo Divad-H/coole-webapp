@@ -12,7 +12,7 @@ namespace CooleWebapp.Database.Repository
     {
       _dbContext = dbContext;
     }
-    public async Task<UserSettings> GetUserSettings(ulong coolUserId, CancellationToken ct)
+    public async Task<UserSettings> GetUserSettings(long coolUserId, CancellationToken ct)
     {
       var settings = await _dbContext.UserSettings.FirstOrDefaultAsync(s => s.CoolUserId == coolUserId, ct);
       if (settings is null)

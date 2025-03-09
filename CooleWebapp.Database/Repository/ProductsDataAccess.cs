@@ -17,13 +17,13 @@ internal class ProductsDataAccess : IProductDataAccess
     _dbContext = dbContext;
   }
 
-  public async Task<UInt64> CreateProduct(Product product, CancellationToken ct)
+  public async Task<Int64> CreateProduct(Product product, CancellationToken ct)
   {
     var res = await _dbContext.Products.AddAsync(product, ct);
     return res.Entity.Id;
   }
 
-  public async Task<byte[]?> ReadProductImage(ulong productId, CancellationToken ct)
+  public async Task<byte[]?> ReadProductImage(long productId, CancellationToken ct)
   {
     return (await _dbContext.ProductImages
       .AsNoTracking()
@@ -65,7 +65,7 @@ internal class ProductsDataAccess : IProductDataAccess
       dbProduct.ProductImage = product.ProductImage;
   }
 
-  public Task DeleteProduct(UInt64 productId, CancellationToken ct)
+  public Task DeleteProduct(Int64 productId, CancellationToken ct)
   {
     Product product = new() { Id = productId };
     _dbContext.Products.Attach(product);
@@ -73,7 +73,7 @@ internal class ProductsDataAccess : IProductDataAccess
     return Task.CompletedTask;
   }
 
-  public async Task DeleteProductImage(UInt64 productId, CancellationToken ct)
+  public async Task DeleteProductImage(Int64 productId, CancellationToken ct)
   {
     var productImage =
       await _dbContext.ProductImages.SingleOrDefaultAsync(pi => pi.ProductId == productId, ct);
@@ -83,7 +83,7 @@ internal class ProductsDataAccess : IProductDataAccess
     _dbContext.ProductImages.Remove(productImage);
   }
 
-  public Task<Product?> GetProduct(ulong productId, CancellationToken ct)
+  public Task<Product?> GetProduct(long productId, CancellationToken ct)
   {
     return _dbContext.Products.SingleOrDefaultAsync(p => p.Id == productId, ct);
   }

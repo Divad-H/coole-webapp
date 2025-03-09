@@ -29,7 +29,7 @@ internal class DashboardService : IDashboardService
   }
 
   public async Task<GetBuyerResponseModel> ReadBuyerDetails(
-    UInt64 coolUserId, 
+    Int64 coolUserId, 
     CancellationToken ct)
   {
     var user = await _userDataAccess.GetUser(coolUserId, ct)

@@ -6,7 +6,7 @@ namespace CooleWebapp.Application.Dashboard.Services;
 
 public record BuyerResponseModel
 {
-  [Required] public required UInt64 CoolUserId { get; init; }
+  [Required] public required Int64 CoolUserId { get; init; }
   [Required] public required string Name { get; init; }
   [Required] public required string Initials { get; init; }
   [Required] public required decimal Balance { get; init; }
@@ -20,7 +20,7 @@ public record GetRecentBuyersResponeModel
 
 public record GetBuyerResponseModel
 {
-  [Required] public required UInt64 CoolUserId { get; init; }
+  [Required] public required Int64 CoolUserId { get; init; }
   [Required] public required string Name { get; init; }
   [Required] public required decimal Balance { get; init; }
   [Required] public required BuyOnFridgePermission BuyOnFridgePermission { get; init; }
@@ -34,6 +34,6 @@ public interface IDashboardService
     CancellationToken ct);
 
   Task<GetBuyerResponseModel> ReadBuyerDetails(
-    UInt64 CoolUserId,
+    Int64 CoolUserId,
     CancellationToken ct);
 }

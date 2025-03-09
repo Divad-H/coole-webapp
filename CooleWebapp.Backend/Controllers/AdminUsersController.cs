@@ -34,17 +34,17 @@ public class AdminUsersController : ControllerBase
   }
 
   [Route("DeleteUser/{userId}")]
-  [ProducesDefaultResponseType(typeof(UInt64))]
+  [ProducesDefaultResponseType(typeof(Int64))]
   [ProducesResponseType(typeof(ErrorData), StatusCodes.Status404NotFound)]
   [ProducesResponseType(typeof(ErrorData), StatusCodes.Status400BadRequest)]
   [HttpDelete]
-  public Task DeleteUser([FromRoute] UInt64 userId, CancellationToken ct)
+  public Task DeleteUser([FromRoute] Int64 userId, CancellationToken ct)
   {
     return _adminUsers.DeleteUser(userId, ct);
   }
 
   [Route("EditUser")]
-  [ProducesDefaultResponseType(typeof(UInt64))]
+  [ProducesDefaultResponseType(typeof(Int64))]
   [ProducesResponseType(typeof(ErrorData), StatusCodes.Status404NotFound)]
   [ProducesResponseType(typeof(ErrorData), StatusCodes.Status400BadRequest)]
   [HttpPost]

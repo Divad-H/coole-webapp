@@ -10,7 +10,7 @@ public record CoolUser
   /// <summary>
   /// Unique id that identifies the user
   /// </summary>
-  public ulong Id { get; set; }
+  public long Id { get; set; }
   /// <summary>
   /// The id of the related WebappUser that contains login information
   /// </summary>

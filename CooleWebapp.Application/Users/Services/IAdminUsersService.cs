@@ -15,7 +15,7 @@ public enum UserRole
 
 public record UserResponseModel
 {
-  [Required] public required UInt64 Id { get; init; }
+  [Required] public required Int64 Id { get; init; }
   [MaxLength(256), Required] public required string Name { get; init; }
   [MaxLength(256), Required] public required string Email { get; init; }
   [Required] public required decimal Balance { get; init; }
@@ -38,14 +38,14 @@ public record GetUsersRequestModel
 
 public record EditUserRequestModel
 {
-  [Required] public required UInt64 UserId { get; init; }
+  [Required] public required Int64 UserId { get; init; }
   public IReadOnlyCollection<UserRole>? Roles { get; init; }
 }
 
 public interface IAdminUsersService
 {
   Task<GetUsersResponseModel> ReadUsers(GetUsersRequestModel getUsersRequest, CancellationToken ct);
-  Task DeleteUser(UInt64 userId, CancellationToken ct);
+  Task DeleteUser(Int64 userId, CancellationToken ct);
   Task UpdateUser(EditUserRequestModel editUserRequestModel,
     CancellationToken ct);
 }

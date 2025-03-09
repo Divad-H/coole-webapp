@@ -38,7 +38,7 @@ namespace CooleWebapp.Application.Shop.Actions
 
     public static async Task<Unit> BuyProducts(
       IEnumerable<ProductAmount> products,
-      UInt64 coolUserId,
+      Int64 coolUserId,
       IProductDataAccess productDataAccess,
       IAccountingDataAccess accountingDataAccess,
       CancellationToken ct)

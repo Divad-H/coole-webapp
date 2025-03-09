@@ -11,7 +11,7 @@ namespace CooleWebapp.Application.Shop.Services
 
   public record ProductAmount
   {
-    [Required] public required UInt64 ProductId { get; init; }
+    [Required] public required Int64 ProductId { get; init; }
     [Required] public required UInt32 Amount { get; init; }
     [Required] public required Decimal ExpectedPrice { get; init; }
   }
@@ -24,7 +24,7 @@ namespace CooleWebapp.Application.Shop.Services
   public record BuyProductsAsFridgeRequestModel
   {
     [Required] public required IEnumerable<ProductAmount> Products { get; init; }
-    [Required] public required UInt64 CoolUserId { get; init; }
+    [Required] public required Int64 CoolUserId { get; init; }
     public string? PinCode { get; init; }
   }
 
@@ -40,7 +40,7 @@ namespace CooleWebapp.Application.Shop.Services
     Task<IReadOnlyCollection<ShortProductResponseModel>> ReadShortProducts(
       CancellationToken ct);
 
-    Task<byte[]> ReadProductImage(UInt64 productId, CancellationToken ct);
+    Task<byte[]> ReadProductImage(Int64 productId, CancellationToken ct);
 
     Task BuyProducts(BuyProductsDto buyProductsDto, CancellationToken ct);
     Task BuyProductsAsFridge(BuyProductsAsFridgeDto buyProductsAsFridgeDto, CancellationToken ct);

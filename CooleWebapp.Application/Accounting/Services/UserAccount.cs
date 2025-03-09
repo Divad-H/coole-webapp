@@ -27,7 +27,7 @@ namespace CooleWebapp.Application.Accounting.Services
     }
 
     private async Task<UserBalanceResponseModel> AddBalance(
-      UInt64 coolUserId,
+      Int64 coolUserId,
       string userName,
       decimal amount,
       CancellationToken ct)
@@ -52,7 +52,7 @@ namespace CooleWebapp.Application.Accounting.Services
     }
 
     public async Task<UserBalanceResponseModel> AddBalance(
-      UInt64 coolUserId, 
+      Int64 coolUserId, 
       decimal amount, 
       CancellationToken ct)
     {

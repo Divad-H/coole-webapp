@@ -13,7 +13,7 @@ namespace CooleWebapp.Auth.Test.Mocks
       return Task.FromResult(user);
     }
 
-    public Task DeleteUser(ulong coolUserId, CancellationToken ct)
+    public Task DeleteUser(long coolUserId, CancellationToken ct)
     {
       throw new NotImplementedException();
     }
@@ -28,7 +28,7 @@ namespace CooleWebapp.Auth.Test.Mocks
       throw new NotImplementedException();
     }
 
-    public Task<CoolUser?> GetUser(ulong coolUserId, CancellationToken ct)
+    public Task<CoolUser?> GetUser(long coolUserId, CancellationToken ct)
     {
       throw new NotImplementedException();
     }
@@ -38,7 +38,7 @@ namespace CooleWebapp.Auth.Test.Mocks
       throw new NotImplementedException();
     }
 
-    public Task SetUserRoles(ulong coolUserId, IReadOnlyCollection<string> roles, CancellationToken ct)
+    public Task SetUserRoles(long coolUserId, IReadOnlyCollection<string> roles, CancellationToken ct)
     {
       throw new NotImplementedException();
     }

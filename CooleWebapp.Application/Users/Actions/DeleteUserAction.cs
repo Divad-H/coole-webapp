@@ -4,7 +4,7 @@ using System.Reactive;
 
 namespace CooleWebapp.Application.Users.Actions;
 
-internal sealed class DeleteUserAction : IBusinessAction<UInt64, Unit>
+internal sealed class DeleteUserAction : IBusinessAction<Int64, Unit>
 {
   private readonly IUserDataAccess _userDataAccess;
   public DeleteUserAction(IUserDataAccess userDataAccess)
@@ -12,7 +12,7 @@ internal sealed class DeleteUserAction : IBusinessAction<UInt64, Unit>
     _userDataAccess = userDataAccess;
   }
 
-  public async Task<Unit> Run(UInt64 coolUserid, CancellationToken ct)
+  public async Task<Unit> Run(Int64 coolUserid, CancellationToken ct)
   {
     await _userDataAccess.DeleteUser(coolUserid, ct);
     return Unit.Default;

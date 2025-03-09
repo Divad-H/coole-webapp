@@ -28,7 +28,7 @@ namespace CooleWebapp.Application.Shop.Services
       _buyProductsAsFridgeActionFactory = buyProductsAsFridgeActionFactory;
     }
 
-    public async Task<byte[]> ReadProductImage(ulong productId, CancellationToken ct)
+    public async Task<byte[]> ReadProductImage(long productId, CancellationToken ct)
     {
       return await _productDataAccess.ReadProductImage(productId, ct)
         ?? throw new ClientError(ErrorType.NotFound, "No product image available.");

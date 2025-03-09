@@ -23,7 +23,7 @@ public record CreateProductDto : ProductDataDto
 
 public record UpdateProductDto : ProductDataDto
 {
-  public required UInt64 Id { get; set; }
+  public required Int64 Id { get; set; }
   public ProductImageDto? Image { get; set; }
 }
 

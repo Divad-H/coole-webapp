@@ -35,7 +35,7 @@ public class AdminProductsController : ControllerBase
   [ProducesResponseType(typeof(ErrorData), StatusCodes.Status404NotFound)]
   [ProducesResponseType(typeof(ErrorData), StatusCodes.Status400BadRequest)]
   [HttpGet]
-  public async Task<FileResult> GetProductImage([FromRoute] UInt64 productId, CancellationToken ct)
+  public async Task<FileResult> GetProductImage([FromRoute] Int64 productId, CancellationToken ct)
   {
     var image = await _adminProducts.ReadProductImage(productId, ct);
     FileStreamResult file = new(new MemoryStream(image, false), "image/jpeg");
@@ -52,10 +52,10 @@ public class AdminProductsController : ControllerBase
   }
 
   [Route("AddProduct")]
-  [ProducesDefaultResponseType(typeof(UInt64))]
+  [ProducesDefaultResponseType(typeof(Int64))]
   [ProducesResponseType(typeof(ErrorData), StatusCodes.Status400BadRequest)]
   [HttpPost]
-  public async Task<UInt64> AddProduct(
+  public async Task<Int64> AddProduct(
     IFormFile? productImage, 
     [FromForm] AddProductRequestModel product, 
     CancellationToken ct)
@@ -66,7 +66,7 @@ public class AdminProductsController : ControllerBase
   }
 
   [Route("EditProduct")]
-  [ProducesDefaultResponseType(typeof(UInt64))]
+  [ProducesDefaultResponseType(typeof(Int64))]
   [ProducesResponseType(typeof(ErrorData), StatusCodes.Status404NotFound)]
   [ProducesResponseType(typeof(ErrorData), StatusCodes.Status400BadRequest)]
   [HttpPost]
@@ -80,11 +80,11 @@ public class AdminProductsController : ControllerBase
   }
 
   [Route("DeleteProduct/{productId}")]
-  [ProducesDefaultResponseType(typeof(UInt64))]
+  [ProducesDefaultResponseType(typeof(Int64))]
   [ProducesResponseType(typeof(ErrorData), StatusCodes.Status404NotFound)]
   [ProducesResponseType(typeof(ErrorData), StatusCodes.Status400BadRequest)]
   [HttpDelete]
-  public Task DeleteProduct([FromRoute] UInt64 productId, CancellationToken ct)
+  public Task DeleteProduct([FromRoute] Int64 productId, CancellationToken ct)
   {
     return _adminProducts.DeleteProduct(productId, ct);
   }

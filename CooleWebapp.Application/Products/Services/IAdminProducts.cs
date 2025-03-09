@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 namespace CooleWebapp.Application.Products.Services;
 public record ProductResponseModel
 {
-  [Required] public required UInt64 Id { get; set; }
+  [Required] public required Int64 Id { get; set; }
   [MaxLength(256), Required] public required string Name { get; set; }
   public string? Description { get; set; }
   [Required] public required decimal Price { get; set; }
@@ -14,7 +14,7 @@ public record ProductResponseModel
 
 public record ShortProductResponseModel
 {
-  [Required] public required UInt64 Id { get; set; }
+  [Required] public required Int64 Id { get; set; }
   [MaxLength(256), Required] public required string Name { get; set; }
 }
 
@@ -28,7 +28,7 @@ public record AddProductRequestModel
 
 public record EditProductRequestModel : AddProductRequestModel
 {
-  [Required] public required UInt64 ProductId { get; set; }
+  [Required] public required Int64 ProductId { get; set; }
   /// <summary>
   /// The product image should not be updated and is not included in the request
   /// </summary>
@@ -52,7 +52,7 @@ public record GetProductsRequestModel
 
 public interface IAdminProducts
 {
-  Task<UInt64> CreateProduct(AddProductRequestModel addProductRequestModel,
+  Task<Int64> CreateProduct(AddProductRequestModel addProductRequestModel,
     byte[]? productImage,
     CancellationToken ct);
 
@@ -60,11 +60,11 @@ public interface IAdminProducts
     GetProductsRequestModel getProductsRequestModel, 
     CancellationToken ct);
 
-  Task<byte[]> ReadProductImage(UInt64 productId, CancellationToken ct);
+  Task<byte[]> ReadProductImage(Int64 productId, CancellationToken ct);
 
   Task UpdateProduct(EditProductRequestModel editProductRequestModel,
     byte[]? productImage,
     CancellationToken ct);
 
-  Task DeleteProduct(UInt64 productId, CancellationToken ct);
+  Task DeleteProduct(Int64 productId, CancellationToken ct);
 }

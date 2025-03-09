@@ -22,7 +22,7 @@ public record GetTopSpendersResponseModel
 {
   [Required] public required string Name { get; init; }
   [Required] public required string Initials { get; init; }
-  [Required] public required UInt64 CoolUserId { get; init; }
+  [Required] public required Int64 CoolUserId { get; init; }
   [Required] public decimal AmountSpent { get; init; }
 }
 
@@ -41,7 +41,7 @@ public enum PurchaseStatisticsTimePeriod
 public record GetPurchasesPerTimeStatisticsRequestModel
 {
 
-  public UInt64? ProductIdFilter { get; init; }
+  public Int64? ProductIdFilter { get; init; }
   public PurchaseStatisticsTimePeriod PurchaseStatisticsTimePeriod { get; init; }
     = PurchaseStatisticsTimePeriod.OneYear;
 }
@@ -64,7 +64,7 @@ public record GetProductStatisticsRequestModel
 public record GetProductStatisticsResponseModel
 {
   [Required] public required int NumberOfPurchases { get; init; }
-  [Required] public required UInt64 ProductId { get; init; }
+  [Required] public required Int64 ProductId { get; init; }
   [Required] public required string ProductName { get; init; }
 }
 
@@ -77,10 +77,10 @@ public record GetMostRecentPurchasesResponseModel
 {
   [Required] public required string BuyerInitials { get; init; }
   [Required] public required string BuyerName { get; init; }
-  [Required] public required UInt64 BuyerCoolUserId { get; init; }
+  [Required] public required Int64 BuyerCoolUserId { get; init; }
   [Required] public required UInt32 Quantity { get; init; }
   [Required] public required string ProductName { get; init; }
-  [Required] public required UInt64 ProductId { get; init; }
+  [Required] public required Int64 ProductId { get; init; }
   [Required] public required decimal Price { get; init; }
 }
 

@@ -13,19 +13,19 @@ namespace CooleWebapp.Database.Repository
       _dbContext = dbContext;
     }
 
-    public async Task<UInt64> CreateDeposit(Deposit deposit, CancellationToken ct)
+    public async Task<Int64> CreateDeposit(Deposit deposit, CancellationToken ct)
     {
       var res = await _dbContext.Deposits.AddAsync(deposit, ct);
       return res.Entity.Id;
     }
 
-    public async Task<UInt64> CreateOrder(Order order, CancellationToken ct)
+    public async Task<Int64> CreateOrder(Order order, CancellationToken ct)
     {
       var res = await _dbContext.Orders.AddAsync(order, ct);
       return res.Entity.Id;
     }
 
-    public async Task<Balance> GetBalance(UInt64 coolUserId, CancellationToken ct)
+    public async Task<Balance> GetBalance(Int64 coolUserId, CancellationToken ct)
     {
       var res = await _dbContext.Balance
         .SingleOrDefaultAsync(b => b.CoolUserId == coolUserId);

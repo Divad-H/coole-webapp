@@ -4,6 +4,6 @@ namespace CooleWebapp.Application.Users.Repository
 {
   public interface IUserSettingsDataAccess
   {
-    Task<UserSettings> GetUserSettings(UInt64 coolUserId, CancellationToken ct);
+    Task<UserSettings> GetUserSettings(Int64 coolUserId, CancellationToken ct);
   }
 }

@@ -6,7 +6,7 @@ using CooleWebapp.Core.ErrorHandling;
 
 namespace CooleWebapp.Application.Products.Actions
 {
-  internal class CreateProductAction : IBusinessAction<CreateProductDto, UInt64>
+  internal class CreateProductAction : IBusinessAction<CreateProductDto, Int64>
   {
     private readonly IProductDataAccess _productDataAccess;
     private readonly IImageValidator _imageValidator;
@@ -18,7 +18,7 @@ namespace CooleWebapp.Application.Products.Actions
       _imageValidator = imageValidator;
     }
 
-    public async Task<UInt64> Run(CreateProductDto dataIn, CancellationToken ct)
+    public async Task<Int64> Run(CreateProductDto dataIn, CancellationToken ct)
     {
       if (dataIn.Image != null && !await _imageValidator.ValidateImage(dataIn.Image, ct))
         throw new ClientError(ErrorType.InvalidOperation, "The supplied image was invalid.");

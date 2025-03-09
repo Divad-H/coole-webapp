@@ -1,4 +1,4 @@
-﻿using CooleWebapp.Auth.Model;
+using CooleWebapp.Auth.Model;
 using CooleWebapp.Core.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -17,6 +17,7 @@ public sealed class WebappDbContext : IdentityDbContext<WebappUser>
 
   protected override void OnModelCreating(ModelBuilder builder)
   {
+    builder.UseIdentityColumns();
     base.OnModelCreating(builder);
     builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
   }

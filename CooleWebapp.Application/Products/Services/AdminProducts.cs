@@ -28,7 +28,7 @@ namespace CooleWebapp.Application.Products.Services
       _deleteProductActionFactory = deleteProductActionFactory;
     }
 
-    public Task<ulong> CreateProduct(
+    public Task<long> CreateProduct(
       AddProductRequestModel addProductRequestModel,
       byte[]? productImage,
       CancellationToken ct)
@@ -45,7 +45,7 @@ namespace CooleWebapp.Application.Products.Services
         }, ct);
     }
 
-    public async Task<byte[]> ReadProductImage(UInt64 productId, CancellationToken ct)
+    public async Task<byte[]> ReadProductImage(Int64 productId, CancellationToken ct)
     {
       var imageData = await _productDataAccess.ReadProductImage(productId, ct);
       if (imageData is null)
@@ -96,7 +96,7 @@ namespace CooleWebapp.Application.Products.Services
       };
     }
 
-    public Task DeleteProduct(UInt64 productId, CancellationToken ct)
+    public Task DeleteProduct(Int64 productId, CancellationToken ct)
     {
       return _runnerFactory
         .CreateWriterRunner(_deleteProductActionFactory.Create())

@@ -70,7 +70,7 @@ internal sealed class AdminUsersService : IAdminUsersService
     };
   }
 
-  public Task DeleteUser(UInt64 userId, CancellationToken ct)
+  public Task DeleteUser(Int64 userId, CancellationToken ct)
   {
     return _runnerFactory
       .CreateWriterRunner(_deleteUserActionFactory.Create())

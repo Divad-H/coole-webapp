@@ -42,7 +42,7 @@ namespace CooleWebapp.Backend.Controllers
     [ProducesResponseType(typeof(ErrorData), StatusCodes.Status404NotFound)]
     [ProducesResponseType(typeof(ErrorData), StatusCodes.Status400BadRequest)]
     [HttpGet]
-    public async Task<FileResult> GetProductImage([FromRoute] UInt64 productId, CancellationToken ct)
+    public async Task<FileResult> GetProductImage([FromRoute] Int64 productId, CancellationToken ct)
     {
       var image = await _products.ReadProductImage(productId, ct);
       return File(image, "image/jpeg");

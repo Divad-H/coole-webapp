@@ -35,7 +35,7 @@ public class FridgeController : ControllerBase
   [ProducesResponseType(typeof(ErrorData), StatusCodes.Status404NotFound)]
   [HttpGet]
   public Task<GetBuyerResponseModel> GetBuyer(
-    [FromQuery] UInt64 coolUserId,
+    [FromQuery] Int64 coolUserId,
     CancellationToken ct)
   {
     return _dashboardService.ReadBuyerDetails(coolUserId, ct);
@@ -49,7 +49,7 @@ public class FridgeController : ControllerBase
   [HttpPost]
   public Task<UserBalanceResponseModel> AddBalance(
     AddBalanceRequestModel addBalanceRequestModel,
-    UInt64 coolUserId,
+    Int64 coolUserId,
     CancellationToken ct)
   {
     return _userAccount.AddBalance(coolUserId, addBalanceRequestModel.Amount, ct);

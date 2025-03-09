@@ -26,7 +26,7 @@ public sealed class UserDataAccess : IUserDataAccess
     return res.Entity;
   }
 
-  public async Task DeleteUser(UInt64 coolUserId, CancellationToken ct)
+  public async Task DeleteUser(Int64 coolUserId, CancellationToken ct)
   {
     var user = await _dbContext.CoolUsers.FirstOrDefaultAsync(u => u.Id == coolUserId, ct);
     if (user is null)
@@ -58,7 +58,7 @@ public sealed class UserDataAccess : IUserDataAccess
     return _dbContext.CoolUsers;
   }
 
-  public Task<CoolUser?> GetUser(UInt64 coolUserId, CancellationToken ct)
+  public Task<CoolUser?> GetUser(Int64 coolUserId, CancellationToken ct)
   {
     return _dbContext.CoolUsers.FirstOrDefaultAsync(u => u.Id == coolUserId, ct);
   }
@@ -84,7 +84,7 @@ public sealed class UserDataAccess : IUserDataAccess
       });
   }
 
-  public async Task SetUserRoles(UInt64 coolUserId, IReadOnlyCollection<string> roles, CancellationToken ct)
+  public async Task SetUserRoles(Int64 coolUserId, IReadOnlyCollection<string> roles, CancellationToken ct)
   {
     var user = await GetUser(coolUserId, ct) 
       ?? throw new ClientError(ErrorType.NotFound, "A user with that Id does not exist.");
