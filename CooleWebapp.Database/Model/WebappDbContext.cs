@@ -1,4 +1,4 @@
-using CooleWebapp.Auth.Model;
+﻿using CooleWebapp.Auth.Model;
 using CooleWebapp.Core.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -41,7 +41,7 @@ public sealed class WebappDbContext : IdentityDbContext<WebappUser>
 public class DateTimeUtcConverter : ValueConverter<DateTime, DateTime>
 {
   public DateTimeUtcConverter() : base(
-    x => x,
+    x => DateTime.SpecifyKind(x, DateTimeKind.Utc),
     x => DateTime.SpecifyKind(x, DateTimeKind.Utc), 
     null)
   { }
