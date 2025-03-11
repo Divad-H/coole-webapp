@@ -49,6 +49,9 @@ services:
       EmailSender__FromName: Coole Webapp
       EmailSender__FromAddress: !!!CHANGEME!!!
       AdministratorsConfiguration__AdministratorEmails__0: !!!CHANGEME!!!
+      AdministratorsConfiguration__AdministratorEmails__1: !!!CHANGEME!!!
+      AdministratorsConfiguration__AllowedEmailPatterns__0: "*@changeme.net"
+      AdministratorsConfiguration__FridgeUserEmails__0: !!!CHANGEME!!!
       DatabaseConfig__DatabaseConnectionString: "Host=postgresql;Port=5432;Database=coole_webapp;Username=coole_webapp;Password=__PASSWORD__;"
       DB_PASSWORD_FILE: /run/secrets/db_password
     secrets:
