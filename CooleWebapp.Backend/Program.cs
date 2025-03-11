@@ -81,7 +81,8 @@ builder.Services
        // Accept anonymous clients (i.e clients that don't send a client_id).
       .AcceptAnonymousClients()
       .UseAspNetCore()
-      .EnableTokenEndpointPassthrough();
+      .EnableTokenEndpointPassthrough()
+      .DisableTransportSecurityRequirement();
 
     if (builder.Environment.IsDevelopment())
     {

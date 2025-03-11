@@ -31,7 +31,19 @@ namespace CooleWebapp.Database
         .AddDbContext<WebappDbContext>((sp, options) =>
         {
           var config = sp.GetRequiredService<IOptions<DatabaseConfig>>().Value;
-          options.UseNpgsql(config.DatabaseConnectionString, x => x.MigrationsHistoryTable("__efmigrationshistory", "public")).ReplaceService<IHistoryRepository, LoweredCaseMigrationHistoryRepository>();
+
+          var databaseConnectionString = config.DatabaseConnectionString;
+          if (databaseConnectionString.Contains("__PASSWORD__"))
+          {
+            var dbPasswordFile = Environment.GetEnvironmentVariable("DB_PASSWORD_FILE");
+            if (!string.IsNullOrEmpty(dbPasswordFile))
+            {
+              var password = File.ReadAllText(dbPasswordFile);
+              databaseConnectionString = databaseConnectionString.Replace("__PASSWORD__", password);
+            }
+          }
+
+          options.UseNpgsql(databaseConnectionString, x => x.MigrationsHistoryTable("__efmigrationshistory", "public")).ReplaceService<IHistoryRepository, LoweredCaseMigrationHistoryRepository>();
           options.UseOpenIddict();
           options.UseSnakeCaseNamingConvention();
         })
