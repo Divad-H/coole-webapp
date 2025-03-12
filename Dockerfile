@@ -9,4 +9,5 @@ RUN dotnet publish -c Release -o out -- CooleWebapp.Backend/CooleWebapp.Backend.
 # Build runtime image
 FROM --platform=$TARGETARCH mcr.microsoft.com/dotnet/aspnet:8.0-alpine
 COPY --from=build /out /app/
+WORKDIR /app
 ENTRYPOINT ["dotnet", "/app/CooleWebapp.Backend.dll"]

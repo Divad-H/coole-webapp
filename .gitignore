@@ -356,3 +356,5 @@ App/
 docker/db_password.txt
 
 docker/db_root_password.txt
+
+out/
