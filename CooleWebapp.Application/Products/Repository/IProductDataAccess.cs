@@ -13,7 +13,14 @@ namespace CooleWebapp.Application.Products.Repository
       string? searchFilter,
       ProductState? productStateFilter,
       SortDirection sortDirection,
-      CancellationToken ct);
+      CancellationToken ct
+    );
+
+    Task<Paginated<Product>> ReadPopularProducts(
+      Page page,
+      ProductState? productStateFilter,
+      CancellationToken ct
+    );
 
     Task<IQueryable<Product>> ReadAllProducts(CancellationToken ct);
 

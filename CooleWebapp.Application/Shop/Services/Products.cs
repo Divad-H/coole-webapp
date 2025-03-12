@@ -1,10 +1,10 @@
-﻿using CooleWebapp.Application.Products.Repository;
+﻿using System.Collections.Immutable;
+using CooleWebapp.Application.Products.Repository;
 using CooleWebapp.Application.Products.Services;
 using CooleWebapp.Application.Shop.Actions;
 using CooleWebapp.Core.BusinessActionRunners;
 using CooleWebapp.Core.ErrorHandling;
 using CooleWebapp.Core.Utilities;
-using System.Collections.Immutable;
 using Microsoft.EntityFrameworkCore;
 
 namespace CooleWebapp.Application.Shop.Services
@@ -20,7 +20,8 @@ namespace CooleWebapp.Application.Shop.Services
       IProductDataAccess productDataAccess,
       IRunnerFactory runnerFactory,
       IFactory<BuyProductsAction> buyProductsActionFactory,
-      IFactory<BuyProductsAsFridgeAction> buyProductsAsFridgeActionFactory)
+      IFactory<BuyProductsAsFridgeAction> buyProductsAsFridgeActionFactory
+    )
     {
       _productDataAccess = productDataAccess;
       _runnerFactory = runnerFactory;
@@ -35,41 +36,42 @@ namespace CooleWebapp.Application.Shop.Services
     }
 
     public async Task<GetProductsResponseModel> ReadProducts(
-      GetShopProductsRequestModel getShopProductsRequestModel, 
-      CancellationToken ct)
+      GetShopProductsRequestModel getShopProductsRequestModel,
+      CancellationToken ct
+    )
     {
-      var res = await _productDataAccess
-        .ReadProducts(
-          new Page(getShopProductsRequestModel.PageIndex, getShopProductsRequestModel.PageSize),
-          null,
-          Core.Entities.ProductState.Available,
-          SortDirection.ByNameAscending, 
-          ct);
+      var res = await _productDataAccess.ReadPopularProducts(
+        new Page(getShopProductsRequestModel.PageIndex, getShopProductsRequestModel.PageSize),
+        Core.Entities.ProductState.Available,
+        ct
+      );
 
       return new()
       {
         Pagination = res.Pagination,
-        Products = res.Items.Select(p => new ProductResponseModel()
-        {
-          Description = p.Description,
-          Id = p.Id,
-          Name = p.Name,
-          Price = p.Price,
-          State = p.State
-        }).ToImmutableArray()
+        Products = res
+          .Items.Select(p => new ProductResponseModel()
+          {
+            Description = p.Description,
+            Id = p.Id,
+            Name = p.Name,
+            Price = p.Price,
+            State = p.State
+          })
+          .ToImmutableArray()
       };
     }
 
-    public async Task<IReadOnlyCollection<ShortProductResponseModel>> ReadShortProducts(CancellationToken ct)
+    public async Task<IReadOnlyCollection<ShortProductResponseModel>> ReadShortProducts(
+      CancellationToken ct
+    )
     {
       return await (await _productDataAccess.ReadAllProducts(ct))
         .Select(p => new ShortProductResponseModel() { Id = p.Id, Name = p.Name })
         .ToArrayAsync(ct);
     }
 
-    public async Task BuyProducts(
-      BuyProductsDto buyProductsDto, 
-      CancellationToken ct)
+    public async Task BuyProducts(BuyProductsDto buyProductsDto, CancellationToken ct)
     {
       await _runnerFactory
         .CreateWriterRunner(_buyProductsActionFactory.Create())
@@ -77,8 +79,9 @@ namespace CooleWebapp.Application.Shop.Services
     }
 
     public async Task BuyProductsAsFridge(
-      BuyProductsAsFridgeDto buyProductsAsFridgeDto, 
-      CancellationToken ct)
+      BuyProductsAsFridgeDto buyProductsAsFridgeDto,
+      CancellationToken ct
+    )
     {
       await _runnerFactory
         .CreateWriterRunner(_buyProductsAsFridgeActionFactory.Create())

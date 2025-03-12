@@ -12,6 +12,7 @@ namespace CooleWebapp.Database.Repository;
 internal class ProductsDataAccess : IProductDataAccess
 {
   private readonly WebappDbContext _dbContext;
+
   public ProductsDataAccess(WebappDbContext dbContext)
   {
     _dbContext = dbContext;
@@ -25,10 +26,11 @@ internal class ProductsDataAccess : IProductDataAccess
 
   public async Task<byte[]?> ReadProductImage(long productId, CancellationToken ct)
   {
-    return (await _dbContext.ProductImages
-      .AsNoTracking()
-      .SingleOrDefaultAsync(p => p.ProductId == productId))
-      ?.Data;
+    return (
+      await _dbContext
+        .ProductImages.AsNoTracking()
+        .SingleOrDefaultAsync(p => p.ProductId == productId)
+    )?.Data;
   }
 
   public Task<Paginated<Product>> ReadProducts(
@@ -36,13 +38,12 @@ internal class ProductsDataAccess : IProductDataAccess
     string? searchFilter,
     ProductState? productStateFilter,
     SortDirection sortDirection,
-    CancellationToken ct)
+    CancellationToken ct
+  )
   {
-    var query = _dbContext.Products
-      .AsNoTracking();
+    var query = _dbContext.Products.AsNoTracking();
     if (searchFilter is not null)
-      query = query.Where(prod => prod.Name.ToLower()
-        .Contains(searchFilter.ToLower()));
+      query = query.Where(prod => prod.Name.ToLower().Contains(searchFilter.ToLower()));
     if (productStateFilter is not null)
       query = query.Where(prod => prod.State == productStateFilter);
     if (sortDirection == SortDirection.ByNameAscending)
@@ -52,11 +53,43 @@ internal class ProductsDataAccess : IProductDataAccess
     return query.Paginated(page, ct);
   }
 
+  public Task<Paginated<Product>> ReadPopularProducts(
+    Page page,
+    ProductState? productStateFilter,
+    CancellationToken ct
+  )
+  {
+    var query = _dbContext.Products.AsNoTracking();
+    if (productStateFilter is not null)
+      query = query.Where(prod => prod.State == productStateFilter);
+#nullable disable
+#pragma warning disable CS8073 // The result of the expression is always the same since a value of this type is never equal to 'null'
+    query = query
+      .Select(product => new
+      {
+        product,
+        _dbContext
+          .Orders.Where(o => o.OrderItems!.FirstOrDefault(oi => oi.ProductId == product.Id) != null)
+          .OrderByDescending(o => o.Timestamp)
+          .FirstOrDefault()
+          .Timestamp
+      })
+      .OrderBy(d => d.Timestamp == null)
+      .ThenByDescending(d => d.Timestamp)
+      .Select(d => d.product);
+#pragma warning restore CS8073 // The result of the expression is always the same since a value of this type is never equal to 'null'
+#nullable enable
+    return query.Paginated(page, ct);
+  }
+
   public async Task UpdateProduct(Product product, CancellationToken ct)
   {
     var dbProduct = await _dbContext.Products.SingleOrDefaultAsync(p => p.Id == product.Id, ct);
     if (dbProduct is null)
-      throw new ClientError(ErrorType.NotFound, "Could not update product, because the product was not found.");
+      throw new ClientError(
+        ErrorType.NotFound,
+        "Could not update product, because the product was not found."
+      );
     dbProduct.Price = product.Price;
     dbProduct.State = product.State;
     dbProduct.Description = product.Description;
@@ -75,8 +108,10 @@ internal class ProductsDataAccess : IProductDataAccess
 
   public async Task DeleteProductImage(Int64 productId, CancellationToken ct)
   {
-    var productImage =
-      await _dbContext.ProductImages.SingleOrDefaultAsync(pi => pi.ProductId == productId, ct);
+    var productImage = await _dbContext.ProductImages.SingleOrDefaultAsync(
+      pi => pi.ProductId == productId,
+      ct
+    );
     if (productImage is null)
       return;
     _dbContext.ProductImages.Attach(productImage);
