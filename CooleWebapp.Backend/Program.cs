@@ -22,7 +22,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 
-var cultureInfo = new CultureInfo("en-US");
+var cultureInfo = CultureInfo.InvariantCulture;
 CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
 CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
