@@ -7,6 +7,6 @@ RUN dotnet test -c Release --no-build --verbosity normal
 RUN dotnet publish -c Release -o out -- CooleWebapp.Backend/CooleWebapp.Backend.csproj
 
 # Build runtime image
-FROM mcr.microsoft.com/dotnet/aspnet:8.0@sha256:6c4df091e4e531bb93bdbfe7e7f0998e7ced344f54426b7e874116a3dc3233ff
-COPY --from=build /out .
-ENTRYPOINT ["dotnet", "CooleWebapp.Backend.dll"]
+FROM --platform=$TARGETARCH mcr.microsoft.com/dotnet/aspnet:8.0-alpine
+COPY --from=build /out /app/
+ENTRYPOINT ["dotnet", "/app/CooleWebapp.Backend.dll"]
