@@ -126,6 +126,8 @@ builder.Services.AddWebappAuth(builder.Configuration);
 
 builder.Services.AddEmailSender(builder.Configuration);
 
+builder.Services.AddHealthChecks();
+
 var app = builder.Build();
 await DbSetup.InitializeCooleWebappDatabase(app.Services, app.Lifetime.ApplicationStopping);
 
@@ -143,6 +145,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHealthChecks("/health");
 
 app.MapFallbackToFile("index.html");
 
